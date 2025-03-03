@@ -2,7 +2,8 @@
 import Head from "next/head";
 import Image from "next/image";
 import { useEffect } from "react";
-import styles from "../styles/Home.module.css"; // Import CSS
+import styles from "../styles/Home.module.css";
+import ProjectGrid from "../components/ProjectGrid";
 
 export default function Home() {
   useEffect(() => {
@@ -97,7 +98,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+        <section className={styles.projects}>
 
+            <ProjectGrid/>
+        </section>
       <div className={styles.scrollable}></div>
     </div>
   );
