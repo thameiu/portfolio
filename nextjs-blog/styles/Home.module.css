@@ -35,8 +35,7 @@
 .heroContent {
   width: 80vw;
   height: 50vh; /* Reduce height to 50% of the screen */
-  background: rgba(255, 255, 255, 0.1); /* Transparent background */
-  backdrop-filter: blur(10px);
+  background: rgba(245, 245, 245, 0.98);
   border-radius: 20px;
   display: flex;
   align-items: center;

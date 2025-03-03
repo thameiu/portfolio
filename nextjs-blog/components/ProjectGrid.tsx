@@ -54,12 +54,12 @@ const ProjectGrid = () => {
         height="440px"
       />
       <ProjectCard 
-        title="Le Petit Prince" 
+        title="Wee Joker" 
         description="Appli mobile pour école maternelle" 
-        imageSrc="/kev.jpg" 
+        imageSrc="/jumbo.png" 
         href="/project-2" 
-        width="60px" 
-        height="80px"
+        width="90px" 
+        height="150px"
       />
 
     </div>
