@@ -5,83 +5,92 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-family: 'sofia-pro-regular';
+
 }
 
-.title a {
-  color: #0070f3;
-  text-decoration: none;
+
+/* Background animation */
+.canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 }
 
-.title a:hover,
-.title a:focus,
-.title a:active {
-  text-decoration: underline;
+/* Hero section (positioned higher) */
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  margin-top: 8vh;
+  /* margin-top: -8vh; Move it closer to the top */
 }
 
-.title {
-  margin: 0 0 1rem;
-  line-height: 1.15;
-  font-size: 3.6rem;
-}
-
-.title {
-  text-align: center;
-}
-
-.title,
-.description {
-  text-align: center;
-}
-
-.description {
-  line-height: 1.5;
-  font-size: 1.5rem;
-}
-
-.grid {
+/* Main rounded rectangle container */
+/* Main rounded rectangle container */
+.heroContent {
+  width: 80vw;
+  height: 50vh; /* Reduce height to 50% of the screen */
+  background: rgba(255, 255, 255, 0.1); /* Transparent background */
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
   display: flex;
   align-items: center;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  margin-top: 5vh; /* Add space at the top */
+}
+
+
+/* Left: Profile picture */
+.profileContainer {
+  width: 30%;
+  display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-
-  max-width: 800px;
-  margin-top: 3rem;
 }
 
-.card {
-  margin: 1rem;
-  flex-basis: 45%;
-  padding: 1.5rem;
+.profileImage {
+  width: 200px; /* Set a fixed size */
+  height: 200px; /* Keep it square */
+  border-radius: 50%; /* Make it a perfect circle */
+  border: 4px solid white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  object-fit: cover; /* Prevent stretching */
+}
+
+.textContainer {
+  width: 100%; /* Increase width to allow text to fit */
   text-align: left;
-  color: inherit;
-  text-decoration: none;
-  border: 1px solid #eaeaea;
-  border-radius: 10px;
-  transition:
-    color 0.15s ease,
-    border-color 0.15s ease;
+  color: white;
+  white-space: nowrap; /* Prevent line breaks */
+  overflow: hidden; /* Avoid overflow issues */
+  text-overflow: ellipsis; /* Add "..." if text is too long */
 }
 
-.card:hover,
-.card:focus,
-.card:active {
-  color: #0070f3;
-  border-color: #0070f3;
+/* Huge Title */
+.title {
+  font-size: 5vw;
+  font-weight: bold;
+  line-height: 1;
+  color: #1B1626;
+  white-space: nowrap; /* Force title to stay on one line */
 }
 
-.card h3 {
-  margin: 0 0 1rem 0;
-  font-size: 1.5rem;
+/* Subtitle */
+.subtitle {
+  font-size: 2.5rem;
+  margin-top: 10px;
+  color: #1B1626;
+  white-space: nowrap; /* Prevent subtitle from breaking into a new line */
 }
 
-.card p {
-  margin: 0;
-  font-size: 1.25rem;
-  line-height: 1.5;
-}
-
-.logo {
-  height: 1em;
+/* Adds extra height to enable scrolling */
+.scrollable {
+  height: 200vh;
 }
 
 @media (max-width: 600px) {
@@ -89,4 +98,20 @@
     width: 100%;
     flex-direction: column;
   }
+}
+
+@font-face {
+  font-family: 'sofia-pro-regular';
+  src: url('./fonts/Sofia\ Pro\ Regular\ Az.woff') format('woff2'),
+       url('./fonts/Sofia\ Pro\ Regular\ Az.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'sofia-pro-ultralight';
+  src: url('./fonts/Sofia\ Pro\ UltraLight\ Az.woff') format('woff2'),
+       url('./fonts/Sofia\ Pro\ UltraLight\ Az.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
