@@ -135,8 +135,11 @@
       top: 10px;
       left: 10px;
       z-index: 101;
-      border-radius: 25px;
+      border-radius: 50%;
       background: rgba(255, 255, 255, 0.9);
+      width:60px;
+      height: 60px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
   
     .navLinks {
