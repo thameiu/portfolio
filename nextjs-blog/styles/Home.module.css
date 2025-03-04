@@ -3,12 +3,10 @@
   padding: 0 0.5rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   font-family: 'sofia-pro-regular';
-
 }
-
 
 /* Background animation */
 .canvas {
@@ -20,71 +18,97 @@
   z-index: -1;
 }
 
+.sectionTitle {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.projects {
+  margin-top: 10vh;
+}
+
 /* Hero section (positioned higher) */
 .hero {
   display: flex;
+  flex-direction: column; /* Arrange elements vertically */
   justify-content: center;
   align-items: center;
-  height: 50vh;
-  margin-top: 8vh;
-  /* margin-top: -8vh; Move it closer to the top */
+  
+  padding-top: 10vh; /* Add padding to ensure title has space at the top */
+  width: 100%; /* Ensure full width */
+  box-sizing: border-box; /* To prevent overflow */
 }
 
-/* Main rounded rectangle container */
 /* Main rounded rectangle container */
 .heroContent {
   width: 80vw;
-  height: 50vh; /* Reduce height to 50% of the screen */
-  background: rgba(245, 245, 245, 0.98);
+  background: rgba(245, 245, 245, 0.94);
   border-radius: 20px;
   display: flex;
-  align-items: center;
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center; /* Center align all elements */
   padding: 40px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   margin-top: 5vh; /* Add space at the top */
+  justify-content: center; /* Center all items vertically */
 }
 
-
-/* Left: Profile picture */
-.profileContainer {
-  width: 30%;
-  display: flex;
-  justify-content: center;
-}
-
-.profileImage {
-  width: 200px; /* Set a fixed size */
-  height: 200px; /* Keep it square */
-  border-radius: 50%; /* Make it a perfect circle */
-  border: 4px solid white;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  object-fit: cover; /* Prevent stretching */
-}
-
-.textContainer {
-  width: 100%; /* Increase width to allow text to fit */
-  text-align: left;
-  color: white;
-  white-space: nowrap; /* Prevent line breaks */
-  overflow: hidden; /* Avoid overflow issues */
-  text-overflow: ellipsis; /* Add "..." if text is too long */
-}
-
-/* Huge Title */
+/* Title */
 .title {
-  font-size: 5vw;
+  font-size: 7vw;
   font-weight: bold;
   line-height: 1;
+  text-align: center;
   color: #1B1626;
   white-space: nowrap; /* Force title to stay on one line */
+  margin: 0;
+  /* margin-top: 10vh; Add space to the top of the title */
 }
 
 /* Subtitle */
 .subtitle {
+  margin-top: 4vh;
   font-size: 2.5rem;
-  margin-top: 10px;
   color: #1B1626;
-  white-space: nowrap; /* Prevent subtitle from breaking into a new line */
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* Profile Container */
+.profileContainer {
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px; /* Increase space between the profile image and text */
+}
+
+.profileImage {
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  border: 4px solid white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  object-fit: cover;
+}
+
+/* About Me Text */
+.aboutMeContainer {
+  text-align: left; /* Align text to the left */
+  margin-left: 30px; /* Add some space between the profile image and text */
+}
+
+/* About Me Title */
+.aboutMeTitle {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+/* About Me Description */
+.aboutMeDescription {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #333;
 }
 
 /* Adds extra height to enable scrolling */

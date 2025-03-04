@@ -1,36 +1,55 @@
-import Link from "next/link";
-import Image from "next/image";
+import { useState, useEffect } from "react";
 import styles from "./ProjectCard.module.css";
 
 interface ProjectCardProps {
   title: string;
   description: string;
-  imageSrc: string;
-  href: string;
+  previewImage: string; // Preview image
   width?: string;
   height?: string;
+  children: React.ReactNode; // Carousel images inside modal
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({
-  title,
-  description,
-  imageSrc,
-  href,
-  width = "300px",
-  height = "400px",
-}) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, previewImage, width, height, children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden"; // Disable scrolling
+    } else {
+      document.body.style.overflow = "auto"; // Enable scrolling
+    }
+
+    return () => {
+      document.body.style.overflow = "auto"; // Reset when component unmounts
+    };
+  }, [isOpen]);
+
   return (
-    <Link href={href} passHref className={styles.projectLink}>
-      <div className={styles.card} style={{ width, height }}>
-        <div className={styles.imageContainer}>
-          <Image src={imageSrc} alt={title} layout="fill" objectFit="cover" />
-        </div>
-        <div className={styles.content}>
-          <h3 className={styles.title}>{title}</h3>
-          <p className={styles.description}>{description}</p>
+    <>
+      {/* Project Card */}
+      <div className={styles.projectCard} style={{ width, height }} onClick={() => setIsOpen(true)}>
+        <img src={previewImage} alt={title} className={styles.previewImage} />
+        <div className={styles.cardContent}>
+          <h3>{title}</h3>
+          <p>{description}</p>
         </div>
       </div>
-    </Link>
+
+      {/* Modal */}
+      {isOpen && (
+        <div className={styles.modalOverlay} onClick={() => setIsOpen(false)}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <button className={styles.closeButton} onClick={() => setIsOpen(false)}>✖</button>
+            <img src={previewImage} alt={title} className={styles.modalPreviewImage} />
+
+            <h2>{title}</h2>
+            <p>{description}</p>
+            {children}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

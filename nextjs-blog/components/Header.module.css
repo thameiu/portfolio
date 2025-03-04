@@ -1,0 +1,91 @@
+.header {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 900px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .hidden {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .visible {
+    transform: translateX(-50%);
+    opacity: 1;
+  }
+  
+/* Navigation bar */
+.navbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+  }
+  
+  /* Nav Links */
+  .navLinks {
+    list-style: none;
+    display: flex;
+    flex: 1;
+    justify-content: space-evenly;
+    align-items: center;  /* Ensures vertical alignment */
+    padding: 0;
+    margin: 0;
+  }
+  
+  .navLinks li {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    align-items: center; /* Keeps all items vertically centered */
+    justify-content: center;
+  }
+  .navLinks a {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+    transition: color 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    position: relative; /* Needed for the underline effect */
+}
+
+.navLinks a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px; /* Adjust position */
+    width: 100%;
+    height: 2px; /* Thickness of the underline */
+    background-color: #1B1626; /* Underline color */
+    border-radius:15px;
+    transform: scaleX(0); /* Initially hidden */
+    transform-origin: left; /* Start the animation from the left */
+    transition: transform 0.3s ease-in-out;
+}
+
+.navLinks a:hover::after {
+    transform: scaleX(1); /* Expand the underline from left to right */
+}
+
+  
+  /* Logo styling */
+  .logo {
+    height: 40px;  /* Adjust height */
+    width: auto;
+    vertical-align: middle;
+  }
+  
