@@ -6,9 +6,12 @@
   justify-content: flex-start;
   align-items: center;
   font-family: 'sofia-pro-regular';
-  
+
 }
 
+.container b {
+  color:#334A52;
+}
 /* Background animation */
 .canvas {
   position: fixed;
@@ -27,7 +30,7 @@
 }
 
 .projects {
-  margin-top: 10vh;
+  margin-top: 5vh;
 }
 
 /* Hero section (positioned higher) */
@@ -121,7 +124,10 @@
 }
 /* Contact Section */
 
+.contact{
+  margin-top:5vh;
 
+}
 .contactDetails {
   border-radius: 15px;
   text-align: left; /* Aligns text to the left */

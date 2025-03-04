@@ -7,6 +7,7 @@ import ProjectGrid from "../components/ProjectGrid";
 import Header from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faFile, faPhoneAlt } from "@fortawesome/free-solid-svg-icons";
+import { FaLinkedin, FaPhoneAlt, FaFileDownload, FaEnvelope } from "react-icons/fa";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<string>("experience");
@@ -103,7 +104,14 @@ export default function Home() {
             <div className={styles.aboutMeContainer}>
               <h2 className={styles.aboutMeTitle}>À propos de moi</h2>
               <section className={styles.aboutMeDescription}>
-                I'm a full-stack developer with a passion for creating web applications. I specialize in React, Node.js, and MongoDB. I'm always looking for new opportunities to learn and grow as a developer.
+                
+              Je m'appelle <b>Mathieu HERNANDEZ</b>, j'ai 20 ans et je suis en troisième année de <b>BUT Informatique</b> à l'IUT d'Arles. <br/>
+              Passionné par la programmation et voulant m'orienter vers l’<b>intelligence artificielle</b>, 
+              je vais bientôt intégrer un Master of Science en IA à <b>Epitech</b>.<br/>
+              Grâce à ma formation et mes expériences professionnelles, j’ai acquis de solides compétences en <b>développement web</b>,
+              en optimisation des performances, ainsi qu’en <b>gestion de projet</b> et qualité de développement. <br/>
+              Ces expériences m’ont permis d’adopter des méthodologies <b>rigoureuses</b> et d’améliorer ma capacité à concevoir des solutions <b>efficaces</b> et bien <b>structurées</b>.
+
               </section>
             </div>
           </div>
@@ -191,7 +199,7 @@ export default function Home() {
       </section>
 
       <section id="projects" className={styles.projects}>
-        <h2 className={styles.sectionTitle}>Projects</h2>
+        <h2 className={styles.sectionTitle}>Projets</h2>
         <ProjectGrid />
       </section>
 
@@ -200,17 +208,22 @@ export default function Home() {
         <h2 className={styles.sectionTitle}>Me Contacter</h2>
         <div className={styles.contactDetails}>
           <a href="mailto:hernandez.mathieu19@gmail.com" className={styles.contactItem}>
-            <FontAwesomeIcon height={"40px"} icon={faEnvelope} />
+            <FaEnvelope size={40} />
+
             <span>E-mail : hernandez.mathieu19@gmail.com</span>
           </a>
           <a href="tel:+33662011741" className={styles.contactItem}>
-            <FontAwesomeIcon height={"40px"} icon={faPhoneAlt} />
+            <FaPhoneAlt size={40} />
             <span>Téléphone : 06 62 01 17 41</span>
           </a>
           <a href="/CV_HERNANDEZ_MATHIEU_2025_2026.pdf" download className={styles.contactItem}>
-            <FontAwesomeIcon width={"40px"} icon={faFile} />
+              <FaFileDownload size={40} />
             <span>Télécharger mon CV</span>
           </a>
+            <a href="https://www.linkedin.com/in/mathieu-hernandez-306914264/" className={styles.contactItem}>
+            <FaLinkedin size={40} />
+            <span>Mon profil LinkedIn</span>
+            </a>
         </div>
       </section>
 
