@@ -43,6 +43,7 @@ const Header = () => {
         behavior: "smooth",
       });
     }
+    setMenuVisible(false); 
   };
 
   const toggleMenu = () => {
