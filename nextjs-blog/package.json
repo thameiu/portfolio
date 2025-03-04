@@ -6,6 +6,10 @@
     "start": "next start"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "font-awesome": "^4.7.0",
     "framer-motion": "^12.4.7",
     "next": "latest",
     "react": "18.2.0",
@@ -17,6 +21,7 @@
   "devDependencies": {
     "@types/node": "22.13.8",
     "@types/react": "19.0.10",
+    "@types/react-fontawesome": "^1.6.8",
     "typescript": "5.8.2"
   }
 }

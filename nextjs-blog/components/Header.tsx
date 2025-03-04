@@ -5,6 +5,7 @@ const Header = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [hovering, setHovering] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false); // For mobile menu toggle
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,7 +24,6 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY, hovering]);
 
-  // Detect hover at the top of the screen
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
       if (event.clientY < 20) {
@@ -35,21 +35,48 @@ const Header = () => {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const toggleMenu = () => {
+    setMenuVisible((prev) => !prev); // Toggle the menu visibility
+  };
+
   return (
     <div
       className={`${styles.header} ${isVisible ? styles.visible : styles.hidden}`}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >
-      <nav className={styles.navbar}>
+      <button className={styles.menuButton} onClick={toggleMenu}>
+        <img src="portfolio-logo.png" className={styles.logo} alt="Hamburger icon" />
+      </button>
+      <nav className={`${styles.navbar} ${menuVisible ? styles.menuVisible : ""}`}>
         <ul className={styles.navLinks}>
-          <li><a href="#">A propos</a></li>
-          <li><a href="#">Formation</a></li>
-          <li><a href="#">Expériences</a></li>
-          <li><a href="#"><img className={styles.logo} src='portfolio-logo.png' alt="Logo Initiales de Mathieu Hernandez"></img></a></li>
-          <li><a href="#">Compétences</a></li>
-          <li><a href="#">Projets</a></li>
-          <li><a href="#">Contact</a></li>
+          <li>
+            <a onClick={() => scrollToSection("about")}>A propos</a>
+          </li>
+          <li>
+            <a onClick={() => scrollToSection("projects")}>Projets</a>
+          </li>
+          <li>
+            <a onClick={() => scrollToSection("about")}>
+              <img className={styles.logo} src="portfolio-logo.png" alt="Logo Initiales de Mathieu Hernandez" />
+            </a>
+          </li>
+          <li>
+            <a onClick={() => scrollToSection("contact")}>Formation</a>
+          </li>
+          <li>
+            <a onClick={() => scrollToSection("contact")}>Contact</a>
+          </li>
         </ul>
       </nav>
     </div>

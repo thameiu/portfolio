@@ -19,9 +19,10 @@
 }
 
 .sectionTitle {
-  font-size: 2rem;
+  font-size: 3rem;
   margin-bottom: 20px;
   text-align: center;
+  color: #334A52;
 }
 
 .projects {
@@ -60,7 +61,7 @@
   font-weight: bold;
   line-height: 1;
   text-align: center;
-  color: #1B1626;
+  color: #334A52;
   white-space: nowrap; /* Force title to stay on one line */
   margin: 0;
   /* margin-top: 10vh; Add space to the top of the title */
@@ -100,8 +101,9 @@
 
 /* About Me Title */
 .aboutMeTitle {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: bold;
+  color: #334A52;
 }
 
 /* About Me Description */
@@ -111,10 +113,275 @@
   color: #333;
 }
 
+/* Media Queries for Mobile */
+@media (max-width: 768px) {
+
+  /* Hero section to fit the width */
+  .hero {
+    padding-top: 5vh; /* Reduce padding for mobile */
+    width: 100%;
+    margin-left:auto;
+  }
+
+  /* Main rounded container */
+  .heroContent {
+    width: 100%; /* Make the content container responsive */
+    padding: 20px;
+  }
+
+  /* Title for smaller screen */
+  .title {
+    font-size: 8vw;
+  }
+
+  /* Subtitle */
+  .subtitle {
+    font-size: 2rem;
+    margin-top: 2vh;
+  }
+
+  /* Profile Section */
+  .profileContainer {
+    flex-direction: column; /* Stack profile image and text vertically */
+    margin-top: 20px; /* Reduce margin for mobile */
+    align-items: center;
+  }
+
+  .profileImage {
+    width: 250px;
+    height: 250px;
+    margin-bottom: 20px; /* Move image below text */
+  }
+
+  .aboutMeContainer {
+    text-align: center; /* Center-align text on mobile */
+    margin-left: 0; /* Remove left margin */
+  }
+
+  /* About Me Title */
+  .aboutMeTitle {
+    font-size: 2.5rem;
+  }
+
+  /* About Me Description */
+  .aboutMeDescription {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #333;
+  }
+
+}
+
 /* Adds extra height to enable scrolling */
 .scrollable {
   height: 200vh;
 }
+/* Contact Section */
+.contact {
+  background: rgba(245, 245, 245, 0.94);
+  border-radius: 15px;
+  padding-right: 40px;
+  padding-left: 40px;
+  padding-bottom: 40px;
+  text-align: left; /* Aligns text to the left */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+}
+
+.contactDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align items to the left */
+  gap: 20px;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  justify-content: flex-start; /* Align text and icons to the left */
+}
+
+.contactItem:hover {
+  color: #8de1fd;
+}
+
+/* Ensure icons have the same size and are aligned well */
+.contactItem svg {
+  font-size: 22px; /* Adjust size as necessary */
+  line-height: 1; /* Ensure no extra space around the icon */
+  display: inline-block; /* Align the icon properly with the text */
+}
+
+.contactItem span {
+  font-size: 18px;
+}
+
+/* Add this to your existing CSS */
+.experienceSection {
+  margin: 40px 0;
+  padding: 20px;
+}
+
+.experienceContent{
+  background: rgba(245, 245, 245, 0.94);
+  padding : 40px;
+  width: 60vw;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  /* background: transparent; */
+  border: 2px solid #334A52;
+  /* color:#96AFB8; */
+  border-radius: 25px;
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+  font-family: 'sofia-pro-regular';
+}
+
+.tabs button:hover {
+  background-color: #f0f0f0;
+  color:#000;
+  border-color:#C5EFFD;
+
+}
+
+.activeTab {
+  
+  background: #334A52;
+  color: white;
+}
+
+.tabContent {
+  display: block;
+  text-align: center;
+}
+
+.tabContent div {
+  display: block;
+}
+
+.tabContent ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.tabContent li {
+  font-size: 18px;
+  margin: 5px 0;
+}
+
+.professionalExperienceContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.experienceList {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Ensure that the items are centered */
+  position: relative;
+  margin-top: 20px;
+  width: 90%; /* You can adjust this width based on how much space you want */
+}
+
+.experienceItem {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 20px;
+  position: relative;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+
+.jobTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.companyName {
+  font-size: 1.1rem;
+  margin-top: 5px;
+  color: #6C757D;
+}
+
+.period {
+  font-size: 1rem;
+  margin-top: 3px;
+  color: #6C757D;
+  font-style: italic;
+}
+
+.experienceItem span {
+  padding-left: 10px;
+}
+
+.studiesContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.studiesList {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Ensure that the items are centered */
+  margin-top: 20px;
+  width: 90%; /* Adjust as needed */
+}
+
+.studiesItem {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.studyTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.studyDetails {
+  font-size: 1.1rem;
+  margin-top: 5px;
+  color: #6C757D;
+}
+
+.studyPeriod {
+  font-size: 1rem;
+  margin-top: 3px;
+  color: #6C757D;
+  font-style: italic;
+}
+
+.studiesItem span {
+  padding-left: 10px;
+}
+
 
 @media (max-width: 600px) {
   .grid {
