@@ -36,9 +36,7 @@
   flex-direction: column; /* Arrange elements vertically */
   justify-content: center;
   align-items: center;
-  
   padding-top: 10vh; /* Add padding to ensure title has space at the top */
-  width: 100%; /* Ensure full width */
   box-sizing: border-box; /* To prevent overflow */
 }
 
@@ -119,20 +117,18 @@
 /* Adds extra height to enable scrolling */
 .scrollable {
   height: 200vh;
+  
 }
 /* Contact Section */
-.contact {
-  background: rgba(245, 245, 245, 0.94);
-  border-radius: 15px;
-  padding-right: 40px;
-  padding-left: 40px;
-  padding-bottom: 40px;
-  text-align: left; /* Aligns text to the left */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 
-}
 
 .contactDetails {
+  border-radius: 15px;
+  text-align: left; /* Aligns text to the left */
+  background: rgba(245, 245, 245, 0.94);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  padding:40px;
+  padding-top:20px;
   display: flex;
   flex-direction: column;
   align-items: flex-start; /* Align items to the left */
@@ -280,33 +276,31 @@
   padding-left: 10px;
 }
 
-
-/* Media Queries for Mobile */
 @media (max-width: 768px) {
-
-  .container{
-    /* overflow-x: hidden; */
-    width:100vw;
-    padding: 0;
+  .container {
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    margin: 0; /* Remove default body margin */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
   }
+
 
   /* Hero section to fit the width */
-  .hero {
-    padding-top: 5vh; /* Reduce padding for mobile */
-    /* width: 100%; */
-    
-  }
 
   /* Main rounded container */
+  .hero{
+    margin:0;
+  }
+
   .heroContent {
     width: 100vw;
-
     padding: 20px;
+    margin-top: 1vh; /* Add space at the top */
+    border-radius: 40px;
   }
 
   /* Title for smaller screen */
   .title {
-    font-size: 10vw;
+    font-size: 12vw;
     text-align: center;
     white-space: normal; /* Allow the title to wrap */
   }
@@ -350,17 +344,21 @@
   }
 
   .experienceSection {
-    width:100vw;
+    width: 100vw;
     padding: 15px; /* Reduce padding for mobile */
+    
   }
 
   .experienceContent {
     width: 100vw; /* Make the experience container responsive */
     padding: 20px; /* Adjust padding for mobile */
+    border-radius: 40px;
+
   }
 
   /* Tabs */
   .tabs {
+    width: 90%; /* Ensure tabs take full width */
     flex-direction: column; /* Stack the tabs vertically */
     align-items: center; /* Center align the tabs */
     margin-bottom: 5vh; /* Reduce space between tabs */
@@ -413,25 +411,30 @@
     margin-top: 10px;
   }
 
-  /* Experience Item */
   .experienceItem {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     padding-left: 20px;
     margin-bottom: 15px;
-    width: 100%;
+    width: 80%;
+    word-wrap: break-word; /* Ensures long words break */
+    white-space: normal; /* Allows wrapping */
   }
 
   .experienceItem span {
-    display: block; /* Ensure the spans are block-level elements to stack vertically */
-    padding-left: 0; /* Remove left padding on mobile */
-    margin-top: 5px; /* Space between the spans */
+    display: block;
+    padding-left: 0;
+    margin-top: 5px;
+    word-wrap: break-word; /* Ensures text breaks */
+    white-space: normal; /* Allow text to wrap naturally */
+    overflow: hidden; /* Prevents any accidental overflow */
+    text-overflow: ellipsis; /* Optional: add "..." if text overflows */
   }
 
   /* Job Title */
   .jobTitle {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   /* Company Name */
@@ -449,8 +452,12 @@
     font-style: italic;
   }
 
-}
+  .contactDetails{
 
+    border-radius: 50px;
+
+  }
+}
 
 
 @media (max-width: 600px) {
