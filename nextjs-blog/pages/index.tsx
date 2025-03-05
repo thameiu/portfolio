@@ -90,7 +90,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Portfolio</title>
+        <title>Portfolio - Mathieu HERNANDEZ</title>
         <link rel="icon" href="/portfolio-logo.png" />
         <link rel="stylesheet" href="../styles/global.css" />
       </Head>
