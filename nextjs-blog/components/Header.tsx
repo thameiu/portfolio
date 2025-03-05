@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./Header.module.css";
+import projectStyles from "./ProjectCard.module.css";
 
 const Header = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -26,14 +27,19 @@ const Header = () => {
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
-      if (event.clientY < 20) {
-        setIsVisible(true);
+      const isModalOpen = document.querySelector(`.${projectStyles.modalOverlay}`) !== null;
+  
+      if (isModalOpen) {
+        setIsVisible(false); // Hide header when modal is open
+      } else if (event.clientY < 20) {
+        setIsVisible(true); // Show when hovering near the top
       }
     };
-
+  
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
+  
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -62,7 +68,7 @@ const Header = () => {
       <nav className={`${styles.navbar} ${menuVisible ? styles.menuVisible : ""}`}>
         <ul className={styles.navLinks}>
           <li>
-            <a onClick={() => scrollToSection("about")}>A propos</a>
+            <a onClick={() => scrollToSection("about")}>À propos</a>
           </li>
           <li>
             <a onClick={() => scrollToSection("experience")}>Formation</a>

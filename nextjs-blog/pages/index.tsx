@@ -5,9 +5,16 @@ import styles from "../styles/Home.module.css";
 import ProjectCard from "../components/ProjectCard";
 import ProjectGrid from "../components/ProjectGrid";
 import Header from "../components/Header";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faFile, faPhoneAlt } from "@fortawesome/free-solid-svg-icons";
 import { FaLinkedin, FaPhoneAlt, FaFileDownload, FaEnvelope } from "react-icons/fa";
+import { SiNextdotjs, SiNestjs, SiReact, SiLeaflet, SiDocker, SiTypescript, SiPhp, SiLaravel,SiOpengl,SiCmake, SiTailwindcss,SiExpress, SiMysql, SiPython, SiJavascript, SiGit, SiPostgresql, SiMongodb, SiGitlab } from "react-icons/si";
+import { TbBrandCpp } from "react-icons/tb";
+import { FaJs,FaNodeJs,FaJava  } from "react-icons/fa";
+import { DiNetbeans } from "react-icons/di";
+import { PiFileCpp } from "react-icons/pi";
+import { MdAccessTimeFilled } from "react-icons/md";
+import { GiFlame } from "react-icons/gi";
+import { IoPeople } from "react-icons/io5";
+
 import "animate.css";
 
 export default function Home() {
@@ -168,7 +175,7 @@ export default function Home() {
           )}
 
           {activeTab === "studies" && (
-            <div className={styles.studiesContainer}>
+            <div className={styles.professionalExperienceContainer}>
               <div className={styles.experienceList}>
                 <div className={styles.experienceItem}>
                   <span className={styles.jobTitle}>BUT Informatique</span>
@@ -184,17 +191,105 @@ export default function Home() {
             </div>
           )}
 
-            {activeTab === "skills" && (
-              <div>
-                <h3>Skills</h3>
-                <ul>
-                  <li>JavaScript (React, Node.js)</li>
-                  <li>Python (Data Science, Django)</li>
-                  <li>Database Management (SQL, MongoDB)</li>
-                  <li>Version Control (Git, GitHub)</li>
-                </ul>
+          {activeTab === "skills" && (
+            <div className={styles.skillsContainer}>
+
+            <h4 className={styles.skillCategory}>Soft Skills</h4>
+              <div className={styles.skillStack}>
+                <div className={styles.skillBadge}>
+                  <MdAccessTimeFilled /> Ponctualité
+                </div>
+                <div className={styles.skillBadge}>
+                  <IoPeople /> Sociabilité
+                </div>
+                <div className={styles.skillBadge}>
+                  <GiFlame /> Persévérance
+                </div>
               </div>
-            )}
+
+              <h4 className={styles.skillCategory}>Langages de Programmation</h4>
+              <div className={styles.skillStack}>
+                <div className={styles.skillBadge}>
+                  <PiFileCpp /> C++
+                </div>
+                <div className={styles.skillBadge}>
+                  <FaJava /> Java
+                </div>
+                <div className={styles.skillBadge}>
+                  <SiPython /> Python
+                </div>
+                <div className={styles.skillBadge}>
+                  <SiJavascript /> JavaScript
+                </div>
+                <div className={styles.skillBadge}>
+                  <SiTypescript /> TypeScript
+                </div>
+                <div className={styles.skillBadge}>
+                  <SiPhp /> PHP
+                </div>
+                <div className={styles.skillBadge}>
+                  <SiMysql /> SQL
+                </div>
+              </div>
+
+              <h4 className={styles.skillCategory}>Frameworks, Librairies</h4>
+              <div className={styles.skillStack}>
+
+                <div className={styles.skillBadge}>
+                  <SiReact /> React.js
+                </div>
+                <div className={styles.skillBadge}>
+                  <SiNextdotjs /> Next.js
+                </div>
+                <div className={styles.skillBadge}>
+                  <SiNextdotjs /> Node.js
+                </div>
+                <div className={styles.skillBadge}>
+                  <SiExpress /> Express.js
+                </div>
+                <div className={styles.skillBadge}>
+                  <SiNestjs /> Nest.js
+                </div>
+                <div className={styles.skillBadge}>
+                  <SiLaravel /> Laravel
+                </div>
+                <div className={styles.skillBadge}>
+                  <SiLeaflet /> Leaflet
+                </div>
+                <div className={styles.skillBadge}>
+                  <SiOpengl /> OpenGL
+                </div>
+              </div>
+
+              <h4 className={styles.skillCategory}>Bases de Données</h4>
+              <div className={styles.skillStack}>
+                <div className={styles.skillBadge}>
+                  <SiMysql /> MySQL
+                </div>
+                <div className={styles.skillBadge}>
+                  <SiPostgresql /> PostGreSQL
+                </div>
+                <div className={styles.skillBadge}>
+                  <SiMongodb /> MongoDB
+                </div>
+              </div>
+
+
+              <h4 className={styles.skillCategory}>Outils, Plateformes</h4>
+              <div className={styles.skillStack}>
+                  <div className={styles.skillBadge}>
+                    <SiGit /> Git
+                  </div>
+                  <div className={styles.skillBadge}>
+                    <SiGitlab /> Gitlab
+                  </div>
+                  <div className={styles.skillBadge}>
+                    <SiDocker /> Docker
+                  </div>
+              </div>
+            </div>
+          )}
+
           </div>
         </div>
       </section>

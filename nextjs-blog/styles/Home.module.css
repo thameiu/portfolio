@@ -213,9 +213,9 @@
   text-align: center;
 }
 
-.tabContent div {
+/* .tabContent div {
   display: block;
-}
+} */
 
 .tabContent ul {
   list-style-type: none;
@@ -244,7 +244,7 @@
 }
 
 .experienceItem {
-  display: flex;
+  display: block;
   flex-direction: column;
   align-items: flex-start;
   padding-left: 20px;
@@ -275,6 +275,55 @@
 .experienceItem span {
   padding-left: 10px;
 }
+
+.skillsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center; /* Aligns items to the center */
+}
+
+.skillStack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  /* margin-top: 10px; */
+  margin-bottom: 1vh;
+}
+
+.skillBadge {
+  display: inline-flex; /* Ensure the badges don't take up full width */
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  background: #334A52;
+  border: 1px solid #334A52;
+  color: white;
+  border-radius: 20px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.skillBadge:hover {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+.skillBadge svg {
+  width: 20px;
+  height: 20px;
+}
+
+.skillCategory {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #334A52;
+  margin-bottom: 20px; /* Adds space below the title */
+}
+
+
 
 @media (max-width: 768px) {
   .container {
@@ -456,6 +505,10 @@
 
     border-radius: 50px;
 
+  }
+  .skillStack {
+    justify-content: flex-start;
+    margin-left: 10px;
   }
 }
 

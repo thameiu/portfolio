@@ -75,7 +75,7 @@ const ProjectGrid = () => {
               GGPS permet également de communiquer avec les organisateurs et participants des évènements dans des chatrooms, 
               avec une communication quasi-instantanée grâce aux WebSockets. <br/>
               J'ai pu forger mes compétences sur la création et la gestion d'une API Rest, et apprendre à utiliser 
-              de nouvelles technologies à travers ce projet, qui est aujourd'hui le plus abouti, complet et otpimisé de mon portfolio.
+              de nouvelles technologies à travers ce projet, qui est aujourd'hui le plus abouti, complet et optimisé de mon portfolio.
             </p>
           </section>
           <img src="/ggps-chat.png" alt="Chat GGPS" />
@@ -106,7 +106,7 @@ const ProjectGrid = () => {
       </ProjectCard>
 
 
-      <ProjectCard title="ShuckleDex" description="Pokédex en React" previewImage="/shuckledex-preview.png" width="320px" height="280px">
+      <ProjectCard title="ShuckleDex" description="Pokédex Web utilisant l'API PokéAPI" previewImage="/shuckledex-preview.png" width="320px" height="280px">
           <div className={styles.techStack}>
             <div className={styles.techBadge}><SiReact />React</div>
             <div className={styles.techBadge}><FaJs />JavaScript</div>
@@ -159,7 +159,7 @@ const ProjectGrid = () => {
 
       <ProjectCard title="Tosser of Coin" description="API Rest - Jeu vidéo sans interface de pile ou face amélioré" previewImage="/tosserofcoin-preview.png"  width="320px" height="280px">
           <div className={styles.techStack}>
-            <div className={styles.techBadge}><FaNodeJs />NodeJs</div>
+            <div className={styles.techBadge}><FaNodeJs />Node.js</div>
             <div className={styles.techBadge}><SiExpress />ExpressJs</div>
             <div className={styles.techBadge}><SiTypescript />TypeScript</div>
           </div>
@@ -167,7 +167,7 @@ const ProjectGrid = () => {
             <img src="/tosserofcoin-1.png" alt="Requête pour jouer à Tosser of Coin" />
             <section>
               <p>
-                Dans le cadre de ma 2ème année de BUT Informatique,nous devions créer une API Rest en NodeJs, avec Express, en TypeScript. <br/>
+                Dans le cadre de ma 2ème année de BUT Informatique,nous devions créer une API Rest en Node.js, avec Express, en TypeScript. <br/>
                 Afin de sortir du lot et de créer un projet plus intéressant, j'ai décidé de créer une API pour un jeu vidéo sans interface de pile ou face amélioré. <br/>
                 L'API permet de créer un compte, de se connecter, de jouer, de consulter le classement des joueurs, et de consulter son inventaire.
                 Les administrateurs peuvent bannir des joueurs, mais aussi créer des objets et en rajouter aux inventaires des joueurs. <br/>
@@ -187,6 +187,28 @@ const ProjectGrid = () => {
           <div className={styles.techStack}>
             <div className={styles.techBadge}><FaJava />Java</div>
             <div className={styles.techBadge}><DiNetbeans />Netbeans</div>
+          </div>
+          <div className={styles.modalContentGrid}>
+            <img src="/pwdmanager-1.png" alt="Carte GGPS" />
+            <section>
+              <p>
+                Dans le cadre de ma 2ème année de BUT Informatique, nous devions réaliser un projet en Java, avec une interface graphique. <br/>
+                Nous avions le choix entre plusieurs sujets, et j'ai choisi de réaliser un gestionnaire de mots de passe, que j'ai intitulé PWDManager. <br/>
+                L'application permet de stocker des mots de passe, de les afficher, de les modifier, de les supprimer, et de les trier par différents critères. <br/>
+                La première utilisation de l'application demande de créer un mot de passe maître, qui sera crypté, puis demandé pour accéder à la liste des mots de passes. <br/>
+                
+              </p>
+            </section>
+
+            <section>
+              <p>
+              Tous les mots de passes sont cryptés avec BCrypt, et stockés dans un fichier chiffré. L'application permet également de vérifier la force d'un mot de passe,
+              et de prévenir l'utilisateur si un mot de passe est expiré.<br/>
+              Grâce à ce projet, j'ai pu apprendre à créer une interface graphique en Java avec Netbeans, en utilisant des composants Swing, et en 
+              portant beaucoup d'attention à l'aspect orienté objet du projet, pour une meilleure qualité de développement. 
+              </p>
+            </section>
+            <img src="/pwdmanager-2.png" alt="Chat GGPS" />
           </div>
       </ProjectCard>
     </div>

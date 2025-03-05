@@ -31,8 +31,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, previewIm
       <div className={styles.projectCard} style={{ width, height }} onClick={() => setIsOpen(true)}>
         <img src={previewImage} alt={title} className={styles.previewImage} />
         <div className={styles.cardContent}>
-          <h3>{title}</h3>
-          <p>{description}</p>
+          <h1 className={styles.cardTitle}>{title}</h1>
+          <p className={styles.cardDesc}>{description}</p>
         </div>
       </div>
 
