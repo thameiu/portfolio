@@ -57,7 +57,7 @@ const Header = () => {
       onMouseLeave={() => setHovering(false)}
     >
       <button className={styles.menuButton} onClick={toggleMenu}>
-        <img src="portfolio-logo.png" className={styles.logo} alt="logo" />
+        <img src="portfolio-logo-circle.png" className={styles.logo} alt="logo" />
       </button>
       <nav className={`${styles.navbar} ${menuVisible ? styles.menuVisible : ""}`}>
         <ul className={styles.navLinks}>
@@ -65,7 +65,7 @@ const Header = () => {
             <a onClick={() => scrollToSection("about")}>A propos</a>
           </li>
           <li>
-            <a onClick={() => scrollToSection("contact")}>Formation</a>
+            <a onClick={() => scrollToSection("experience")}>Formation</a>
           </li>
           <li>
             <a onClick={() => scrollToSection("about")}>

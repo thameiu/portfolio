@@ -41,10 +41,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, previewIm
         <div className={styles.modalOverlay} onClick={() => setIsOpen(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <button className={styles.closeButton} onClick={() => setIsOpen(false)}>✖</button>
-            <img src={previewImage} alt={title} className={styles.modalPreviewImage} />
+            {/* <img src={previewImage} alt={title} className={styles.modalPreviewImage} /> */}
 
-            <h2>{title}</h2>
-            <p>{description}</p>
+            <h1 className={styles.modalTitle}>{title}</h1>
+            <p className={styles.modalDescription}>{description}</p>
             {children}
           </div>
         </div>

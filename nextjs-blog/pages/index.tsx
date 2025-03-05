@@ -8,6 +8,7 @@ import Header from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faFile, faPhoneAlt } from "@fortawesome/free-solid-svg-icons";
 import { FaLinkedin, FaPhoneAlt, FaFileDownload, FaEnvelope } from "react-icons/fa";
+import "animate.css";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<string>("experience");
@@ -93,8 +94,8 @@ export default function Home() {
       <section id="about" className={styles.hero}>
         <div className={styles.heroContent}>
           <div className={styles.textContainer}>
-            <p className={styles.title}>Tétra-Développement</p>
-            <p className={styles.subtitle}>Portfolio de Mathieu HERNANDEZ</p>
+            <p className={`${styles.title} animate__animated animate__fadeInDown`}>Tétra-Développement</p>
+            <p className={`${styles.subtitle} animate__animated animate__fadeInDown`}>Portfolio de Mathieu HERNANDEZ</p>
           </div>
 
           <div className={styles.profileContainer}>
@@ -208,7 +209,7 @@ export default function Home() {
         <h2 className={styles.sectionTitle}>Me Contacter</h2>
         <div className={styles.contactDetails}>
           <a href="mailto:hernandez.mathieu19@gmail.com" className={styles.contactItem}>
-            <FaEnvelope size={40} />
+              <FaEnvelope size={40} />
 
             <span>E-mail : hernandez.mathieu19@gmail.com</span>
           </a>
@@ -227,7 +228,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div className={styles.scrollable}></div>
+      {/* <div className={styles.scrollable}></div> */}
     </div>
   );
 }

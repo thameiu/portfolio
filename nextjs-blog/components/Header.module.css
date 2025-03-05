@@ -117,6 +117,12 @@
 
       transition: all 0.3s ease-in-out; /* Add transition for the sliding effect */
     }
+
+    .logo{
+      height:60px;
+
+
+    }
   
     .navbar.menuVisible {
       display: flex; /* Show the navbar when it's visible */
@@ -135,11 +141,11 @@
       top: 10px;
       left: 10px;
       z-index: 101;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.9);
+      /* border-radius: 50%; */
+      /* background: rgba(255, 255, 255, 0.9); */
       width:60px;
       height: 60px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
     }
   
     .navLinks {

@@ -51,7 +51,8 @@
 /* Modal */
 .modal {
   width: 70vw;
-  background: #333;
+  background: rgba(249, 249, 249, 0.95);
+
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   position: relative;
@@ -70,6 +71,18 @@
   border-radius: 10px;
 }
 
+.modalTitle{
+  font-size: 6rem;
+  margin: 10px 0;
+  color: #334A52;
+}
+
+.modalDescription{
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: #333;
+  padding: 0 20px;
+}
 /* Close Button */
 .closeButton {
   position: absolute;
@@ -79,24 +92,61 @@
   border: none;
   font-size: 20px;
   cursor: pointer;
-  color: #fff;
+  color: #334A52;
+
 }
 
-/* Carousel */
-.carousel {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 10px;
-  justify-content: center;
+.modalContentGrid {
+  color:#333;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: center;
+  padding: 20px;
 }
 
-.carousel img {
-  height: 250px;
-  width: auto;
-  max-width: 100%;
+.modalContentGrid img {
+  width: 100%;
+  height: auto;
   border-radius: 10px;
 }
+
+.techStack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+  margin-bottom: 3vh;
+}
+
+.techBadge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  background: #334A52;
+  border: 1px solid #334A52;
+  color: white;
+  border-radius: 20px;
+  font-size: 14px;
+  /* font-weight: bold; */
+  transition : all 0.3s ease;
+}
+
+.techBadge:hover {
+  background-color: #f0f0f0;
+  color:#000;
+  /* border-color:#C5EFFD; */
+
+}
+
+.techBadge svg {
+  width: 20px;
+  height: 20px;
+}
+
+
 /* Animations */
 @keyframes fadeIn {
   from {
