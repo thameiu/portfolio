@@ -323,7 +323,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* <div className={styles.scrollable}></div> */}
+           {/* Footer */}
+      <footer className={styles.footer}>
+        <p>&copy; {new Date().getFullYear()} Mathieu Hernandez. Tous droits réservés.</p>
+      </footer>
     </div>
   );
 }

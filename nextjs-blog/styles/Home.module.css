@@ -6,6 +6,7 @@
   justify-content: flex-start;
   align-items: center;
   font-family: 'sofia-pro-regular';
+  /* min-height:100vh; */
 
 }
 
@@ -321,6 +322,19 @@
   font-weight: bold;
   color: #334A52;
   margin-bottom: 20px; /* Adds space below the title */
+}
+
+.footer {
+  /* width: 90%; */
+  /* padding: 20px; */
+  background-color: #334A52;
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  /* margin-top: 40px; */
+  padding-left:12px;
+  padding-right:20px;
+  border-radius: 50px;
 }
 
 
