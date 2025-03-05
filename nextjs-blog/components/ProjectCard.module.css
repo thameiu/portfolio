@@ -146,6 +146,37 @@
   height: 20px;
 }
 
+@media (max-width: 768px) {
+  .modal {
+    width: 90vw;
+    margin-top: 3vh;
+    padding: 15px;
+  }
+
+  .modalTitle {
+    font-size: 2.5rem;
+  }
+
+  .modalDescription {
+    font-size: 1.2rem;
+    padding: 0 10px;
+  }
+
+  .modalContentGrid {
+    display: flex;
+    flex-direction:column;
+    gap: 15px;
+  }
+
+  .modalPreviewImage {
+    height: auto;
+  }
+
+  .techStack {
+    justify-content: flex-start;
+    margin-left: 10px;
+  }
+}
 
 /* Animations */
 @keyframes fadeIn {
