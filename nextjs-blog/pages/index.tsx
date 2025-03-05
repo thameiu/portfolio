@@ -5,7 +5,7 @@ import styles from "../styles/Home.module.css";
 import ProjectCard from "../components/ProjectCard";
 import ProjectGrid from "../components/ProjectGrid";
 import Header from "../components/Header";
-import { FaLinkedin, FaPhoneAlt, FaFileDownload, FaEnvelope } from "react-icons/fa";
+import { FaLinkedin, FaPhoneAlt, FaFileDownload, FaEnvelope, FaGithub } from "react-icons/fa";
 import { SiNextdotjs, SiNestjs, SiReact, SiLeaflet, SiDocker, SiTypescript, SiPhp, SiLaravel,SiOpengl,SiCmake, SiTailwindcss,SiExpress, SiMysql, SiPython, SiJavascript, SiGit, SiPostgresql, SiMongodb, SiGitlab } from "react-icons/si";
 import { TbBrandCpp } from "react-icons/tb";
 import { FaJs,FaNodeJs,FaJava  } from "react-icons/fa";
@@ -316,10 +316,14 @@ export default function Home() {
               <FaFileDownload size={40} />
             <span>Télécharger mon CV</span>
           </a>
-            <a href="https://www.linkedin.com/in/mathieu-hernandez-306914264/" className={styles.contactItem}>
+          <a href="https://www.linkedin.com/in/mathieu-hernandez-306914264/" className={styles.contactItem}>
             <FaLinkedin size={40} />
             <span>Mon profil LinkedIn</span>
-            </a>
+          </a>
+          <a href="https://github.com/thameiu" className={styles.contactItem}>
+            <FaGithub size={40} />
+            <span>Mon profil Github</span>
+          </a>
         </div>
       </section>
 

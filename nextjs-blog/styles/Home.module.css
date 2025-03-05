@@ -258,6 +258,8 @@
 .jobTitle {
   font-size: 1.5rem;
   font-weight: bold;
+  color: #334A52;
+
 }
 
 .companyName {
@@ -413,7 +415,7 @@
   }
 
   .experienceContent {
-    width: 100vw; /* Make the experience container responsive */
+    width: 94vw; /* Make the experience container responsive */
     padding: 20px; /* Adjust padding for mobile */
     border-radius: 40px;
 
@@ -444,7 +446,7 @@
   }
 
   .tabContent div {
-    display: block;
+    /* display: block; */
   }
 
   .tabContent ul {
@@ -459,7 +461,7 @@
 
   /* Professional Experience Section */
   .professionalExperienceContainer {
-    display: flex;
+    display: block;
     flex-direction: column;
     align-items: center;
     width: 100%;
@@ -467,7 +469,7 @@
 
   /* Experience List */
   .experienceList {
-    display: flex;
+    display: block;
     flex-direction: column;
     align-items: center;
     width: 100%; /* Adjust width to fit on smaller screens */
@@ -475,7 +477,7 @@
   }
 
   .experienceItem {
-    display: flex;
+    display: block;
     flex-direction: column;
     align-items: flex-start;
     padding-left: 20px;
@@ -497,7 +499,8 @@
 
   /* Job Title */
   .jobTitle {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
+    color: #334A52;
   }
 
   /* Company Name */
@@ -519,6 +522,10 @@
 
     border-radius: 50px;
 
+  }
+
+  .skillCategory{
+    display: block;
   }
   .skillStack {
     justify-content: flex-start;
