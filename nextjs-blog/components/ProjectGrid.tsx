@@ -1,11 +1,8 @@
 import ProjectCard from "./ProjectCard";
 import styles from "./ProjectCard.module.css";
-import { SiNextdotjs, SiNestjs, SiReact, SiLeaflet, SiDocker, SiTypescript, SiPhp, SiLaravel,SiOpengl,SiCmake, SiTailwindcss,SiExpress } from "react-icons/si";
-import { TbBrandCpp } from "react-icons/tb";
+import { SiNextdotjs, SiCplusplus,SiNestjs, SiReact, SiLeaflet, SiDocker, SiTypescript, SiPhp, SiLaravel,SiOpengl,SiCmake, SiTailwindcss,SiExpress } from "react-icons/si";
 import { FaJs,FaNodeJs,FaJava  } from "react-icons/fa";
 import { DiNetbeans } from "react-icons/di";
-import { PiFileCpp } from "react-icons/pi";
-
 const ProjectGrid = () => {
   return (
     <div className={styles.projectsGrid}>
@@ -84,7 +81,7 @@ const ProjectGrid = () => {
 
       <ProjectCard title="GLPROJECT" description="Projet pédagogique présentant des fonctionnalités de la librairie OpenGL" previewImage="/opengl.jpg"  width="320px" height="280px">
           <div className={styles.techStack}>
-            <div className={styles.techBadge}><PiFileCpp />C++</div>
+            <div className={styles.techBadge}><SiCplusplus />C++</div>
             <div className={styles.techBadge}><SiOpengl />OpenGL</div>
             <div className={styles.techBadge}><SiCmake />CMake</div>
           </div>

@@ -7,7 +7,7 @@ import ProjectGrid from "../components/ProjectGrid";
 import Header from "../components/Header";
 import { FaLinkedin, FaPhoneAlt, FaFileDownload, FaEnvelope, FaGithub } from "react-icons/fa";
 import { SiCplusplus, SiNextdotjs, SiNestjs, SiReact, SiLeaflet, SiDocker, SiTypescript, SiPhp, SiLaravel,SiOpengl,SiCmake, SiTailwindcss,SiExpress, SiMysql, SiPython, SiJavascript, SiGit, SiPostgresql, SiMongodb, SiGitlab } from "react-icons/si";
-import { TbBrandCpp } from "react-icons/tb";
+
 import { FaJs,FaNodeJs,FaJava  } from "react-icons/fa";
 import { DiNetbeans } from "react-icons/di";
 import { MdAccessTimeFilled } from "react-icons/md";
