@@ -6,11 +6,10 @@ import ProjectCard from "../components/ProjectCard";
 import ProjectGrid from "../components/ProjectGrid";
 import Header from "../components/Header";
 import { FaLinkedin, FaPhoneAlt, FaFileDownload, FaEnvelope, FaGithub } from "react-icons/fa";
-import { SiNextdotjs, SiNestjs, SiReact, SiLeaflet, SiDocker, SiTypescript, SiPhp, SiLaravel,SiOpengl,SiCmake, SiTailwindcss,SiExpress, SiMysql, SiPython, SiJavascript, SiGit, SiPostgresql, SiMongodb, SiGitlab } from "react-icons/si";
+import { SiCplusplus, SiNextdotjs, SiNestjs, SiReact, SiLeaflet, SiDocker, SiTypescript, SiPhp, SiLaravel,SiOpengl,SiCmake, SiTailwindcss,SiExpress, SiMysql, SiPython, SiJavascript, SiGit, SiPostgresql, SiMongodb, SiGitlab } from "react-icons/si";
 import { TbBrandCpp } from "react-icons/tb";
 import { FaJs,FaNodeJs,FaJava  } from "react-icons/fa";
 import { DiNetbeans } from "react-icons/di";
-import { PiFileCpp } from "react-icons/pi";
 import { MdAccessTimeFilled } from "react-icons/md";
 import { GiFlame } from "react-icons/gi";
 import { IoPeople } from "react-icons/io5";
@@ -210,7 +209,7 @@ export default function Home() {
               <h4 className={styles.skillCategory}>Langages de Programmation</h4>
               <div className={styles.skillStack}>
                 <div className={styles.skillBadge}>
-                  <PiFileCpp /> C++
+                  <SiCplusplus /> C++
                 </div>
                 <div className={styles.skillBadge}>
                   <FaJava /> Java
