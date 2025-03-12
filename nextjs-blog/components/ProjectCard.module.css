@@ -15,6 +15,7 @@
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.2s ease-in-out;
+  padding-bottom: 5vh;
 }
 
 .projectCard:hover {
@@ -34,7 +35,7 @@
 }
 
 .cardTitle {
-  font-size: 2rem;
+  font-size: 1.8rem;
   margin: 10px 0;
   color: #334A52;
 }
