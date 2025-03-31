@@ -549,10 +549,3 @@
   font-style: normal;
 }
 
-@font-face {
-  font-family: 'sofia-pro-ultralight';
-  src: url('./fonts/Sofia\ Pro\ UltraLight\ Az.woff') format('woff2'),
-       url('./fonts/Sofia\ Pro\ UltraLight\ Az.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
