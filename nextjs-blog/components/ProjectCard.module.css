@@ -61,6 +61,9 @@
 
 /* Modal */
 .modal {
+  padding-top: 5vh;
+  padding-bottom: 2vh;
+
   width: 70vw;
   background: rgba(249, 249, 249, 0.95);
 
