@@ -5,7 +5,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  font-family: 'poppins-regular';
+  font-family: 'sofia-pro-regular';
   /* min-height:100vh; */
 
 }
@@ -59,7 +59,7 @@
 
 /* Title */
 .title {
-  font-size: 6.5vw;
+  font-size: 7vw;
   font-weight: bold;
   line-height: 1;
   text-align: center;
@@ -193,7 +193,7 @@
   cursor: pointer;
   font-size: 16px;
   transition: all 0.3s;
-  font-family: 'poppins-regular';
+  font-family: 'sofia-pro-regular';
 }
 
 .tabs button:hover {
@@ -542,15 +542,10 @@
 }
 
 @font-face {
-  font-family: 'poppins-regular';
-  src: url('./fonts/Poppins-Regular.ttf') format('truetype');
+  font-family: 'sofia-pro-regular';
+  src: url('./fonts/Sofia\ Pro\ Regular\ Az.woff') format('woff2'),
+       url('./fonts/Sofia\ Pro\ Regular\ Az.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
 
-@font-face {
-  font-family: 'poppins-extralight';
-  src: url('./fonts/Poppins-ExtraLight.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
