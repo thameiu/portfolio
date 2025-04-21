@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./Header.module.css";
 import projectStyles from "./ProjectCard.module.css";
+import Image from "next/image";
 
 const Header = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -63,7 +64,14 @@ const Header = () => {
       onMouseLeave={() => setHovering(false)}
     >
       <button className={styles.menuButton} onClick={toggleMenu}>
-        <img src="portfolio-logo-circle.png" className={styles.logo} alt="logo" />
+      <Image 
+        src="/portfolio-logo-circle.png" 
+        width={40}
+        height={40}
+        className={styles.logo} 
+        alt="logo"
+        priority
+      />
       </button>
       <nav className={`${styles.navbar} ${menuVisible ? styles.menuVisible : ""}`}>
         <ul className={styles.navLinks}>
@@ -75,7 +83,14 @@ const Header = () => {
           </li>
           <li>
             <a onClick={() => scrollToSection("about")}>
-              <img className={styles.logo} src="portfolio-logo.png" alt="Logo Initiales de Mathieu Hernandez" />
+            <Image 
+              className={styles.logo} 
+              src="/portfolio-logo.png" 
+              width={50}
+              height={50}
+              alt="Logo Initiales de Mathieu Hernandez"
+              priority
+            />
             </a>
           </li>
           <li>

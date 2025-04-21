@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import styles from "./ProjectCard.module.css";
 
 interface ProjectCardProps {
@@ -29,7 +30,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, previewIm
     <>
       {/* Project Card */}
       <div className={styles.projectCard} style={{ width, height }} onClick={() => setIsOpen(true)}>
-        <img src={previewImage} alt={title} className={styles.previewImage} />
+        <Image 
+          src={previewImage} 
+          alt={title} 
+          width={320} 
+          height={280}
+          className={styles.previewImage} 
+        />
         <div className={styles.cardContent}>
           <h1 className={styles.cardTitle}>{title}</h1>
           <p className={styles.cardDesc}>{description}</p>

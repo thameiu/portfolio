@@ -13,7 +13,7 @@ import { DiNetbeans } from "react-icons/di";
 import { MdAccessTimeFilled } from "react-icons/md";
 import { GiFlame } from "react-icons/gi";
 import { IoPeople } from "react-icons/io5";
-
+import Image from 'next/image';
 import "animate.css";
 
 export default function Home() {
@@ -114,7 +114,14 @@ export default function Home() {
 
           <div className={styles.profileContainer}>
             <div className={styles.profileImageContainer}>
-              <img src="/me.jpg" alt="Mathieu Hernandez" className={styles.profileImage} />
+            <Image 
+              src="/me.jpg" 
+              alt="Mathieu Hernandez" 
+              width={400} 
+              height={400} 
+              className={styles.profileImage}
+              priority={true} // For above-fold images
+            />
             </div>
             <div className={styles.aboutMeContainer}>
               <h2 className={styles.aboutMeTitle}>À propos de moi</h2>

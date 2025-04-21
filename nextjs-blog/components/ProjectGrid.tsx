@@ -3,12 +3,12 @@ import styles from "./ProjectCard.module.css";
 import { SiNextdotjs, SiCplusplus,SiNestjs, SiReact, SiLeaflet, SiDocker, SiTypescript, SiPhp, SiLaravel,SiOpengl,SiCmake, SiTailwindcss,SiExpress } from "react-icons/si";
 import { FaJs,FaNodeJs,FaJava  } from "react-icons/fa";
 import { DiNetbeans } from "react-icons/di";
+import Image from "next/image";
+
 const ProjectGrid = () => {
   return (
     <div className={styles.projectsGrid}>
      
-
-
       <ProjectCard
         title="GGPS"
         description="Application web de localisation d'évènements du jeu vidéo"
@@ -27,7 +27,13 @@ const ProjectGrid = () => {
 
 
         <div className={styles.modalContentGrid}>
-          <img src="/ggps-map.png" alt="Carte GGPS" />
+          <Image 
+            src="/ggps-map.png" 
+            alt="Carte GGPS" 
+            width={800}
+            height={500}
+            className={styles.modalContentGridImage}
+          />
           <section>
             <p>
               Dans le cadre de ma 3ème année de BUT Informatique, nous devions réaliser un projet de notre choix validant
@@ -45,7 +51,13 @@ const ProjectGrid = () => {
               de nouvelles technologies à travers ce projet, qui est aujourd'hui le plus abouti, complet et optimisé de mon portfolio.
             </p>
           </section>
-          <img src="/ggps-chat.png" alt="Chat GGPS" />
+          <Image 
+            src="/ggps-chat.png" 
+            alt="Chat GGPS" 
+            width={800}
+            height={500}
+            className={styles.modalContentGridImage}
+          />
         </div>
       </ProjectCard>
 
@@ -57,7 +69,13 @@ const ProjectGrid = () => {
             <div className={styles.techBadge}><SiTypescript />TypeScript</div>
           </div>
           <div className={styles.modalContentGrid}>
-            <img src="/tosserofcoin-1.png" alt="Requête pour jouer à Tosser of Coin" />
+            <Image 
+              src="/tosserofcoin-1.png" 
+              alt="Requête pour jouer à Tosser of Coin" 
+              width={800}
+              height={500}
+              className={styles.modalContentGridImage}
+            />
             <section>
               <p>
                 Dans le cadre de ma 2ème année de BUT Informatique,nous devions créer une API Rest en Node.js, avec Express, en TypeScript. <br/>
@@ -83,7 +101,13 @@ const ProjectGrid = () => {
             <div className={styles.techBadge}><SiCmake />CMake</div>
           </div>
           <div className={styles.modalContentGrid}>
-            <img src="/glproject-1.png" alt="Finder - page d'accueil" />
+            <Image 
+              src="/glproject-1.png" 
+              alt="Finder - page d'accueil" 
+              width={800}
+              height={500}
+              className={styles.modalContentGridImage}
+            />
             <section>
               <p>
                 Dans le cadre de ma 3ème année de BUT Informatique, j'ai du réaliser un projet pédagogique présentant des fonctionnalités de la librairie OpenGL. <br/>
@@ -107,7 +131,13 @@ const ProjectGrid = () => {
             <div className={styles.techBadge}><SiDocker /> Docker</div>
           </div>
           <div className={styles.modalContentGrid}>
-            <img src="/finder-2.png" alt="Finder - page d'accueil" />
+            <Image 
+              src="/finder-2.png" 
+              alt="Finder - page d'accueil" 
+              width={800}
+              height={500}
+              className={styles.modalContentGridImage}
+            />
             <section>
               <p>
                 Dans le cadre de ma 2ème année de BUT Informatique, nous devions réaliser un projet en groupe, à présenter à la fin du 
@@ -126,8 +156,13 @@ const ProjectGrid = () => {
                 En 3ème année, nous avons pu revenir sur ce projet pour une simulation d'entreprenariat, en calculant un business plan.
               </p>
             </section>
-            <img src="/finder-1.png" alt="Finder - recherche d'annonces" />
-
+            <Image 
+              src="/finder-1.png" 
+              alt="Finder - recherche d'annonces" 
+              width={800}
+              height={500}
+              className={styles.modalContentGridImage}
+            />
           </div>
       </ProjectCard>
 
@@ -138,7 +173,13 @@ const ProjectGrid = () => {
             <div className={styles.techBadge}><FaJs />JavaScript</div>
           </div>
           <div className={styles.modalContentGrid}>
-          <img src="/shuckledex-1.png" alt="Carte GGPS" />
+          <Image 
+            src="/shuckledex-1.png" 
+            alt="Carte GGPS" 
+            width={800}
+            height={500}
+            className={styles.modalContentGridImage}
+          />
           <section>
             <p>
               Dans le cadre de ma 2ème année de BUT Informatique, nous devions réaliser un projet de notre choix en React faisant 
@@ -159,7 +200,13 @@ const ProjectGrid = () => {
             <div className={styles.techBadge}><SiTailwindcss />Tailwind</div>
           </div>
           <div className={styles.modalContentGrid}>
-            <img src="/forcedot-1.png" alt="Carte GGPS" />
+            <Image 
+              src="/forcedot-1.png" 
+              alt="Carte GGPS" 
+              width={800}
+              height={500}
+              className={styles.modalContentGridImage}
+            />
             <section>
               <p>
                 Dans le cadre de ma 2ème année de BUT Informatique, nous devions créer une bibliothèque de composants React,
@@ -179,7 +226,13 @@ const ProjectGrid = () => {
               Ce projet m'a permis à développer mes compétences sur l'utilisation des composants, des props, des states, et des hooks en React.
               </p>
             </section>
-            <img src="/forcedot-2.png" alt="Chat GGPS" />
+            <Image 
+              src="/forcedot-2.png" 
+              alt="Chat GGPS" 
+              width={800}
+              height={500}
+              className={styles.modalContentGridImage}
+            />
           </div>
       </ProjectCard>
 
@@ -190,7 +243,13 @@ const ProjectGrid = () => {
             <div className={styles.techBadge}><DiNetbeans />Netbeans</div>
           </div>
           <div className={styles.modalContentGrid}>
-            <img src="/pwdmanager-1.png" alt="Carte GGPS" />
+            <Image 
+              src="/pwdmanager-1.png" 
+              alt="Carte GGPS" 
+              width={800}
+              height={500}
+              className={styles.modalContentGridImage}
+            />
             <section>
               <p>
                 Dans le cadre de ma 2ème année de BUT Informatique, nous devions réaliser un projet en Java, avec une interface graphique. <br/>
@@ -209,7 +268,13 @@ const ProjectGrid = () => {
               portant beaucoup d'attention à l'aspect orienté objet du projet, pour une meilleure qualité de développement. 
               </p>
             </section>
-            <img src="/pwdmanager-2.png" alt="Chat GGPS" />
+            <Image 
+              src="/pwdmanager-2.png" 
+              alt="Chat GGPS" 
+              width={800}
+              height={500}
+              className={styles.modalContentGridImage}
+            />
           </div>
       </ProjectCard>
     </div>
