@@ -123,8 +123,7 @@ const ProjectGrid = () => {
           </div>
       </ProjectCard>
 
-      <ProjectCard title="Finder" description="Application web de prestations de services entre particuliers" previewImage="/finder-preview.png
-      " width="320px" height="280px">
+      <ProjectCard title="Finder" description="Application web de prestations de services entre particuliers" previewImage="/finder-preview.png" width="320px" height="280px">
           <div className={styles.techStack}>
             <div className={styles.techBadge}><SiLaravel />Laravel</div>
             <div className={styles.techBadge}><SiPhp /> PHP</div>
