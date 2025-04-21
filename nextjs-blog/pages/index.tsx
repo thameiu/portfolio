@@ -90,12 +90,12 @@ export default function Home() {
     <div className={styles.container}>
       <Head>
         <meta name="google-site-verification" content="9gob9xK_TYszbdBCenuGlccq09xNyIFaaOUg9FI81VA" />
-        <meta name="description" content="Portfolio de Mathieu HERNANDEZ, développeur full-stack spécialisé en React, TypeScript et intelligence artificielle. BUT Informatique à l'IUT d'Arles." />
+        <meta name="description" content="Bienvenue sur le Portfolio de Mathieu HERNANDEZ, développeur full-stack, se spécialisant en Intelligence Artificielle à Epitech." />
         <meta name="keywords" content="développeur, full-stack, intelligence artificielle, web, portfolio, Mathieu HERNANDEZ, finder, Finder, Kwester, kwester, GGPS, Tétra-Développement, tetradeveloppement, tétradéveloppement, programmeur, programmation, hernandez, mathieu, Marseille, Bouc-Bel-Air, Aix-en-Provence, Aix-Marseille, Aix-Marseille Université, Université, Epitech, React, Nextjs, Laravel, freelance" />
         <meta name="author" content="Mathieu HERNANDEZ" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta property="og:title" content="Portfolio - Mathieu HERNANDEZ" />
-        <meta property="og:description" content="Développeur full-stack, étudiant en Msc Technique à Epitech (Marseille)" />
+        <meta property="og:description" content="Bienvenue sur le Portfolio de Mathieu HERNANDEZ, développeur full-stack, se spécialisant en Intelligence Artificielle à Epitech." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.mathieu-hernandez.fr/" />
         <title>Portfolio - Mathieu HERNANDEZ</title>
