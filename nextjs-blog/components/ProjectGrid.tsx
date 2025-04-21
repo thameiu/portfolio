@@ -33,6 +33,8 @@ const ProjectGrid = () => {
             width={800}
             height={500}
             className={styles.modalContentGridImage}
+            priority={true}
+            loading="eager"
           />
           <section>
             <p>
@@ -57,6 +59,8 @@ const ProjectGrid = () => {
             width={800}
             height={500}
             className={styles.modalContentGridImage}
+            priority={true}
+            loading="eager"
           />
         </div>
       </ProjectCard>
@@ -75,6 +79,8 @@ const ProjectGrid = () => {
               width={800}
               height={500}
               className={styles.modalContentGridImage}
+            priority={true}
+            loading="eager"
             />
             <section>
               <p>
@@ -107,6 +113,8 @@ const ProjectGrid = () => {
               width={800}
               height={500}
               className={styles.modalContentGridImage}
+            priority={true}
+            loading="eager"
             />
             <section>
               <p>
@@ -136,6 +144,8 @@ const ProjectGrid = () => {
               width={800}
               height={500}
               className={styles.modalContentGridImage}
+            priority={true}
+            loading="eager"
             />
             <section>
               <p>
@@ -161,6 +171,8 @@ const ProjectGrid = () => {
               width={800}
               height={500}
               className={styles.modalContentGridImage}
+            priority={true}
+            loading="eager"
             />
           </div>
       </ProjectCard>
@@ -178,6 +190,8 @@ const ProjectGrid = () => {
             width={800}
             height={500}
             className={styles.modalContentGridImage}
+            priority={true}
+            loading="eager"
           />
           <section>
             <p>
@@ -205,6 +219,8 @@ const ProjectGrid = () => {
               width={800}
               height={500}
               className={styles.modalContentGridImage}
+            priority={true}
+            loading="eager"
             />
             <section>
               <p>
@@ -231,6 +247,8 @@ const ProjectGrid = () => {
               width={800}
               height={500}
               className={styles.modalContentGridImage}
+            priority={true}
+            loading="eager"
             />
           </div>
       </ProjectCard>
@@ -248,6 +266,8 @@ const ProjectGrid = () => {
               width={800}
               height={500}
               className={styles.modalContentGridImage}
+            priority={true}
+            loading="eager"
             />
             <section>
               <p>
@@ -273,6 +293,8 @@ const ProjectGrid = () => {
               width={800}
               height={500}
               className={styles.modalContentGridImage}
+            priority={true}
+            loading="eager"
             />
           </div>
       </ProjectCard>
