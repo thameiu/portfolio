@@ -326,7 +326,7 @@ export default function Home() {
             <FaPhoneAlt size={40} />
             <span>Téléphone : 06 62 01 17 41</span>
           </a>
-          <a href="/CV_HERNANDEZ_MATHIEU_2025_2026.pdf" download className={styles.contactItem}>
+          <a href="/CV_HERNANDEZ_MATHIEU_2025.pdf" download className={styles.contactItem}>
               <FaFileDownload size={40} />
             <span>Télécharger mon CV</span>
           </a>
