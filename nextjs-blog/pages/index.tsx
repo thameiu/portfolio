@@ -127,7 +127,7 @@ export default function Home() {
               <h2 className={styles.aboutMeTitle}>À propos de moi</h2>
               <section className={styles.aboutMeDescription}>
                 
-              Je m'appelle <b>Mathieu HERNANDEZ</b>, j'ai 20 ans et je suis en troisième année de <b>BUT Informatique</b> à l'IUT d'Arles. <br/>
+              Je m'appelle <b>Mathieu HERNANDEZ</b>, j'ai 20 ans et j'intègre bientôt <b>Epitech</b>, Marseille, dans le cadre d'un <b>Master of Science Technique</b>, avec une spécialisation en <b>IA</b>, après avoir réalisé un <b>BUT Informatique</b> à l'IUT d'Arles. <br/>
               Passionné par la programmation et souhaitant m'orienter vers l’<b>intelligence artificielle</b> et y faire carrière,
               je vais bientôt intégrer un Master of Science en IA à <b>Epitech</b>.<br/>
               Grâce à ma formation et mes expériences professionnelles, j’ai acquis de solides compétences en <b>développement web</b>,
@@ -191,6 +191,11 @@ export default function Home() {
           {activeTab === "studies" && (
             <div className={styles.professionalExperienceContainer}>
               <div className={styles.experienceList}>
+                <div className={styles.experienceItem}>
+                  <span className={styles.jobTitle}>Master of Science Technique - Spécialisation IA</span>
+                  <span className={styles.companyName}>Epitech (Marseille)</span>
+                  <span className={styles.period}>2025-2027</span>
+                </div>
                 <div className={styles.experienceItem}>
                   <span className={styles.jobTitle}>BUT Informatique</span>
                   <span className={styles.companyName}>Aix-Marseille Université (Arles)</span>
