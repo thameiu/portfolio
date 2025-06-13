@@ -170,6 +170,29 @@
   height: 20px;
 }
 
+.projectLink {
+  color: #334A52;
+  font-weight: bold;
+  font-size: 1.5rem;
+  text-decoration: none;
+  transition: all  0.2s;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.projectLink svg {
+  font-size: 1.2rem;
+}
+
+.projectLink:hover {
+  text-decoration: underline;
+  /* color:#8DE1FD; */
+}
+
 @media (max-width: 768px) {
   .modal {
     width: 90vw;

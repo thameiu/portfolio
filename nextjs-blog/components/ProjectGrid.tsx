@@ -1,7 +1,7 @@
 import ProjectCard from "./ProjectCard";
 import styles from "./ProjectCard.module.css";
 import { SiNextdotjs, SiCplusplus,SiNestjs, SiReact, SiLeaflet, SiDocker, SiTypescript, SiPhp, SiLaravel,SiOpengl,SiCmake, SiTailwindcss,SiExpress } from "react-icons/si";
-import { FaJs,FaNodeJs,FaJava  } from "react-icons/fa";
+import { FaJs,FaNodeJs,FaJava,FaExternalLinkAlt   } from "react-icons/fa";
 import { DiNetbeans } from "react-icons/di";
 import Image from "next/image";
 
@@ -9,6 +9,64 @@ const ProjectGrid = () => {
   return (
     <div className={styles.projectsGrid}>
      
+     <ProjectCard
+        title="Pathfinder"
+        description="Application web de cartographie de perturbations atmosphériques (FSOC)"
+        previewImage="/miratlas-preview.png"
+        width="320px"
+        height="280px"
+      >
+          <div className={styles.techStack}>
+            <div className={styles.techBadge}><SiNextdotjs /> Next.js</div>
+            <div className={styles.techBadge}><SiLaravel /> Laravel</div>
+            <div className={styles.techBadge}><SiReact /> React</div>
+            <div className={styles.techBadge}><SiLeaflet /> Leaflet</div>
+            <div className={styles.techBadge}><SiDocker /> Docker</div>
+            <div className={styles.techBadge}><SiTypescript /> TypeScript</div>
+            <div className={styles.techBadge}><SiPhp />PHP</div>
+          </div>
+
+
+        <div className={styles.modalContentGrid}>
+          <Image 
+            src="/pathfinder-1.png" 
+            alt="Pathfinder - Visualisation d'histogrammes" 
+            width={800}
+            height={500}
+            className={styles.modalContentGridImage}
+            priority={true}
+            loading="eager"
+          />
+          <section>
+            <p>
+                Durant mon alternance chez Miratlas, j'ai eu l'opportunité complètement transformer Pathfinder,
+                une application web de cartographie de perturbations atmosphériques, développée en Next.js et Laravel. <br/>
+                Pathfinder permet de visualiser des données de perturbations atmosphériques,
+                de les filtrer, de les comparer, et de les analyser à travers des graphiques et des cartes interactives. <br/>
+                Elle possède également un back-office, permettant aux administrateurs de gérer les données, les utilisateurs, et d'observer en un coup d'oeil des anomalies stockées dans la base de données.<br/>
+            </p>
+          </section>
+
+          <section>
+            <p>
+                En plus de pouvoir visualiser des graphiques selon des points de présences, à travers des graphiques générés dynamiquement avec Recharts,
+                elle permet également d'afficher des fonds de carte de couverture nuageuse et de turbulence,
+                filtrés avec des seuils de valeurs, et avec un large de choix de palette de couleurs, directement en modifiant l'image côté client, pixel par pixel.
+            </p>
+          </section>
+          <Image 
+            src="/pathfinder-2.png" 
+            alt="Pathfinder - Couche de couverture nuageuse, filtrée avec des seuils de valeurs" 
+            width={800}
+            height={500}
+            className={styles.modalContentGridImage}
+            priority={true}
+            loading="eager"
+          />
+        </div>
+          <a href="https://miratlas.com" target="_blank" rel="noopener noreferrer" className={styles.projectLink}><FaExternalLinkAlt /> Consultez le site de Miratlas</a>
+      </ProjectCard>
+
       <ProjectCard
         title="GGPS"
         description="Application web de localisation d'évènements du jeu vidéo"
@@ -63,6 +121,7 @@ const ProjectGrid = () => {
             loading="eager"
           />
         </div>
+       
       </ProjectCard>
 
       
