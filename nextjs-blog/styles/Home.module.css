@@ -6,6 +6,7 @@
   justify-content: flex-start;
   align-items: center;
   font-family: 'sofia-pro-regular';
+  
   /* min-height:100vh; */
 
 }
@@ -19,13 +20,15 @@
   top: 0;
   left: 0;
   z-index: -1;
+  background-color: #192231;
+
 }
 
 .sectionTitle {
   font-size: 3rem;
   margin-bottom: 20px;
   text-align: center;
-  color: #334A52;
+  color: #fefefe;
 }
 
 .projects {
