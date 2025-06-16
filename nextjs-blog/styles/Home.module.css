@@ -346,6 +346,52 @@
 
 
 @media (max-width: 768px) {
+
+  
+
+
+    .heroContent {
+    width: 100vw;
+    max-width: 90vw;
+    margin: 1vh auto 0;
+    padding: 20px;
+    border-radius: 40px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  /* Experience/Skills section fixes */
+  .experienceContent {
+    width: 100vw;
+    max-width: 90vw;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 40px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  
+  /* Contact section fixes */
+  .contactDetails {
+    width: 100vw;
+    max-width: 90vw;
+    margin: 0 auto;
+    padding: 25px;
+    border-radius: 50px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  
+  /* Ensure section titles are properly contained */
+  .sectionTitle {
+    width: 100vw;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 2.5rem;
+  }
+  
+
+
   .container {
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
     margin: 0; /* Remove default body margin */
@@ -360,16 +406,9 @@
     margin:0;
   }
 
-  .heroContent {
-    width: 100vw;
-    padding: 20px;
-    margin-top: 1vh; /* Add space at the top */
-    border-radius: 40px;
-  }
-
   /* Title for smaller screen */
   .title {
-    font-size: 12vw;
+    font-size: 11vw;
     text-align: center;
     white-space: normal; /* Allow the title to wrap */
   }
@@ -396,12 +435,12 @@
   }
 
   .aboutMeContainer {
-    text-align: center; /* Center-align text on mobile */
     margin-left: 0; /* Remove left margin */
   }
 
   /* About Me Title */
   .aboutMeTitle {
+    text-align: center;
     font-size: 2.5rem;
   }
 
@@ -418,26 +457,26 @@
     
   }
 
-  .experienceContent {
-    width: 94vw; /* Make the experience container responsive */
-    padding: 20px; /* Adjust padding for mobile */
-    border-radius: 40px;
 
-  }
 
-  /* Tabs */
-  .tabs {
-    width: 90%; /* Ensure tabs take full width */
-    flex-direction: column; /* Stack the tabs vertically */
-    align-items: center; /* Center align the tabs */
-    margin-bottom: 5vh; /* Reduce space between tabs */
+ .tabs {
+    width: 90%; /* Consistent with other sections */
+    display: flex;
+    flex-direction: row; /* Keep horizontal */
+    justify-content: center;
+    flex-wrap: wrap; /* Allow wrapping if needed */
+    gap: 8px; /* Space between tabs */
+    margin-bottom: 20px;
   }
 
   .tabs button {
-    width: 50%; /* Make each tab button take the full width */
-    margin: 5px 0; /* Add space between each tab */
+    width: auto; /* Don't force width */
+    min-width: 28%; /* Allow buttons to fit */
+    margin: 0; /* Remove conflicting margins */
+    padding: 8px 12px; /* Smaller padding for mobile */
+    font-size: 14px; /* Slightly smaller font */
   }
-
+  
   .activeTab {
     background: #334A52;
     color: white;
@@ -522,11 +561,7 @@
     font-style: italic;
   }
 
-  .contactDetails{
 
-    border-radius: 50px;
-
-  }
 
   .skillCategory{
     display: block;
