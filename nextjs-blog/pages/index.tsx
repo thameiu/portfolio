@@ -39,6 +39,7 @@ export default function Home() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
+    
     // Create an array of 3D shapes
     interface Shape {
       x: number;
@@ -59,9 +60,11 @@ export default function Home() {
       lineDash: number[]; // Custom dash pattern for the stroke
     }
 
+    // With this code that checks for mobile devices:
     const shapes: Shape[] = [];
-    const numShapes = 15; // Reduced number of shapes
-    
+    // Determine if on mobile by checking viewport width
+    const isMobile = window.innerWidth < 768;
+    const numShapes = isMobile ? 4 : 15; // Only 4 shapes on mobile, 15 on desktop
     // Color palette in shades of blue
     const colors = [
       '#C5EFFD',
@@ -71,6 +74,7 @@ export default function Home() {
       '#334A52',
       '#E4E6E7',
     ];
+
 
     // Function to get a random shape type with equal distribution
     function getRandomShapeType(): 'cube' | 'pyramid' | 'diamond' | 'prism' {
