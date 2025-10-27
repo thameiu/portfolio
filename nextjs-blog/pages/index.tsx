@@ -624,12 +624,20 @@ export default function Home() {
               {/* <h3>Professional Experience</h3> */}
               <div className={styles.experienceList}>
                 <div className={styles.experienceItem}>
-                  <span className={styles.jobTitle}>Alternance en Développement full-stack</span>
+                  <span className={styles.jobTitle}>Alternance - Analyste Développeur</span>
+                  <br/>
+                  <span className={styles.companyName}>ACD (Aix-en-Provence)</span>
+                  <span className={styles.period}>Septembre 2025 - Juin 2027</span>
+                </div>
+                <div className={styles.experienceItem}>
+                  <span className={styles.jobTitle}>Alternance - Développeur Full-stack</span>
+                  <br/>
                   <span className={styles.companyName}>Miratlas (Pertuis)</span>
                   <span className={styles.period}>Septembre 2024 - Juin 2025</span>
                 </div>
                 <div className={styles.experienceItem}>
-                  <span className={styles.jobTitle}>Stage étudiant en Développement web</span>
+                  <span className={styles.jobTitle}>Stage étudiant - Développeur Web</span>
+                  <br/>
                   <span className={styles.companyName}>Amiltone (Aix-en-Provence)</span>
                   <span className={styles.period}>Avril - Juin 2024</span>
                 </div>
@@ -646,17 +654,20 @@ export default function Home() {
             <div className={styles.professionalExperienceContainer}>
               <div className={styles.experienceList}>
                 <div className={styles.experienceItem}>
-                  <span className={styles.jobTitle}>Master of Science Technique - Spécialisation IA</span>
+                  <span className={styles.jobTitle}>Master of Science Technique - Architecte de Systèmes d'Information</span>
+                  <br/>
                   <span className={styles.companyName}>Epitech (Marseille)</span>
                   <span className={styles.period}>2025-2027</span>
                 </div>
                 <div className={styles.experienceItem}>
                   <span className={styles.jobTitle}>BUT Informatique</span>
+                  <br/>
                   <span className={styles.companyName}>Aix-Marseille Université (Arles)</span>
                   <span className={styles.period}>2022-2025</span>
                 </div>
                 <div className={styles.experienceItem}>
                   <span className={styles.jobTitle}>Baccalauréat Général</span>
+                  <br/>
                   <span className={styles.companyName}>Lycée Georges Duby (Luynes)</span>
                   <span className={styles.period}>2022</span>
                 </div>
