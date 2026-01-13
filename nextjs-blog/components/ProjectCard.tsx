@@ -32,9 +32,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  
+  // Drag/Swipe states
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [currentTranslate, setCurrentTranslate] = useState(0);
+  const [prevTranslate, setPrevTranslate] = useState(0);
 
-  const touchStartX = useRef<number>(0);
-  const touchEndX = useRef<number>(0);
   const carouselRef = useRef<HTMLDivElement>(null);
   const lightboxRef = useRef<HTMLDivElement>(null);
 
@@ -56,21 +60,27 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     return () => { document.body.style.overflow = "auto"; };
   }, [isOpen, isFocused]);
 
+  // Update translate position when image changes
+  useEffect(() => {
+    setPrevTranslate(-currentImageIndex * 100);
+    setCurrentTranslate(-currentImageIndex * 100);
+  }, [currentImageIndex]);
+
   const nextImage = useCallback((e?: React.MouseEvent) => {
     e?.stopPropagation();
-    if (isTransitioning) return;
+    if (isTransitioning || isDragging) return;
     setIsTransitioning(true);
     setCurrentImageIndex((prev) => (prev === screenshots.length - 1 ? 0 : prev + 1));
     setTimeout(() => setIsTransitioning(false), 500);
-  }, [screenshots.length, isTransitioning]);
+  }, [screenshots.length, isTransitioning, isDragging]);
 
   const prevImage = useCallback((e?: React.MouseEvent) => {
     e?.stopPropagation();
-    if (isTransitioning) return;
+    if (isTransitioning || isDragging) return;
     setIsTransitioning(true);
     setCurrentImageIndex((prev) => (prev === 0 ? screenshots.length - 1 : prev - 1));
     setTimeout(() => setIsTransitioning(false), 500);
-  }, [screenshots.length, isTransitioning]);
+  }, [screenshots.length, isTransitioning, isDragging]);
 
   const openModal = () => {
     setCurrentImageIndex(0);
@@ -79,7 +89,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
   const toggleFocus = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsFocused(!isFocused);
+    if (!isDragging) {
+      setIsFocused(!isFocused);
+    }
   };
 
   const closeLightbox = () => {
@@ -88,38 +100,70 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
   const handleLightboxClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
-    if (!target.closest('button') && !target.closest('img')) {
+    if (target === e.currentTarget && !isDragging) {
       closeLightbox();
     }
   };
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (isTransitioning) return;
-    touchStartX.current = e.touches[0].clientX;
-    touchEndX.current = e.touches[0].clientX;
+  // Unified drag/swipe handlers for both mouse and touch
+  const getPositionX = (event: MouseEvent | TouchEvent | React.MouseEvent | React.TouchEvent): number => {
+    return 'touches' in event ? event.touches[0].clientX : event.clientX;
   };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX;
+  const dragStart = (event: React.MouseEvent | React.TouchEvent) => {
+    if (isTransitioning) return;
+    setIsDragging(true);
+    setStartX(getPositionX(event));
+    
+    // Disable transition during drag
+    if (carouselRef.current) {
+      carouselRef.current.style.transition = 'none';
+    }
+    if (lightboxRef.current) {
+      lightboxRef.current.style.transition = 'none';
+    }
   };
 
-  const handleTouchEnd = () => {
-    if (isTransitioning) return;
-    const swipeThreshold = 50;
-    const swipeDistance = touchStartX.current - touchEndX.current;
+  const dragMove = (event: React.MouseEvent | React.TouchEvent) => {
+    if (!isDragging) return;
+    
+    const currentPosition = getPositionX(event);
+    const diff = currentPosition - startX;
+    const containerWidth = carouselRef.current?.offsetWidth || lightboxRef.current?.offsetWidth || window.innerWidth;
+    const translatePercentage = (diff / containerWidth) * 100;
+    
+    setCurrentTranslate(prevTranslate + translatePercentage);
+  };
 
-    if (Math.abs(swipeDistance) > swipeThreshold) {
-      setIsTransitioning(true);
-      if (swipeDistance > 0) {
-        setCurrentImageIndex((prev) => (prev === screenshots.length - 1 ? 0 : prev + 1));
-      } else {
-        setCurrentImageIndex((prev) => (prev === 0 ? screenshots.length - 1 : prev - 1));
-      }
-      setTimeout(() => setIsTransitioning(false), 500);
+  const dragEnd = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+
+    // Re-enable transition
+    if (carouselRef.current) {
+      carouselRef.current.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
+    }
+    if (lightboxRef.current) {
+      lightboxRef.current.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
     }
 
-    touchStartX.current = 0;
-    touchEndX.current = 0;
+    const movedBy = currentTranslate - prevTranslate;
+    const threshold = 15; // Percentage threshold to trigger slide change
+
+    if (movedBy < -threshold && currentImageIndex < screenshots.length - 1) {
+      // Swiped left - next image
+      setIsTransitioning(true);
+      setCurrentImageIndex((prev) => prev + 1);
+      setTimeout(() => setIsTransitioning(false), 500);
+    } else if (movedBy > threshold && currentImageIndex > 0) {
+      // Swiped right - previous image
+      setIsTransitioning(true);
+      setCurrentImageIndex((prev) => prev - 1);
+      setTimeout(() => setIsTransitioning(false), 500);
+    } else {
+      // Snap back to current image
+      setCurrentTranslate(prevTranslate);
+    }
   };
 
   useEffect(() => {
@@ -169,9 +213,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           <div
             className="relative w-[90vw] h-[70vh] md:w-[85vw] md:h-[80vh] overflow-hidden"
             ref={lightboxRef}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
+            onMouseDown={dragStart}
+            onMouseMove={dragMove}
+            onMouseUp={dragEnd}
+            onMouseLeave={dragEnd}
+            onTouchStart={dragStart}
+            onTouchMove={dragMove}
+            onTouchEnd={dragEnd}
+            style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
           >
             <button
               className="absolute top-4 left-4 md:top-5 md:left-5 bg-black/50 hover:bg-white/20 border border-white/30 rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-white/90 hover:text-white text-lg md:text-xl transition-all hover:scale-110 z-30"
@@ -183,7 +232,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
             {screenshots.length > 1 && (
               <button
-                className="absolute left-2 md:left-5 top-1/2 -translate-y-1/2 text-white/70 hover:text-[var(--color-secondary)]  text-3xl md:text-4xl transition-all hover:scale-125 z-20 drop-shadow-lg"
+                className="absolute left-2 md:left-5 top-1/2 -translate-y-1/2 text-white/70 hover:text-[var(--color-secondary)] text-3xl md:text-4xl transition-all hover:scale-125 z-20 drop-shadow-lg"
                 onClick={prevImage}
                 disabled={isTransitioning}
               >
@@ -192,30 +241,31 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             )}
 
             <div
-              className="flex h-full w-full transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]"
-              style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}
+              className="flex h-full w-full"
+              style={{
+                transform: `translateX(${currentTranslate}%)`,
+                transition: isDragging ? 'none' : 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)'
+              }}
             >
               {screenshots.map((src, index) => (
-                <div className="min-w-full h-full flex items-center justify-center" key={index}>
-                  <div className="relative w-full h-full">
-                    <Image
-                      src={src}
-                      alt={`${title} screenshot ${index + 1}`}
-                      fill
-                      className="object-contain saturate-125"
-                      quality={100}
-                      priority={index === currentImageIndex}
-                      sizes="100vw"
-                      unoptimized={true}
-                    />
-                  </div>
+                <div className="min-w-full h-full relative flex items-center justify-center" key={index}>
+                  <Image
+                    src={src}
+                    alt={`Screenshot ${index + 1}`}
+                    fill
+                    className="object-contain saturate-125 pointer-events-none"
+                    priority={index === currentImageIndex}
+                    sizes="(max-width: 768px) 100vw, 800px"
+                    unoptimized={true}
+                    draggable={false}
+                  />
                 </div>
               ))}
             </div>
 
             {screenshots.length > 1 && (
               <button
-                className="absolute right-2 md:right-5 top-1/2 -translate-y-1/2 text-white/70 hover:text-[var(--color-secondary)]  text-3xl md:text-4xl transition-all hover:scale-125 z-20 drop-shadow-lg"
+                className="absolute right-2 md:right-5 top-1/2 -translate-y-1/2 text-white/70 hover:text-[var(--color-secondary)] text-3xl md:text-4xl transition-all hover:scale-125 z-20 drop-shadow-lg"
                 onClick={nextImage}
                 disabled={isTransitioning}
               >
@@ -272,17 +322,22 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
             {screenshots.length > 0 && (
               <div
-                className="relative w-[85%] md:w-full h-48 md:h-96 mx-auto mt-4 md:mt-6 overflow-hidden cursor-zoom-in rounded-lg"
+                className="relative w-[85%] md:w-full h-48 md:h-96 mx-auto mt-4 md:mt-6 overflow-hidden cursor-grab rounded-lg"
                 onClick={toggleFocus}
                 title="Cliquez pour agrandir"
                 ref={carouselRef}
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
+                onMouseDown={dragStart}
+                onMouseMove={dragMove}
+                onMouseUp={dragEnd}
+                onMouseLeave={dragEnd}
+                onTouchStart={dragStart}
+                onTouchMove={dragMove}
+                onTouchEnd={dragEnd}
+                style={{ cursor: isDragging ? 'grabbing' : 'zoom-in' }}
               >
                 {screenshots.length > 1 && (
                   <button
-                    className="absolute left-0 md:left-2 top-1/2 -translate-y-1/2 text-[var(--color-primary)] hover:text-[var(--color-secondary)]  text-2xl md:text-4xl transition-all hover:scale-125 z-10 drop-shadow-md"
+                    className="absolute left-0 md:left-2 top-1/2 -translate-y-1/2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] text-2xl md:text-4xl transition-all hover:scale-125 z-10 drop-shadow-md"
                     onClick={prevImage}
                     disabled={isTransitioning}
                   >
@@ -291,27 +346,34 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 )}
 
                 <div
-                  className="flex h-full w-full transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]"
-                  style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}
+                  className="flex h-full w-full"
+                  style={{
+                    transform: `translateX(${currentTranslate}%)`,
+                    transition: isDragging ? 'none' : 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)'
+                  }}
                 >
                   {screenshots.map((src, index) => (
-                    <div className="min-w-full h-full relative flex items-center justify-center" key={index}>
-                      <Image
-                        src={src}
-                        alt={`Screenshot ${index + 1}`}
-                        fill
-                        className="object-contain saturate-125"
-                        priority={index === currentImageIndex}
-                        sizes="(max-width: 768px) 100vw, 800px"
-                        unoptimized={true}
-                      />
+                    <div className="min-w-full h-full flex items-center justify-center" key={index}>
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={src}
+                          alt={`${title} screenshot ${index + 1}`}
+                          fill
+                          className="object-contain saturate-125 pointer-events-none"
+                          quality={100}
+                          priority={index === currentImageIndex}
+                          sizes="100vw"
+                          unoptimized={true}
+                          draggable={false}
+                        />
+                      </div>
                     </div>
                   ))}
                 </div>
 
                 {screenshots.length > 1 && (
                   <button
-                    className="absolute right-0 md:right-2 top-1/2 -translate-y-1/2 text-[var(--color-primary)] hover:text-[var(--color-secondary)]  text-2xl md:text-4xl transition-all hover:scale-125 z-10 drop-shadow-md"
+                    className="absolute right-0 md:right-2 top-1/2 -translate-y-1/2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] text-2xl md:text-4xl transition-all hover:scale-125 z-10 drop-shadow-md"
                     onClick={nextImage}
                     disabled={isTransitioning}
                   >
@@ -330,7 +392,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 href={projectLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-6 md:mt-8 inline-flex items-center justify-center gap-2 md:gap-3 text-[var(--color-primary)] hover:text-[var(--color-secondary)]  font-bold text-base md:text-xl transition-colors hover:underline mx-auto"
+                className="mt-6 md:mt-8 inline-flex items-center justify-center gap-2 md:gap-3 text-[var(--color-primary)] hover:text-[var(--color-secondary)] font-bold text-base md:text-xl transition-colors hover:underline mx-auto"
               >
                 <FaExternalLinkAlt />{projectLinkText}
               </a>
