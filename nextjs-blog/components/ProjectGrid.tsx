@@ -1,14 +1,18 @@
 import ProjectCard from "./ProjectCard";
-import styles from "./ProjectCard.module.css";
 import { SiNextdotjs, SiCplusplus, SiNestjs, SiReact, SiLeaflet, SiDocker, SiTypescript, SiPhp, SiLaravel, SiOpengl, SiCmake, SiTailwindcss, SiExpress, SiPostgresql, SiJenkins, SiJest, SiSupabase } from "react-icons/si";
 import { FaJs, FaNodeJs, FaJava } from "react-icons/fa";
 import { DiNetbeans } from "react-icons/di";
 
 const ProjectGrid = () => {
-  return (
-    <div className={styles.projectsGrid}>
+  const TechBadge = ({ children }: { children: React.ReactNode }) => (
+    <div className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-[var(--color-primary)] border border-primary text-white rounded-full text-xs md:text-sm transition-all hover:bg-gray-100 hover:text-[var(--color-primary)] whitespace-nowrap">
+      {children}
+    </div>
+  );
 
-    {/* --- 2CLOCK --- */}
+  return (
+    <div className="flex flex-wrap gap-4 md:gap-5 justify-center px-4 md:px-5 mt-10 md:mt-12">
+      {/* --- 2CLOCK --- */}
       <ProjectCard
         title="2Clock"
         description="Application web de pointage horodaté et d'analyse de KPI en entreprise"
@@ -18,43 +22,42 @@ const ProjectGrid = () => {
         projectLink="https://2clock-mar-8.fr"
         projectLinkText="Consulter la landing page de 2clock"
         screenshots={[
-            "/2clock/2clock-1.png",
-            "/2clock/2clock-2.png",
-            "/2clock/2clock-3.png",
-            "/2clock/2clock-4.png",
-            "/2clock/2clock-5.png",
-            "/2clock/2clock-6.png",
-            "/2clock/2clock-7.png",
-            "/2clock/2clock-8.png",
-            "/2clock/2clock-9.png",
-            "/2clock/2clock-10.png",
-            "/2clock/2clock-11.png",
-            "/2clock/2clock-12.png",
-            "/2clock/2clock-13.png",
-            "/2clock/2clock-14.png",
-            "/2clock/2clock-15.png",
+          "/2clock/2clock-1.png",
+          "/2clock/2clock-2.png",
+          "/2clock/2clock-3.png",
+          "/2clock/2clock-4.png",
+          "/2clock/2clock-5.png",
+          "/2clock/2clock-6.png",
+          "/2clock/2clock-7.png",
+          "/2clock/2clock-8.png",
+          "/2clock/2clock-9.png",
+          "/2clock/2clock-10.png",
+          "/2clock/2clock-11.png",
+          "/2clock/2clock-12.png",
+          "/2clock/2clock-13.png",
+          "/2clock/2clock-14.png",
+          "/2clock/2clock-15.png",
         ]}
         features={[
-            "Système de pointage sécurisé : Code éphémère (TOTP) généré via WebSockets et régénéré toutes les 30s.",
-            "Architecture Microservices : Frontend Next.js et API Node.js/Express séparés, communiquant via REST et WebSockets.",
-            "Gestion multi-équipes et rôles : Système complet de permissions (Employé, Manager, Propriétaire) et plannings flexibles.",
-            "Analyse de données (KPI) : Visualisation graphique de la ponctualité, des retards et des absences.",
-            "DevOps complet : Pipeline CI/CD Jenkins, conteneurisation Docker, Reverse Proxy Nginx et certificats SSL automatisés.",
-            "Sécurité avancée : Protection CSRF, Rate Limiting, Sanitization des entrées et authentification JWT."
+          "Système de pointage sécurisé : Code éphémère (TOTP) généré via WebSockets et régénéré toutes les 30s.",
+          "Architecture Microservices : Frontend Next.js et API Node.js/Express séparés, communiquant via REST et WebSockets.",
+          "Gestion multi-équipes et rôles : Système complet de permissions (Employé, Manager, Propriétaire) et plannings flexibles.",
+          "Analyse de données (KPI) : Visualisation graphique de la ponctualité, des retards et des absences.",
+          "DevOps complet : Pipeline CI/CD Jenkins, conteneurisation Docker, Reverse Proxy Nginx et certificats SSL automatisés.",
+          "Sécurité avancée : Protection CSRF, Rate Limiting, Sanitization des entrées et authentification JWT."
         ]}
         techStack={
           <>
-            <div className={styles.techBadge}><SiNextdotjs /> Next.js</div>
-            <div className={styles.techBadge}><SiReact /> React</div>
-            <div className={styles.techBadge}><SiTailwindcss /> Tailwind</div>
-            <div className={styles.techBadge}><FaNodeJs /> Node.js</div>
-            <div className={styles.techBadge}><SiExpress /> Express</div>
-            <div className={styles.techBadge}><SiTypescript /> TypeScript</div>
-            <div className={styles.techBadge}><SiSupabase /> Supabase (SQL)</div>
-            <div className={styles.techBadge}><SiDocker /> Docker</div>
-            <div className={styles.techBadge}><SiJenkins /> Jenkins</div> 
-            <div className={styles.techBadge}><SiJest /> Jest</div> 
-            {/* Note: SiCmake est utilisé faute d'icone Jenkins dans ton import initial, sinon ajoute SiJenkins */}
+            <TechBadge><SiNextdotjs /> Next.js</TechBadge>
+            <TechBadge><SiReact /> React</TechBadge>
+            <TechBadge><SiTailwindcss /> Tailwind</TechBadge>
+            <TechBadge><FaNodeJs /> Node.js</TechBadge>
+            <TechBadge><SiExpress /> Express</TechBadge>
+            <TechBadge><SiTypescript /> TypeScript</TechBadge>
+            <TechBadge><SiSupabase /> Supabase (SQL)</TechBadge>
+            <TechBadge><SiDocker /> Docker</TechBadge>
+            <TechBadge><SiJenkins /> Jenkins</TechBadge>
+            <TechBadge><SiJest /> Jest</TechBadge>
           </>
         }
       />
@@ -69,29 +72,28 @@ const ProjectGrid = () => {
         projectLink="https://miratlas.com"
         projectLinkText="Consulter le site de Miratlas"
         screenshots={[
-            "/pathfinder/pathfinder-1.png", 
-            "/pathfinder/pathfinder-2.png",
-            "/pathfinder/pathfinder-3.png", 
-            "/pathfinder/pathfinder-4.png", 
-            "/pathfinder/pathfinder-5.png", 
-
+          "/pathfinder/pathfinder-1.png",
+          "/pathfinder/pathfinder-2.png",
+          "/pathfinder/pathfinder-3.png",
+          "/pathfinder/pathfinder-4.png",
+          "/pathfinder/pathfinder-5.png",
         ]}
         features={[
-            "Visualisation de données complexes : Graphiques dynamiques avec Recharts pour les points de présence.",
-            "Traitement d'images côté client : Modification pixel par pixel pour afficher les couches de couverture nuageuse avec seuils filtrables.",
-            "Cartographie interactive : Utilisation de Leaflet pour le positionnement des stations et l'affichage des calques.",
-            "Back-office complet : Gestion des utilisateurs, des données et visualisation instantanée des anomalies.",
-            "Architecture : Frontend Next.js et Backend Laravel (API) conteneurisés avec Docker."
+          "Visualisation de données complexes : Graphiques dynamiques avec Recharts pour les points de présence.",
+          "Traitement d'images côté client : Modification pixel par pixel pour afficher les couches de couverture nuageuse avec seuils filtrables.",
+          "Cartographie interactive : Utilisation de Leaflet pour le positionnement des stations et l'affichage des calques.",
+          "Back-office complet : Gestion des utilisateurs, des données et visualisation instantanée des anomalies.",
+          "Architecture : Frontend Next.js et Backend Laravel (API) conteneurisés avec Docker."
         ]}
         techStack={
           <>
-            <div className={styles.techBadge}><SiNextdotjs /> Next.js</div>
-            <div className={styles.techBadge}><SiLaravel /> Laravel</div>
-            <div className={styles.techBadge}><SiReact /> React</div>
-            <div className={styles.techBadge}><SiLeaflet /> Leaflet</div>
-            <div className={styles.techBadge}><SiDocker /> Docker</div>
-            <div className={styles.techBadge}><SiTypescript /> TypeScript</div>
-            <div className={styles.techBadge}><SiPhp />PHP</div>
+            <TechBadge><SiNextdotjs /> Next.js</TechBadge>
+            <TechBadge><SiLaravel /> Laravel</TechBadge>
+            <TechBadge><SiReact /> React</TechBadge>
+            <TechBadge><SiLeaflet /> Leaflet</TechBadge>
+            <TechBadge><SiDocker /> Docker</TechBadge>
+            <TechBadge><SiTypescript /> TypeScript</TechBadge>
+            <TechBadge><SiPhp /> PHP</TechBadge>
           </>
         }
       />
@@ -104,30 +106,29 @@ const ProjectGrid = () => {
         width="360px"
         height="280px"
         screenshots={[
-            "/ggps/ggps-1.png",
-            "/ggps/ggps-2.png",
-            "/ggps/ggps-3.png",
-            "/ggps/ggps-4.png",
-            "/ggps/ggps-5.png",
-            "/ggps/ggps-6.png",
-            "/ggps/ggps-7.png",
-
+          "/ggps/ggps-1.png",
+          "/ggps/ggps-2.png",
+          "/ggps/ggps-3.png",
+          "/ggps/ggps-4.png",
+          "/ggps/ggps-5.png",
+          "/ggps/ggps-6.png",
+          "/ggps/ggps-7.png",
         ]}
         features={[
-            "Architecture API REST : Backend performant développé en NestJS.",
-            "Communication Temps Réel : Système de Chatrooms instantanées via WebSockets (Socket.io).",
-            "Géolocalisation : Recherche d'événements à proximité et création de points sur carte interactive.",
-            "Fonctionnalités sociales : Communication organisateurs/participants intégrée.",
-            "Authentification et Sécurité : Gestion complète des utilisateurs et validation des données."
+          "Architecture API REST : Backend performant développé en NestJS.",
+          "Communication Temps Réel : Système de Chatrooms instantanées via WebSockets (Socket.io).",
+          "Géolocalisation : Recherche d'événements à proximité et création de points sur carte interactive.",
+          "Fonctionnalités sociales : Communication organisateurs/participants intégrée.",
+          "Authentification et Sécurité : Gestion complète des utilisateurs et validation des données."
         ]}
         techStack={
           <>
-            <div className={styles.techBadge}><SiNextdotjs /> Next.js</div>
-            <div className={styles.techBadge}><SiNestjs /> NestJS</div>
-            <div className={styles.techBadge}><SiReact /> React</div>
-            <div className={styles.techBadge}><SiLeaflet /> Leaflet</div>
-            <div className={styles.techBadge}><SiDocker /> Docker</div>
-            <div className={styles.techBadge}><SiTypescript /> TypeScript</div>
+            <TechBadge><SiNextdotjs /> Next.js</TechBadge>
+            <TechBadge><SiNestjs /> NestJS</TechBadge>
+            <TechBadge><SiReact /> React</TechBadge>
+            <TechBadge><SiLeaflet /> Leaflet</TechBadge>
+            <TechBadge><SiDocker /> Docker</TechBadge>
+            <TechBadge><SiTypescript /> TypeScript</TechBadge>
           </>
         }
       />
@@ -151,65 +152,63 @@ const ProjectGrid = () => {
         ]}
         techStack={
             <>
-            <div className={styles.techBadge}><FaNodeJs />Node.js</div>
-            <div className={styles.techBadge}><SiExpress />ExpressJs</div>
-            <div className={styles.techBadge}><SiTypescript />TypeScript</div>
+            <TechBadge><FaNodeJs />Node.js</TechBadge>
+            <TechBadge><SiExpress />ExpressJs</TechBadge>
+            <TechBadge><SiTypescript />TypeScript</TechBadge>
             </>
         }
       /> */}
 
       {/* --- GLPROJECT --- */}
-      <ProjectCard 
-        title="GLPROJECT" 
-        description="Moteur de visualisation 3D pédagogique (OpenGL)" 
-        previewImage="/glproject/glproject-preview.png"  
-        width="360px" 
+      <ProjectCard
+        title="GLPROJECT"
+        description="Moteur de visualisation 3D pédagogique (OpenGL)"
+        previewImage="/glproject/glproject-preview.png"
+        width="360px"
         height="280px"
         screenshots={[
-            "/glproject/glproject-1.png",
-            "/glproject/glproject-2.png"
-
-            
+          "/glproject/glproject-1.png",
+          "/glproject/glproject-2.png"
         ]}
         features={[
-            "Programmation Bas-Niveau : C++ avec gestion mémoire pour interagir avec le GPU.",
-            "Shaders GLSL : Implémentation manuelle de Phong, Blinn-Phong et flou Gaussien.",
-            "Texturing Avancé : Support des projections planaires, sphériques, cylindriques et cubiques.",
-            "Moteur de Rendu : Chargement de modèles .obj, gestion caméra et lumières dynamiques.",
-            "Pipeline Graphique : Manipulation directe des vertices et fragments."
+          "Programmation Bas-Niveau : C++ avec gestion mémoire pour interagir avec le GPU.",
+          "Shaders GLSL : Implémentation manuelle de Phong, Blinn-Phong et flou Gaussien.",
+          "Texturing Avancé : Support des projections planaires, sphériques, cylindriques et cubiques.",
+          "Moteur de Rendu : Chargement de modèles .obj, gestion caméra et lumières dynamiques.",
+          "Pipeline Graphique : Manipulation directe des vertices et fragments."
         ]}
         techStack={
           <>
-            <div className={styles.techBadge}><SiCplusplus />C++</div>
-            <div className={styles.techBadge}><SiOpengl />OpenGL</div>
-            <div className={styles.techBadge}><SiCmake />CMake</div>
+            <TechBadge><SiCplusplus /> C++</TechBadge>
+            <TechBadge><SiOpengl /> OpenGL</TechBadge>
+            <TechBadge><SiCmake /> CMake</TechBadge>
           </>
         }
       />
 
       {/* --- FINDER --- */}
-      <ProjectCard 
-        title="Finder" 
-        description="Plateforme de services entre particuliers" 
-        previewImage="/finder/finder-preview.png" 
-        width="360px" 
+      <ProjectCard
+        title="Finder"
+        description="Plateforme de services entre particuliers"
+        previewImage="/finder/finder-preview.png"
+        width="360px"
         height="280px"
         screenshots={[
-            "/finder/finder-1.png",
-            "/finder/finder-2.png"
+          "/finder/finder-1.png",
+          "/finder/finder-2.png"
         ]}
         features={[
-            "Développement Backend : PHP natif migré vers le framework Laravel.",
-            "Marketplace : Publication d'annonces, réponses avec propositions de prix, filtrage.",
-            "Système de Réputation : Notation et commentaires entre prestataires et clients.",
-            "DevOps : Environnement complet (Web + BDD) conteneurisé avec Docker.",
-            "Gestion de Projet : Méthode Agile, Git flow et simulation business plan."
+          "Développement Backend : PHP natif migré vers le framework Laravel.",
+          "Marketplace : Publication d'annonces, réponses avec propositions de prix, filtrage.",
+          "Système de Réputation : Notation et commentaires entre prestataires et clients.",
+          "DevOps : Environnement complet (Web + BDD) conteneurisé avec Docker.",
+          "Gestion de Projet : Méthode Agile, Git flow et simulation business plan."
         ]}
         techStack={
           <>
-            <div className={styles.techBadge}><SiLaravel />Laravel</div>
-            <div className={styles.techBadge}><SiPhp /> PHP</div>
-            <div className={styles.techBadge}><SiDocker /> Docker</div>
+            <TechBadge><SiLaravel /> Laravel</TechBadge>
+            <TechBadge><SiPhp /> PHP</TechBadge>
+            <TechBadge><SiDocker /> Docker</TechBadge>
           </>
         }
       />
@@ -232,35 +231,35 @@ const ProjectGrid = () => {
         ]}
         techStack={
           <>
-            <div className={styles.techBadge}><SiReact />React</div>
-            <div className={styles.techBadge}><FaJs />JavaScript</div>
+            <TechBadge><SiReact />React</TechBadge>
+            <TechBadge><FaJs />JavaScript</TechBadge>
           </>
         }
       /> */}
 
       {/* --- FORCEDOT --- */}
-      <ProjectCard 
-        title="ForceDot" 
-        description="Bibliothèque de composants React pour présentations" 
-        previewImage="/forcedot/forcedot-preview.png" 
-        width="360px" 
+      <ProjectCard
+        title="ForceDot"
+        description="Bibliothèque de composants React pour présentations"
+        previewImage="/forcedot/forcedot-preview.png"
+        width="360px"
         height="280px"
         screenshots={[
-            "/forcedot/forcedot-1.png",
-            "/forcedot/forcedot-2.png"
+          "/forcedot/forcedot-1.png",
+          "/forcedot/forcedot-2.png"
         ]}
         features={[
-            "Librairie UI : Création de composants réutilisables pour générer des slides.",
-            "Navigation : Système complet avec flèches et menu miniature.",
-            "Support Contenu Riche : Markdown, blocs de code avec coloration syntaxique, grilles.",
-            "Styling Modulaire : Utilisation de TailwindCSS pour le design system.",
-            "DX : Structure déclarative (JSX) pensée pour les développeurs."
+          "Librairie UI : Création de composants réutilisables pour générer des slides.",
+          "Navigation : Système complet avec flèches et menu miniature.",
+          "Support Contenu Riche : Markdown, blocs de code avec coloration syntaxique, grilles.",
+          "Styling Modulaire : Utilisation de TailwindCSS pour le design system.",
+          "DX : Structure déclarative (JSX) pensée pour les développeurs."
         ]}
         techStack={
           <>
-            <div className={styles.techBadge}><SiReact />React</div>
-            <div className={styles.techBadge}><FaJs />JavaScript</div>
-            <div className={styles.techBadge}><SiTailwindcss />Tailwind</div>
+            <TechBadge><SiReact /> React</TechBadge>
+            <TechBadge><FaJs /> JavaScript</TechBadge>
+            <TechBadge><SiTailwindcss /> Tailwind</TechBadge>
           </>
         }
       />
@@ -285,8 +284,8 @@ const ProjectGrid = () => {
         ]}
         techStack={
           <>
-            <div className={styles.techBadge}><FaJava />Java</div>
-            <div className={styles.techBadge}><DiNetbeans />Netbeans</div>
+            <TechBadge><FaJava />Java</TechBadge>
+            <TechBadge><DiNetbeans />Netbeans</TechBadge>
           </>
         }
       /> */}

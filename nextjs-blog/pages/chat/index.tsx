@@ -124,7 +124,7 @@ export default function Model3D() {
         <meta name="description" content="Modèle 3D de Mathieu HERNANDEZ" />
       </Head>
       
-      <div ref={containerRef} className={styles.container}>
+ <div className="min-h-screen p-2 flex flex-col justify-start items-center font-['sofia-pro-regular']">
         <div className={styles.loadingText}>miaou...</div>
         
         {/* Add controls hint for users */}
