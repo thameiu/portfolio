@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import styles from "./ProjectCard.module.css";
-import { FaChevronLeft, FaChevronRight, FaExternalLinkAlt } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaExternalLinkAlt, FaTimes } from "react-icons/fa";
 
 interface ProjectCardProps {
   title: string;
@@ -31,6 +31,23 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Touch handling refs
+  const touchStartX = useRef<number>(0);
+  const touchEndX = useRef<number>(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const lightboxRef = useRef<HTMLDivElement>(null);
+
+  // Detect mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Lock body scroll
   useEffect(() => {
@@ -60,6 +77,45 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const toggleFocus = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsFocused(!isFocused);
+  };
+
+  const closeLightbox = () => {
+    setIsFocused(false);
+  };
+
+  const handleLightboxClick = (e: React.MouseEvent) => {
+    // Close if clicking anywhere except on buttons
+    const target = e.target as HTMLElement;
+    if (!target.closest('button')) {
+      closeLightbox();
+    }
+  };
+
+  // Touch/Swipe handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const swipeThreshold = 50;
+    const swipeDistance = touchStartX.current - touchEndX.current;
+
+    if (Math.abs(swipeDistance) > swipeThreshold) {
+      if (swipeDistance > 0) {
+        // Swiped left - next image
+        setCurrentImageIndex((prev) => (prev === screenshots.length - 1 ? 0 : prev + 1));
+      } else {
+        // Swiped right - previous image
+        setCurrentImageIndex((prev) => (prev === 0 ? screenshots.length - 1 : prev - 1));
+      }
+    }
+
+    touchStartX.current = 0;
+    touchEndX.current = 0;
   };
 
   // Keyboard navigation
@@ -98,8 +154,26 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
       {/* --- LIGHTBOX OVERLAY (FOCUS) --- */}
       {isFocused && screenshots.length > 0 && (
-        <div className={styles.lightboxOverlay} onClick={() => setIsFocused(false)}>
-           <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
+        <div 
+          className={styles.lightboxOverlay} 
+          onClick={handleLightboxClick}
+        >
+           <div 
+             className={styles.lightboxContent} 
+             ref={lightboxRef}
+             onTouchStart={handleTouchStart}
+             onTouchMove={handleTouchMove}
+             onTouchEnd={handleTouchEnd}
+           >
+              {/* Close button (top-left) */}
+              <button 
+                className={styles.lightboxCloseButton} 
+                onClick={closeLightbox}
+                aria-label="Fermer"
+              >
+                <FaTimes />
+              </button>
+
               <button className={`${styles.navButton} ${styles.prevButton}`} onClick={prevImage} style={{position: 'absolute', left: '20px', zIndex: 20}}>
                   <FaChevronLeft />
               </button>
@@ -111,7 +185,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               >
                 {screenshots.map((src, index) => (
                     <div className={styles.lightboxSlide} key={index}>
-                        {/* Image directly inside lightboxSlide for better centering via Flexbox */}
                         <Image 
                             src={src} 
                             alt={`${title} screenshot ${index + 1}`}
@@ -132,7 +205,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               
               {/* Nouveau compteur en bas à droite */}
               <div className={styles.lightboxCounter}>
-                  {currentImageIndex + 1} / {screenshots.length} • Echap pour fermer
+                  {currentImageIndex + 1} / {screenshots.length}{!isMobile && ' • Echap pour fermer'}
               </div>
            </div>
         </div>
@@ -161,7 +234,15 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
             {/* --- CAROUSEL TRACK (MODAL) --- */}
             {screenshots.length > 0 && (
-                <div className={styles.carouselContainer} onClick={toggleFocus} title="Cliquez pour agrandir">
+                <div 
+                  className={styles.carouselContainer} 
+                  onClick={toggleFocus} 
+                  title="Cliquez pour agrandir"
+                  ref={carouselRef}
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                >
                     {screenshots.length > 1 && (
                         <button className={`${styles.navButton} ${styles.prevButton}`} onClick={prevImage}>
                             <FaChevronLeft />
