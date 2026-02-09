@@ -1,7 +1,11 @@
 "use client";
 import { useEffect } from 'react';
 
-const BackgroundAnimation = () => {
+interface BackgroundAnimationProps {
+  onReady?: () => void;
+}
+
+const BackgroundAnimation = ({ onReady }: BackgroundAnimationProps) => {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -387,6 +391,13 @@ const BackgroundAnimation = () => {
 
       updateAndDrawShapes();
 
+      // Signal that background is ready after first frame
+      if (onReady) {
+        requestAnimationFrame(() => {
+          onReady();
+        });
+      }
+
       return () => {
         window.removeEventListener("resize", resizeCanvas);
         window.removeEventListener('scroll', handleScroll);
@@ -395,7 +406,7 @@ const BackgroundAnimation = () => {
     }, 100);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [onReady]);
 
   return <canvas id="topo-canvas" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: -1, display: 'block' }}></canvas>;
 };
