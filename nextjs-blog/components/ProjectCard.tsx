@@ -98,12 +98,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     setIsFocused(false);
   };
 
-  const handleLightboxClick = (e: React.MouseEvent) => {
-
-    if (target === e.currentTarget && !isDragging) {
-      closeLightbox();
-    }
-  };
 
   // Unified drag/swipe handlers for both mouse and touch
   const getPositionX = (event: MouseEvent | TouchEvent | React.MouseEvent | React.TouchEvent): number => {
@@ -222,7 +216,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
           >
             <button
-              className="absolute top-4 left-4 md:top-5 md:left-5 bg-black/50 hover:bg-white/20 border border-white/30 rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-white/90 hover:text-white text-lg md:text-xl transition-all hover:scale-110 z-30"
+              className="absolute top-4 right-4 md:top-5 md:right-5 bg-black/50 hover:bg-white/20 border border-white/30 rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-white/90 hover:text-white text-lg md:text-xl transition-all hover:scale-110 z-30"
               onClick={closeLightbox}
               aria-label="Fermer"
             >
