@@ -99,7 +99,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   };
 
   const handleLightboxClick = (e: React.MouseEvent) => {
-    const target = e.target as HTMLElement;
+
     if (target === e.currentTarget && !isDragging) {
       closeLightbox();
     }
@@ -199,7 +199,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           />
         </div>
         <div className="p-4 flex-1 flex flex-col justify-between text-center">
-          <h1 className="text-3xl font-bold text-[var(--color-primary)] mb-2">{title}</h1>
+          <h1 className="text-3xl font-bold text-[var(--color-primary)] mb-2 ">{title}</h1>
           <p className="text-base text-gray-800">{description}</p>
         </div>
       </div>
@@ -208,7 +208,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       {isFocused && screenshots.length > 0 && (
         <div
           className="fixed inset-0 bg-black/92 backdrop-blur-sm z-[2000] flex items-center justify-center animate-fade-in"
-          onClick={handleLightboxClick}
         >
           <div
             className="relative w-[90vw] h-[70vh] md:w-[85vw] md:h-[80vh] overflow-hidden"
@@ -248,7 +247,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               }}
             >
               {screenshots.map((src, index) => (
-                <div className="min-w-full h-full relative flex items-center justify-center" key={index}>
+                <div className="min-w-full h-full relative flex items-center justify-center" key={index} >
                   <Image
                     src={src}
                     alt={`Screenshot ${index + 1}`}

@@ -2,10 +2,43 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 
 const Header = () => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [hovering, setHovering] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
+
+  // Show header after 5 seconds or on user interaction
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!hasInteracted) {
+        setIsVisible(true);
+      }
+    }, 5000);
+
+    const handleInteraction = () => {
+      if (!hasInteracted) {
+        setHasInteracted(true);
+        setIsVisible(true);
+      }
+    };
+
+    // Listen for user interactions
+    window.addEventListener('scroll', handleInteraction);
+    window.addEventListener('mousemove', handleInteraction);
+    window.addEventListener('keydown', handleInteraction);
+    window.addEventListener('click', handleInteraction);
+    window.addEventListener('touchstart', handleInteraction);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleInteraction);
+      window.removeEventListener('mousemove', handleInteraction);
+      window.removeEventListener('keydown', handleInteraction);
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+    };
+  }, [hasInteracted]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,7 +91,7 @@ const Header = () => {
       {/* Desktop Header */}
       <div
         className={`hidden md:flex fixed top-2.5 left-1/2 -translate-x-1/2 w-[80%] max-w-[900px] h-[50px] bg-white/90 rounded-[25px] shadow-lg transition-all duration-300 items-center justify-center z-[100] ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full pointer-events-none'
         }`}
         onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}

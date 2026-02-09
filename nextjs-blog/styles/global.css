@@ -78,6 +78,13 @@ b {
 }
 
 @font-face {
+  font-family: 'archivo-black';
+  src: url('./fonts/ArchivoBlack-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
   font-family: 'sofia-pro-regular';
   src: url('./fonts/Sofia\ Pro\ Regular\ Az.woff') format('woff2'),
        url('./fonts/Sofia\ Pro\ Regular\ Az.woff') format('woff');

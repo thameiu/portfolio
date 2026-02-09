@@ -1,6 +1,6 @@
 "use client";
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProjectGrid from "../components/ProjectGrid";
 import Header from "../components/Header";
 import BackgroundAnimation from "../components/BackgroundAnimation";
@@ -15,10 +15,27 @@ import "animate.css";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<string>("experience");
+  const [heroVisible, setHeroVisible] = useState<boolean>(true);
 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const heroHeight = window.innerHeight * 0.3; // 30vh threshold - disappears earlier
+      
+      if (scrollPosition > heroHeight) {
+        setHeroVisible(false);
+      } else {
+        setHeroVisible(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const SkillBadge = ({ children }: { children: React.ReactNode }) => (
     <div className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-[#334A52] border border-[#334A52] text-white rounded-full text-xs md:text-sm transition-all hover:bg-gray-100 hover:text-[#334A52] whitespace-nowrap">
@@ -37,35 +54,43 @@ export default function Home() {
       <BackgroundAnimation />
       <Header />
 
-      {/* Hero Section */}
-      <section id="about" className="flex flex-col justify-center items-center pt-[10vh] w-full box-border">
-        <div className="w-[90vw] md:w-[80vw] bg-gray-50/95 rounded-3xl flex flex-col items-center p-5 md:p-10 shadow-2xl mt-[5vh] justify-center box-border">
-          <div className="w-full text-center">
-            <p className="text-[11vw] md:text-[7vw] font-bold leading-tight text-[#334A52] whitespace-normal m-0 animate__animated animate__fadeInDown">
-              Tétra-Développement
-            </p>
-            <p className="mt-[2vh] md:mt-[4vh] text-xl md:text-4xl text-[#1B1626] whitespace-normal text-center animate__animated animate__fadeInDown">
-              Portfolio de Mathieu HERNANDEZ
-            </p>
-          </div>
+      {/* Hero Title Section - Full Screen */}
+      <div className={`w-full h-[90vh] flex flex-col items-start justify-center px-6 md:px-12 lg:px-20 ${heroVisible ? 'animate__animated animate__fadeInDown' : 'animate__animated animate__fadeOutUp animate__faster'}`}>
+        <p className="text-[6vw] text-white/90 mb-4 md:mb-6 lg:mb-8 max-w-full font-light tracking-tight ">
+          Portfolio de
+        </p>
+        <h1 className="text-[12vw] font-bold leading-[0.85] text-white/95 m-0 font-['archivo-black'] w-full tracking-tighter">
+          MATHIEU<br /><span className="text-[#8DE1FD]">HERNANDEZ</span>
+        </h1>
+      </div>
 
-          <div className="w-[90%] flex flex-col md:flex-row justify-center items-center md:items-start mt-5 md:mt-8">
-            <div className="relative w-[250px] h-[250px] md:w-[400px] md:h-[400px] mb-5 md:mb-0 flex-shrink-0">
+      {/* Hero Section */}
+      <section id="about" className="flex flex-col justify-center items-center pt-[10vh] w-full box-border my-10 md:my-16">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
+          À propos
+        </h2>
+        <div className="w-[90vw] md:w-[80vw] bg-gray-50/95 rounded-3xl flex flex-col items-center p-5 md:p-10 shadow-2xl justify-center box-border">
+          <div className="w-full flex flex-col md:flex-row justify-center items-center md:items-start gap-6 md:gap-8">
+            <div className="relative w-[200px] h-[200px] md:w-[300px] md:h-[300px] mb-5 md:mb-0 flex-shrink-0">
               <Image
-                src="/me.jpg"
+                src="/photoHernandez.jpg"
                 alt="Mathieu Hernandez"
                 fill
-                className="rounded-full border-4 border-white shadow-lg object-cover"
+                className="rounded-full border-4 border-white shadow-lg object-cover saturate-125"
                 priority={true}
               />
             </div>
-            <div className="text-left md:ml-8 w-full md:w-auto">
-              <h2 className="text-2xl md:text-5xl font-bold text-[#334A52]">À propos de moi</h2>
-              <section className="text-base md:text-lg leading-relaxed text-gray-800 mt-4">
-                Je m'appelle <b>Mathieu HERNANDEZ</b>, j'ai 20 ans et je suis actuellement étudiant à <b>Epitech</b>, Marseille, dans le cadre d'un <b>Master of Science Technique</b>, avec une spécialisation en <b>Cybersécurité + Cloud</b>, après avoir réalisé un <b>BUT Informatique</b> à l'IUT d'Arles. <br /><br />
-                Grâce à ma formation et mes expériences professionnelles, j'ai acquis de solides compétences en <b>développement web</b>,
-                en optimisation des performances, ainsi qu'en <b>gestion de projet</b> et qualité de développement. <br />
-                Ces expériences m'ont permis d'adopter des méthodologies <b>rigoureuses</b> et d'améliorer ma capacité à concevoir des solutions <b>efficaces</b> et bien <b>structurées</b>.
+            <div className="text-left w-full md:w-auto">
+              <section className="text-base md:text-lg leading-relaxed text-gray-700 space-y-4">
+                <p>
+                  Je m'appelle <b>Mathieu HERNANDEZ</b>, j'ai 20 ans et je suis actuellement étudiant à <b>Epitech</b>, Marseille, dans le cadre d'un <b>Master of Science Technique</b>, avec une spécialisation en <b>Cybersécurité + Cloud</b>, après avoir réalisé un <b>BUT Informatique</b> à l'IUT d'Arles.
+                </p>
+                <p>
+                  Grâce à ma formation et mes expériences professionnelles, j'ai acquis de solides compétences en <b>développement web</b>, en optimisation des performances, ainsi qu'en <b>gestion de projet</b> et qualité de développement.
+                </p>
+                <p>
+                  Ces expériences m'ont permis d'adopter des méthodologies <b>rigoureuses</b> et d'améliorer ma capacité à concevoir des solutions <b>efficaces</b> et bien <b>structurées</b>.
+                </p>
               </section>
             </div>
           </div>
@@ -74,8 +99,8 @@ export default function Home() {
 
       {/* Experience Section */}
       <section id="experience" className="my-10 md:my-16 w-full px-4">
-        <h2 className="text-3xl md:text-5xl mb-5 md:mb-8 text-center text-white">
-          Expériences, Formation, Compétences
+        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
+          Parcours et Compétences
         </h2>
         <div className="w-full max-w-[90vw] md:max-w-4xl mx-auto bg-gray-50/95 rounded-3xl shadow-2xl p-5 md:p-10">
           <div className="flex flex-row flex-wrap justify-center gap-2 md:gap-3 mb-5 md:mb-8">
@@ -260,13 +285,17 @@ export default function Home() {
 
       {/* Projects Section */}
       <section id="projects" className="mt-[10vh] w-full">
-        <h2 className="text-3xl md:text-5xl mb-5 md:mb-8 text-center text-white">Projets</h2>
+        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
+          Projets
+        </h2>
         <ProjectGrid />
       </section>
 
     {/* Contact Section */}
       <section id="contact" className="mt-[15vh] mb-[20vh] w-full px-4">
-        <h2 className="text-3xl md:text-5xl mb-5 md:mb-8 text-center text-white font-extrabold">Me Contacter</h2>
+        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
+          Contact
+        </h2>
         <div className="w-full max-w-[95vw] md:max-w-4xl mx-auto rounded-2xl text-left bg-gray-50/95 shadow-2xl p-5 md:p-10 flex flex-col items-start gap-5 md:gap-6">
           <a 
             href="mailto:hernandez.mathieu19@gmail.com" 
