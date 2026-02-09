@@ -49,6 +49,7 @@ export default function Home() {
         <title>Portfolio - Mathieu HERNANDEZ</title>
         <meta name="description" content="Portfolio de Mathieu HERNANDEZ - Développeur Full-Stack" />
         <link rel="icon" href="/portfolio-logo-circle.png" />
+        <html lang="fr" />
       </Head>
 
       <BackgroundAnimation />

@@ -189,7 +189,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             alt={`Aperçu de ${title}`}
             fill
             className="object-cover"
-            unoptimized={true}
           />
         </div>
         <div className="p-4 flex-1 flex flex-col justify-between text-center">
@@ -249,7 +248,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                     className="object-contain saturate-125 pointer-events-none"
                     priority={index === currentImageIndex}
                     sizes="(max-width: 768px) 100vw, 800px"
-                    unoptimized={true}
                     draggable={false}
                   />
                 </div>
@@ -356,7 +354,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                           quality={100}
                           priority={index === currentImageIndex}
                           sizes="100vw"
-                          unoptimized={true}
                           draggable={false}
                         />
                       </div>
