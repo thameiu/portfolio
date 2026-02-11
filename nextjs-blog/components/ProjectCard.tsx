@@ -248,6 +248,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                     className="object-contain saturate-125 pointer-events-none"
                     priority={index === currentImageIndex}
                     sizes="(max-width: 768px) 100vw, 800px"
+                    unoptimized
                     draggable={false}
                   />
                 </div>
@@ -354,6 +355,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                           quality={100}
                           priority={index === currentImageIndex}
                           sizes="100vw"
+                          unoptimized
                           draggable={false}
                         />
                       </div>
