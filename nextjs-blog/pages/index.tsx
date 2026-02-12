@@ -1,6 +1,6 @@
 "use client";
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import ProjectGrid from "../components/ProjectGrid";
 import Header from "../components/Header";
 import BackgroundAnimation from "../components/BackgroundAnimation";
@@ -12,11 +12,17 @@ import { GiFlame } from "react-icons/gi";
 import { IoPeople } from "react-icons/io5";
 import Image from 'next/image';
 import "animate.css";
+import Loader from "../components/Loader";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<string>("experience");
   const [heroVisible, setHeroVisible] = useState<boolean>(true);
-
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  
+  const handleBackgroundReady = useCallback(() => {
+    setIsLoading(false);
+  }, []);
+  
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
@@ -52,7 +58,12 @@ export default function Home() {
 
       </Head>
 
-      <BackgroundAnimation />
+
+      {/* Loading Screen */}
+      <Loader isLoading={isLoading} />
+
+      <BackgroundAnimation onReady={handleBackgroundReady} />
+
       <Header />
 
       {/* Hero Title Section - Full Screen */}

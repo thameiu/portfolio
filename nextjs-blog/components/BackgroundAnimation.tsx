@@ -1,7 +1,12 @@
 "use client";
+import { init } from 'next/dist/compiled/webpack/webpack';
 import { useEffect } from 'react';
 
-const BackgroundAnimation = () => {
+interface BackgroundAnimationProps {
+  onReady?: () => void;
+}
+
+const BackgroundAnimation = ({ onReady }: BackgroundAnimationProps) => {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -386,7 +391,11 @@ const BackgroundAnimation = () => {
       }
 
       updateAndDrawShapes();
-
+      if (onReady) {
+        requestAnimationFrame(() => {
+          onReady();
+        });
+      }
       return () => {
         window.removeEventListener("resize", resizeCanvas);
         window.removeEventListener('scroll', handleScroll);
