@@ -93,3 +93,11 @@ b {
   font-style: normal;
   font-display: swap;
 }
+
+@font-face {
+  font-family: 'cedarville-cursive-regular';
+  src: url('./fonts/CedarvilleCursive-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
