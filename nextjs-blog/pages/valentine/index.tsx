@@ -122,7 +122,7 @@ export default function Valentine() {
           />
         }
           <h1 className="text-3xl font-bold text-red-600 mb-8 font-['cedarville-cursive-regular']">
-            Veux-tu être ma valentine ?
+            Chère Lexane, veux-tu être ma valentine ?
           </h1>
           <div className="flex gap-8 justify-center">
             <button 
