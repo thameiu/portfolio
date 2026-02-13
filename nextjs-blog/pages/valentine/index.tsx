@@ -23,7 +23,6 @@ export default function Valentine() {
 
   const moveNoButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     setClickCount(prev => prev + 1);
-    console.log(`No button clicked ${clickCount} times`);
     
     // Get the button's current position on screen
     const rect = e.currentTarget.getBoundingClientRect();
