@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import ProjectGrid from "../components/ProjectGrid";
 import Header from "../components/Header";
 import BackgroundAnimation from "../components/BackgroundAnimation";
+import Section from "../components/Section";
 import { FaLinkedin, FaPhoneAlt, FaFileDownload, FaEnvelope, FaGithub } from "react-icons/fa";
 import { SiCplusplus, SiNextdotjs, SiNestjs, SiReact, SiLeaflet, SiDocker, SiTypescript, SiPhp, SiLaravel, SiOpengl, SiCmake, SiTailwindcss, SiExpress, SiMysql, SiPython, SiJavascript, SiGit, SiPostgresql, SiMongodb, SiGitlab } from "react-icons/si";
 import { FaJs, FaNodeJs, FaJava } from "react-icons/fa";
@@ -13,6 +14,7 @@ import { IoPeople } from "react-icons/io5";
 import Image from 'next/image';
 import "animate.css";
 import Loader from "../components/Loader";
+const getAge = require('get-age')
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<string>("experience");
@@ -77,7 +79,7 @@ export default function Home() {
       </div>
 
       {/* Hero Section */}
-      <section id="about" className="flex flex-col justify-center items-center pt-[10vh] w-full box-border my-10 md:my-16">
+      <Section id="about" className="flex flex-col justify-center items-center pt-[10vh] w-full box-border my-10 md:my-16">
         <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
           À propos
         </h2>
@@ -93,24 +95,24 @@ export default function Home() {
               />
             </div>
             <div className="text-left w-full md:w-auto">
-              <section className="text-base md:text-lg leading-relaxed text-gray-700 space-y-4">
+              <section className="text-base md:text-2xl leading-relaxed text-gray-700 space-y-4">
                 <p>
-                  Je m'appelle <b>Mathieu HERNANDEZ</b>, j'ai 20 ans et je suis actuellement étudiant à <b>Epitech</b>, Marseille, dans le cadre d'un <b>Master of Science Technique</b>, avec une spécialisation en <b>Cybersécurité + Cloud</b>, après avoir réalisé un <b>BUT Informatique</b> à l'IUT d'Arles.
+                  Je m'appelle <b>Mathieu HERNANDEZ</b>, j'ai {getAge('2004-12-19')} ans et je suis actuellement étudiant à <b>Epitech</b>, Marseille, dans le cadre d'un <b>Master of Science Technique</b>, avec une spécialisation en <b>Cybersécurité + Cloud</b>, après avoir réalisé un <b>BUT Informatique</b> à l'IUT d'Arles.
                 </p>
                 <p>
-                  Grâce à ma formation et mes expériences professionnelles, j'ai acquis de solides compétences en <b>développement web</b>, en optimisation des performances, ainsi qu'en <b>gestion de projet</b> et qualité de développement.
+                  Grâce à ma formation et mes expériences professionnelles, j'ai développé de solides compétences en <b>développement web</b>, en conception d'architecture, en optimisation des performances, ainsi qu'en <b>gestion de projet</b> et qualité de développement.
                 </p>
-                <p>
+                {/* <p>
                   Ces expériences m'ont permis d'adopter des méthodologies <b>rigoureuses</b> et d'améliorer ma capacité à concevoir des solutions <b>efficaces</b> et bien <b>structurées</b>.
-                </p>
+                </p> */}
               </section>
             </div>
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* Experience Section */}
-      <section id="experience" className="my-10 md:my-16 w-full px-4">
+      <Section id="experience" className="mt-[10vh] md:my-16 w-full px-4">
         <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
           Parcours et Compétences
         </h2>
@@ -293,18 +295,18 @@ export default function Home() {
             )}
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* Projects Section */}
-      <section id="projects" className="mt-[10vh] w-full">
+      <Section id="projects" className="mt-[10vh] w-full">
         <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
           Projets
         </h2>
         <ProjectGrid />
-      </section>
+      </Section>
 
     {/* Contact Section */}
-      <section id="contact" className="mt-[15vh] mb-[20vh] w-full px-4">
+      <Section id="contact" className="mt-[15vh] mb-[20vh] w-full px-4">
         <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
           Contact
         </h2>
@@ -350,7 +352,7 @@ export default function Home() {
             <span className="text-sm md:text-lg leading-tight">Mon profil Github</span>
           </a>
         </div>
-      </section>
+      </Section>
 
       {/* Footer */}
       <footer className="bg-[#334A52] text-white text-center text-xs md:text-sm px-3 md:px-5 py-4 rounded-[50px]">
