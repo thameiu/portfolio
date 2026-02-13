@@ -53,11 +53,39 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
   useEffect(() => {
     if (isOpen || isFocused) {
+      // Lock scroll on both html and body
+      document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
+      
+      // Add custom scrollbar styles for modal
+      const style = document.createElement('style');
+      style.id = 'modal-scrollbar-style';
+      style.innerHTML = `
+        .modal-overlay::-webkit-scrollbar-track {
+          background: transparent;
+        }
+      `;
+      document.head.appendChild(style);
     } else {
-      document.body.style.overflow = "auto";
+      // Restore scroll
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+      
+      // Remove custom scrollbar styles
+      const style = document.getElementById('modal-scrollbar-style');
+      if (style) {
+        style.remove();
+      }
     }
-    return () => { document.body.style.overflow = "auto"; };
+    
+    return () => { 
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+      const style = document.getElementById('modal-scrollbar-style');
+      if (style) {
+        style.remove();
+      }
+    };
   }, [isOpen, isFocused]);
 
   // Update translate position when image changes
@@ -201,6 +229,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       {isFocused && screenshots.length > 0 && (
         <div
           className="fixed inset-0 bg-black/92 backdrop-blur-sm z-[2000] flex items-center justify-center animate-fade-in"
+          onClick={closeLightbox}
         >
           <div
             className="relative w-[90vw] h-[70vh] md:w-[85vw] md:h-[80vh] overflow-hidden"
@@ -246,8 +275,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                     alt={`Screenshot ${index + 1}`}
                     fill
                     className="object-contain saturate-125 pointer-events-none"
+                    quality={100}
                     priority={index === currentImageIndex}
-                    sizes="(max-width: 768px) 100vw, 800px"
+                    sizes="100vw"
                     unoptimized
                     draggable={false}
                   />
@@ -275,8 +305,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       {/* Modal */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/60 flex justify-center items-start z-[1000] overflow-y-auto py-5 md:py-10 px-4 animate-fade-in"
+          className="modal-overlay fixed inset-0 bg-black/60 flex justify-center items-start z-[1000] overflow-y-auto py-5 md:py-10 px-4 animate-fade-in"
           onClick={() => setIsOpen(false)}
+          style={{
+            scrollbarColor: 'rgba(140, 225, 254, 0.7) transparent'
+          }}
         >
           <div
             className="w-full max-w-4xl bg-gray-50/95 rounded-xl shadow-2xl relative flex flex-col p-6 md:p-10 animate-slide-in mb-12"
@@ -354,7 +387,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                           className="object-contain saturate-125 pointer-events-none"
                           quality={100}
                           priority={index === currentImageIndex}
-                          sizes="100vw"
+                          sizes="(max-width: 768px) 100vw, 800px"
                           unoptimized
                           draggable={false}
                         />

@@ -8,16 +8,35 @@ interface SectionProps {
 
 const Section: React.FC<SectionProps> = ({ id, children, className = '' }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    // Détecte si on est sur mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    // Si on est sur mobile, toujours visible (pas d'animations)
+    if (isMobile) {
+      setIsVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsVisible(entry.isIntersecting);
       },
       {
-        threshold: 0.25, // Augmenté de 0.15 à 0.25 pour détecter plus tard
-        rootMargin: '-150px 0px -100px 0px' // Marge négative en haut pour apparaître plus tard, et en bas pour disparaître plus tôt
+        threshold: 0.25,
+        rootMargin: '-150px 0px -100px 0px'
       }
     );
 
@@ -30,14 +49,16 @@ const Section: React.FC<SectionProps> = ({ id, children, className = '' }) => {
         observer.unobserve(sectionRef.current);
       }
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <section
       id={id}
       ref={sectionRef}
-      className={`${className} transition-opacity duration-700 ${
-        isVisible ? 'opacity-100' : 'opacity-0'
+      className={`${className} ${
+        isMobile 
+          ? '' 
+          : `transition-opacity duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`
       }`}
     >
       {children}
