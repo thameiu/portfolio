@@ -14,7 +14,6 @@ import { IoPeople } from "react-icons/io5";
 import Image from 'next/image';
 import "animate.css";
 import Loader from "../components/Loader";
-const getAge = require('get-age')
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<string>("experience");
@@ -97,7 +96,7 @@ export default function Home() {
             <div className="text-left w-full md:w-auto">
               <section className="text-base md:text-2xl leading-relaxed text-gray-700 space-y-4">
                 <p>
-                  Je m'appelle <b>Mathieu HERNANDEZ</b>, j'ai {getAge('2004-12-19')} ans et je suis actuellement étudiant à <b>Epitech</b>, Marseille, dans le cadre d'un <b>Master of Science Technique</b>, avec une spécialisation en <b>Cybersécurité + Cloud</b>, après avoir réalisé un <b>BUT Informatique</b> à l'IUT d'Arles.
+                  Je m'appelle <b>Mathieu HERNANDEZ</b>, j'ai 21 ans et je suis actuellement étudiant à <b>Epitech</b>, Marseille, dans le cadre d'un <b>Master of Science Technique</b>, avec une spécialisation en <b>Cybersécurité + Cloud</b>, après avoir réalisé un <b>BUT Informatique</b> à l'IUT d'Arles.
                 </p>
                 <p>
                   Grâce à ma formation et mes expériences professionnelles, j'ai développé de solides compétences en <b>développement web</b>, en conception d'architecture, en optimisation des performances, ainsi qu'en <b>gestion de projet</b> et qualité de développement.
