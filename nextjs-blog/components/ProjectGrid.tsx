@@ -189,7 +189,7 @@ const ProjectGrid = () => {
       {/* --- FINDER --- */}
       <ProjectCard
         title="Finder"
-        description="Plateforme de services entre particuliers"
+        description="Plateforme de demande de services de proximité entre particuliers"
         previewImage="/finder/finder-preview.png"
         width="360px"
         height="280px"
