@@ -79,7 +79,7 @@ export default function Home() {
 
       {/* Hero Section */}
       <Section id="about" className="flex flex-col justify-center items-center pt-[10vh] w-full box-border my-10 md:my-16">
-        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
+        <h2 className="uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
           À propos
         </h2>
         <div className="w-[90vw] md:w-[80vw] bg-gray-50/95 rounded-3xl flex flex-col items-center p-5 md:p-10 shadow-2xl justify-center box-border">
@@ -112,7 +112,7 @@ export default function Home() {
 
       {/* Experience Section */}
       <Section id="experience" className="mt-[10vh] md:my-16 w-full px-4">
-        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
+        <h2 className="uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
           Parcours et Compétences
         </h2>
         <div className="w-full max-w-[90vw] md:max-w-4xl mx-auto bg-gray-50/95 rounded-3xl shadow-2xl p-5 md:p-10">
@@ -298,7 +298,7 @@ export default function Home() {
 
       {/* Projects Section */}
       <Section id="projects" className="mt-[10vh] w-full">
-        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
+        <h2 className="uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
           Projets
         </h2>
         <ProjectGrid />
@@ -306,7 +306,7 @@ export default function Home() {
 
     {/* Contact Section */}
       <Section id="contact" className="mt-[15vh] mb-[20vh] w-full px-4">
-        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
+        <h2 className="uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
           Contact
         </h2>
         <div className="w-full max-w-[95vw] md:max-w-4xl mx-auto rounded-2xl text-left bg-gray-50/95 shadow-2xl p-5 md:p-10 flex flex-col items-start gap-5 md:gap-6">
