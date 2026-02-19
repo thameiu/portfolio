@@ -364,7 +364,7 @@ const ExperienceSection = () => {
               <div className="bg-transparent hover:bg-white/30 rounded-2xl p-4 md:p-5 backdrop-blur-sm border border-white/50 transition-all duration-300">
                 <div className="flex items-center gap-3 mb-4">
                   <FaDatabase className="text-[#334A52] text-lg md:text-xl" />
-                  <h4 className="text-base md:text-lg font-bold text-[#334A52]">Database</h4>
+                  <h4 className="text-base md:text-lg font-bold text-[#334A52]">Bases de données</h4>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <SkillBadge><SiPostgresql /> PostgreSQL</SkillBadge>
@@ -377,7 +377,7 @@ const ExperienceSection = () => {
               <div className="bg-transparent hover:bg-white/30 rounded-2xl p-4 md:p-5 backdrop-blur-sm border border-white/50 transition-all duration-300">
                 <div className="flex items-center gap-3 mb-4">
                   <FaTools className="text-[#334A52] text-lg md:text-xl" />
-                  <h4 className="text-base md:text-lg font-bold text-[#334A52]">Tools</h4>
+                  <h4 className="text-base md:text-lg font-bold text-[#334A52]">Outils</h4>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <SkillBadge><SiDocker /> Docker</SkillBadge>
@@ -409,7 +409,7 @@ const ExperienceSection = () => {
               <div className="bg-transparent hover:bg-white/30 rounded-2xl p-4 md:p-5 backdrop-blur-sm border border-white/50 transition-all duration-300">
                 <div className="flex items-center gap-3 mb-4">
                   <FaLaptopCode className="text-[#334A52] text-lg md:text-xl" />
-                  <h4 className="text-base md:text-lg font-bold text-[#334A52]">Desktop</h4>
+                  <h4 className="text-base md:text-lg font-bold text-[#334A52]">Bureau</h4>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <SkillBadge><SiOpengl /> OpenGL</SkillBadge>
