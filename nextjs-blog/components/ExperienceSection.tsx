@@ -126,8 +126,8 @@ const ExperienceSection = () => {
                 {/* Timeline Dot - desktop only */}
                 <div className="hidden md:block absolute left-[48px] top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                   <div className="relative flex items-center justify-center">
-                    <div className="absolute w-5 h-5 bg-gray-50 rounded-full transition-all duration-300 group-hover:w-7 group-hover:h-7 shadow-md" />
-                    <div className="absolute w-3 h-3 bg-[#59C3F0] rounded-full transition-all duration-300 group-hover:w-5 group-hover:h-5" />
+                    <div className="absolute w-6 h-6 bg-gray-50 rounded-full shadow-md transition-transform duration-300 group-hover:scale-125" />
+                    <div className="absolute w-4 h-4 bg-[#59C3F0] rounded-full transition-transform duration-300 group-hover:scale-150" />
                   </div>
                 </div>
                 
@@ -169,8 +169,8 @@ const ExperienceSection = () => {
               <div className="group relative pl-0 md:pl-12 mb-8 md:mb-10">
                 <div className="hidden md:block absolute left-[48px] top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                   <div className="relative flex items-center justify-center">
-                    <div className="absolute w-5 h-5 bg-gray-50 rounded-full transition-all duration-300 group-hover:w-7 group-hover:h-7 shadow-md" />
-                    <div className="absolute w-3 h-3 bg-[#59C3F0] rounded-full transition-all duration-300 group-hover:w-5 group-hover:h-5" />
+                    <div className="absolute w-6 h-6 bg-gray-50 rounded-full shadow-md transition-transform duration-300 group-hover:scale-125" />
+                    <div className="absolute w-4 h-4 bg-[#59C3F0] rounded-full transition-transform duration-300 group-hover:scale-150" />
                   </div>
                 </div>
                 
@@ -215,8 +215,8 @@ const ExperienceSection = () => {
               <div className="group relative pl-0 md:pl-12">
                 <div className="hidden md:block absolute left-[48px] top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                   <div className="relative flex items-center justify-center">
-                    <div className="absolute w-5 h-5 bg-gray-50 rounded-full transition-all duration-300 group-hover:w-7 group-hover:h-7 shadow-md" />
-                    <div className="absolute w-3 h-3 bg-[#59C3F0] rounded-full transition-all duration-300 group-hover:w-5 group-hover:h-5" />
+                    <div className="absolute w-6 h-6 bg-gray-50 rounded-full shadow-md transition-transform duration-300 group-hover:scale-125" />
+                    <div className="absolute w-4 h-4 bg-[#59C3F0] rounded-full transition-transform duration-300 group-hover:scale-150" />
                   </div>
                 </div>
                 
@@ -266,8 +266,8 @@ const ExperienceSection = () => {
               <div className="group relative pl-0 md:pl-12 mb-8 md:mb-10">
                 <div className="hidden md:block absolute left-[48px] top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                   <div className="relative flex items-center justify-center">
-                    <div className="absolute w-5 h-5 bg-gray-50 rounded-full transition-all duration-300 group-hover:w-7 group-hover:h-7 shadow-md" />
-                    <div className="absolute w-3 h-3 bg-[#59C3F0] rounded-full transition-all duration-300 group-hover:w-5 group-hover:h-5" />
+                    <div className="absolute w-6 h-6 bg-gray-50 rounded-full shadow-md transition-transform duration-300 group-hover:scale-125" />
+                    <div className="absolute w-4 h-4 bg-[#59C3F0] rounded-full transition-transform duration-300 group-hover:scale-150" />
                   </div>
                 </div>
                 
@@ -294,8 +294,8 @@ const ExperienceSection = () => {
               <div className="group relative pl-0 md:pl-12">
                 <div className="hidden md:block absolute left-[48px] top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                   <div className="relative flex items-center justify-center">
-                    <div className="absolute w-5 h-5 bg-gray-50 rounded-full transition-all duration-300 group-hover:w-7 group-hover:h-7 shadow-md" />
-                    <div className="absolute w-3 h-3 bg-[#59C3F0] rounded-full transition-all duration-300 group-hover:w-5 group-hover:h-5" />
+                    <div className="absolute w-6 h-6 bg-gray-50 rounded-full shadow-md transition-transform duration-300 group-hover:scale-125" />
+                    <div className="absolute w-4 h-4 bg-[#59C3F0] rounded-full transition-transform duration-300 group-hover:scale-150" />
                   </div>
                 </div>
                 
