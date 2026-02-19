@@ -3,6 +3,7 @@ import { SiNextdotjs, SiCplusplus, SiNestjs, SiReact, SiLeaflet, SiDocker, SiTyp
 import { FaJs, FaNodeJs, FaJava } from "react-icons/fa";
 import { DiNetbeans } from "react-icons/di";
 
+// ProjectGrid component - contains all projects shown on the
 const ProjectGrid = () => {
   const TechBadge = ({ children }: { children: React.ReactNode }) => (
     <div className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-[var(--color-primary)] border border-primary text-white rounded-full text-xs md:text-sm transition-all hover:bg-gray-100 hover:text-[var(--color-primary)] whitespace-nowrap">
