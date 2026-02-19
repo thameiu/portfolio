@@ -237,7 +237,7 @@ const ExperienceSection = () => {
                   </div>
                   
                   <p className="text-sm md:text-base text-gray-700 leading-relaxed mb-4">
-                    Participation au développement de Flotto, solution web de gestion de flotte automobile. <br/>
+                    Participation au développement de <b>Flotto</b>, solution web de gestion de flotte automobile. <br/>
                     Réalisation de nouvelles fonctionnalités sur le Frontend et le Backend, amélioration de l'accessibilité, correction de bugs. <br/>
                   </p>
 
