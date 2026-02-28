@@ -341,7 +341,7 @@ const ExperienceSection = () => {
                   <SkillBadge><SiAngular /> Angular</SkillBadge>
                   <SkillBadge><SiTailwindcss /> Tailwind</SkillBadge>
                   <SkillBadge><SiLeaflet /> Leaflet</SkillBadge>
-                  <SkillBadge><SiDotnet /> Kendo UI</SkillBadge>
+                  <SkillBadge><SiDotnet /> Kendo UI MVC</SkillBadge>
                 </div>
               </div>
 
@@ -356,7 +356,7 @@ const ExperienceSection = () => {
                   <SkillBadge><SiNestjs /> NestJS</SkillBadge>
                   <SkillBadge><SiExpress /> Express</SkillBadge>
                   <SkillBadge><SiLaravel /> Laravel</SkillBadge>
-                  <SkillBadge><SiDotnet /> ASP.NET</SkillBadge>
+                  <SkillBadge><SiDotnet /> ASP.NET MVC</SkillBadge>
                 </div>
               </div>
 
