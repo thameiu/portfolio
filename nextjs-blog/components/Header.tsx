@@ -7,13 +7,11 @@ const Header = () => {
   const [hovering, setHovering] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
 
-  // Show header after 5 seconds or on user interaction
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (!hasInteracted) {
-        setIsVisible(true);
-      }
+      if (!hasInteracted) setIsVisible(true);
     }, 5000);
 
     const handleInteraction = () => {
@@ -23,7 +21,6 @@ const Header = () => {
       }
     };
 
-    // Listen for user interactions
     window.addEventListener('scroll', handleInteraction);
     window.addEventListener('mousemove', handleInteraction);
     window.addEventListener('keydown', handleInteraction);
@@ -49,6 +46,16 @@ const Header = () => {
         setIsVisible(false);
       }
       setLastScrollY(scrollY);
+
+      // Track active section
+      const sections = ["about", "experience", "projects", "contact"];
+      for (const id of [...sections].reverse()) {
+        const el = document.getElementById(id);
+        if (el && scrollY >= el.offsetTop - 100) {
+          setActiveSection(id);
+          break;
+        }
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -59,7 +66,6 @@ const Header = () => {
     const handleMouseMove = (event: MouseEvent) => {
       const modals = document.querySelectorAll('[class*="z-[1000]"], [class*="z-[2000]"]');
       const isModalOpen = modals.length > 0;
-
       if (isModalOpen) {
         setIsVisible(false);
       } else if (event.clientY < 20) {
@@ -74,18 +80,58 @@ const Header = () => {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      window.scrollTo({
-        top: element.offsetTop,
-        behavior: "smooth",
-      });
+      window.scrollTo({ top: element.offsetTop-80, behavior: "smooth" });
     }
     setMenuVisible(false);
   };
 
-  const toggleMenu = () => {
-    setMenuVisible((prev) => !prev);
-  };
+  const toggleMenu = () => setMenuVisible((prev) => !prev);
 
+  const navItems = [
+    { id: "about", label: "À propos" },
+    { id: "experience", label: "Formation" },
+  ];
+  const navItemsRight = [
+    { id: "projects", label: "Projets" },
+    { id: "contact", label: "Contact" },
+  ];
+const NavItem = ({ id, label, mobile = false }: { id: string; label: string; mobile?: boolean }) => {
+    const isActive = activeSection === id;
+    return (
+      <li className={mobile ? "text-center" : "flex-1 text-center flex items-center justify-center"}>
+        <span
+          onClick={() => scrollToSection(id)}
+          className={`
+            relative cursor-pointer select-none
+            ${mobile
+              ? "block text-2xl font-bold px-6 py-2 rounded-full"
+              : "text-lg font-semibold px-4 py-1.5 rounded-full"
+            }
+          `}
+        >
+          {/* Background pill — always in DOM, fades via opacity */}
+          <span
+            aria-hidden="true"
+            className="absolute inset-0 rounded-full bg-[var(--color-primary)]"
+            style={{
+              opacity: isActive ? 1 : 0,
+              transition: 'opacity 0.4s ease-in-out',
+            }}
+          />
+          {/* Text — always in DOM, color transitions via style */}
+          <span
+            className="relative z-10"
+            style={{
+              color: isActive ? 'white' : 'var(--color-primary)',
+              transition: 'color 0.4s ease-in-out',
+            }}
+          >
+            {label}
+          </span>
+        </span>
+      </li>
+    );
+  };
   return (
     <>
       {/* Desktop Header */}
@@ -96,122 +142,52 @@ const Header = () => {
         onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}
       >
-        <nav className="w-full flex items-center justify-center">
+        <nav className="w-full flex items-center justify-center px-4">
           <ul className="list-none flex flex-row flex-1 justify-evenly items-center p-0 m-0">
+            {navItems.map(item => <NavItem key={item.id} {...item} />)}
+
             <li className="flex-1 text-center flex items-center justify-center">
-              <a
-                onClick={() => scrollToSection("about")}
-                className="group no-underline text-lg text-[var(--color-primary)] transition-colors cursor-pointer relative"
-              >
-                À propos
-                <span className="absolute left-0 bottom-[-3px] w-full h-[2px] bg-[var(--color-primary)] rounded-[15px] scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
-              </a>
-            </li>
-            <li className="flex-1 text-center flex items-center justify-center">
-              <a
-                onClick={() => scrollToSection("experience")}
-                className="group no-underline text-lg text-[var(--color-primary)] transition-colors cursor-pointer relative"
-              >
-                Formation
-                <span className="absolute left-0 bottom-[-3px] w-full h-[2px] bg-[var(--color-primary)] rounded-[15px] scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
-              </a>
-            </li>
-            <li className="flex-1 text-center flex items-center justify-center">
-              <a onClick={() => scrollToSection("about")} className="cursor-pointer">
+              <span onClick={() => scrollToSection("about")} className="cursor-pointer">
                 <Image
                   src="/portfolio-logo.png"
-                  width={40}
-                  height={40}
+                  width={36}
+                  height={36}
                   alt="Logo Initiales de Mathieu Hernandez"
                   priority
-                  className="w-10 h-10 object-contain"
+                  className="w-9 h-9 object-contain"
                 />
-              </a>
+              </span>
             </li>
-            <li className="flex-1 text-center flex items-center justify-center">
-              <a
-                onClick={() => scrollToSection("projects")}
-                className="group no-underline text-lg text-[var(--color-primary)] transition-colors cursor-pointer relative"
-              >
-                Projets
-                <span className="absolute left-0 bottom-[-3px] w-full h-[2px] bg-[var(--color-primary)] rounded-[15px] scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
-              </a>
-            </li>
-            <li className="flex-1 text-center flex items-center justify-center">
-              <a
-                onClick={() => scrollToSection("contact")}
-                className="group no-underline text-lg text-[var(--color-primary)] transition-colors cursor-pointer relative"
-              >
-                Contact
-                <span className="absolute left-0 bottom-[-3px] w-full h-[2px] bg-[var(--color-primary)] rounded-[15px] scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
-              </a>
-            </li>
+
+            {navItemsRight.map(item => <NavItem key={item.id} {...item} />)}
           </ul>
         </nav>
       </div>
 
-      {/* Mobile Menu Button - Bigger Icon */}
+      {/* Mobile Menu Button */}
       <button
         className="md:hidden fixed top-4 left-4 z-[101] w-[60px] h-[60px] bg-white/90 rounded-full shadow-lg border-none cursor-pointer flex items-center justify-center"
         onClick={toggleMenu}
         aria-label="Toggle menu"
       >
-        <Image
-          src="/portfolio-logo.png"
-          width={40}
-          height={40}
-          alt="logo"
-          priority
-          className="mt-1"
-        />
+        <Image src="/portfolio-logo.png" width={40} height={40} alt="logo" priority className="mt-1" />
       </button>
 
       {/* Mobile Menu Overlay */}
       {menuVisible && (
-        <div
-          className="md:hidden fixed inset-0 bg-white z-[100] flex flex-col items-center justify-center animate-fade-in"
-        >
+        <div className="md:hidden fixed inset-0 bg-white z-[100] flex flex-col items-center justify-center animate-fade-in">
           <button
-            className="absolute top-4 right-4 text-3xl text-[var(--color-primary)] cursor-pointer"
+            className="absolute top-4 right-4 text-3xl text-[var(--color-primary)] font-bold cursor-pointer"
             onClick={toggleMenu}
             aria-label="Close menu"
           >
             ✖
           </button>
           <nav className="w-full flex items-center justify-center">
-            <ul className="list-none flex flex-col items-center gap-8 p-0 m-0">
-              <li className="text-center">
-                <a
-                  onClick={() => scrollToSection("about")}
-                  className="no-underline text-2xl text-[var(--color-primary)] font-bold cursor-pointer"
-                >
-                  À propos
-                </a>
-              </li>
-              <li className="text-center">
-                <a
-                  onClick={() => scrollToSection("experience")}
-                  className="no-underline text-2xl text-[var(--color-primary)] font-bold cursor-pointer"
-                >
-                  Formation
-                </a>
-              </li>
-              <li className="text-center">
-                <a
-                  onClick={() => scrollToSection("projects")}
-                  className="no-underline text-2xl text-[var(--color-primary)] font-bold cursor-pointer"
-                >
-                  Projets
-                </a>
-              </li>
-              <li className="text-center">
-                <a
-                  onClick={() => scrollToSection("contact")}
-                  className="no-underline text-2xl text-[var(--color-primary)] font-bold cursor-pointer"
-                >
-                  Contact
-                </a>
-              </li>
+            <ul className="list-none flex flex-col items-center gap-5 p-0 m-0">
+              {[...navItems, ...navItemsRight].map(item => (
+                <NavItem key={item.id} {...item} mobile />
+              ))}
             </ul>
           </nav>
         </div>
