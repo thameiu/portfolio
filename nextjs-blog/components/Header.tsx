@@ -80,7 +80,8 @@ const Header = () => {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      window.scrollTo({ top: element.offsetTop-80, behavior: "smooth" });
+      const offset = window.innerWidth >= 768 ? -80 : -30;
+      window.scrollTo({ top: element.offsetTop + offset, behavior: "smooth" });
     }
     setMenuVisible(false);
   };
