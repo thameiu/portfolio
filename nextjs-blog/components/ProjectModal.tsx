@@ -260,8 +260,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                 key={index}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
                     index === currentImageIndex
-                    ? 'w-8 bg-[#8DE1FD]'
-                    : 'w-2 bg-[#8DE1FD]/40'
+                    ? 'w-8 bg-[var(--color-accent)]'
+                    : 'w-2 bg-[var(--color-accent)]/40'
                 }`}
                 />
             ))}

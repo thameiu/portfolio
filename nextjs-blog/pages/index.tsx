@@ -24,10 +24,6 @@ export default function Home() {
   const handleBackgroundReady = useCallback(() => {
     setIsLoading(false);
   }, []);
-  
-  const handleTabClick = (tab: string) => {
-    setActiveTab(tab);
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,12 +40,6 @@ export default function Home() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const SkillBadge = ({ children }: { children: React.ReactNode }) => (
-    <div className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-[#334A52] border border-[#334A52] text-white rounded-full text-xs md:text-sm transition-all hover:bg-gray-100 hover:text-[#334A52] whitespace-nowrap">
-      {children}
-    </div>
-  );
 
   return (
     <div className="min-h-screen p-2 flex flex-col justify-start items-center font-['sofia-pro-regular']">
@@ -74,7 +64,7 @@ export default function Home() {
           Portfolio de
         </p>
         <h1 className="text-[12vw] font-bold leading-[0.85] text-white/95 m-0 font-['archivo-black'] w-full tracking-tighter">
-          MATHIEU<br /><span className="text-[#8DE1FD]">HERNANDEZ</span>
+          MATHIEU<br /><span className="text-[var(--color-accent)]">HERNANDEZ</span>
         </h1>
       </div>
 
@@ -135,14 +125,14 @@ export default function Home() {
         <div className="w-full max-w-[95vw] md:max-w-4xl mx-auto rounded-2xl text-left bg-gray-50/95 shadow-2xl p-5 md:p-10 flex flex-col items-start gap-5 md:gap-6">
           <a 
             href="mailto:hernandez.mathieu19@gmail.com" 
-            className="flex items-center gap-3 md:gap-4 text-[#334A52] no-underline transition-colors hover:text-[#8DE1FD] w-full group"
+            className="flex items-center gap-3 md:gap-4 text-[var(--color-primary)] no-underline transition-colors hover:text-[var(--color-accent)] w-full group"
           >
             <FaEnvelope className="text-2xl md:text-4xl flex-shrink-0 transition-transform group-hover:scale-110" />
             <span className="text-sm md:text-lg break-all leading-tight">E-mail : hernandez.mathieu19@gmail.com</span>
           </a>
           <a 
             href="tel:+33662011741" 
-            className="flex items-center gap-3 md:gap-4 text-[#334A52] no-underline transition-colors hover:text-[#8DE1FD] w-full group"
+            className="flex items-center gap-3 md:gap-4 text-[var(--color-primary)] no-underline transition-colors hover:text-[var(--color-accent)] w-full group"
           >
             <FaPhoneAlt className="text-2xl md:text-4xl flex-shrink-0 transition-transform group-hover:scale-110" />
             <span className="text-sm md:text-lg leading-tight">Téléphone : 06 62 01 17 41</span>
@@ -150,7 +140,7 @@ export default function Home() {
           <a 
             href="/CV_HERNANDEZ_MATHIEU_2025.pdf" 
             download 
-            className="flex items-center gap-3 md:gap-4 text-[#334A52] no-underline transition-colors hover:text-[#8DE1FD] w-full group"
+            className="flex items-center gap-3 md:gap-4 text-[var(--color-primary)] no-underline transition-colors hover:text-[var(--color-accent)] w-full group"
           >
             <FaFileDownload className="text-2xl md:text-4xl flex-shrink-0 transition-transform group-hover:scale-110" />
             <span className="text-sm md:text-lg leading-tight">Télécharger mon CV</span>
@@ -159,7 +149,7 @@ export default function Home() {
             href="https://www.linkedin.com/in/mathieu-hernandez-306914264/" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="flex items-center gap-3 md:gap-4 text-[#334A52] no-underline transition-colors hover:text-[#8DE1FD] w-full group"
+            className="flex items-center gap-3 md:gap-4 text-[var(--color-primary)] no-underline transition-colors hover:text-[var(--color-accent)] w-full group"
           >
             <FaLinkedin className="text-2xl md:text-4xl flex-shrink-0 transition-transform group-hover:scale-110" />
             <span className="text-sm md:text-lg leading-tight">Mon profil LinkedIn</span>
@@ -168,7 +158,7 @@ export default function Home() {
             href="https://github.com/thameiu" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="flex items-center gap-3 md:gap-4 text-[#334A52] no-underline transition-colors hover:text-[#8DE1FD] w-full group"
+            className="flex items-center gap-3 md:gap-4 text-[var(--color-primary)] no-underline transition-colors hover:text-[var(--color-accent)] w-full group"
           >
             <FaGithub className="text-2xl md:text-4xl flex-shrink-0 transition-transform group-hover:scale-110" />
             <span className="text-sm md:text-lg leading-tight">Mon profil Github</span>
@@ -177,7 +167,7 @@ export default function Home() {
       </Section>
 
       {/* Footer */}
-      <footer className="bg-[#334A52] text-white text-center text-xs md:text-sm px-3 md:px-5 py-4 rounded-[50px]">
+      <footer className="bg-[var(--color-primary)] text-white text-center text-xs md:text-sm px-3 md:px-5 py-4 rounded-[50px]">
         <p>&copy; {new Date().getFullYear()} Mathieu Hernandez. Tous droits réservés.</p>
       </footer>
     </div>

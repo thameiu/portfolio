@@ -35,6 +35,11 @@ body {
 
 ::-webkit-scrollbar-button { display: none; }
 
+::selection {
+  background: rgb(139, 225, 255,0.8);
+  color: #334A52;
+}
+
 /* For Firefox */
 * {
   scrollbar-width: thin;

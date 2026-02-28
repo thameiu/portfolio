@@ -101,19 +101,19 @@ const Header = () => {
             <li className="flex-1 text-center flex items-center justify-center">
               <a
                 onClick={() => scrollToSection("about")}
-                className="group no-underline text-lg text-[#334A52] transition-colors cursor-pointer relative"
+                className="group no-underline text-lg text-[var(--color-primary)] transition-colors cursor-pointer relative"
               >
                 À propos
-                <span className="absolute left-0 bottom-[-3px] w-full h-[2px] bg-[#334A52] rounded-[15px] scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
+                <span className="absolute left-0 bottom-[-3px] w-full h-[2px] bg-[var(--color-primary)] rounded-[15px] scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
               </a>
             </li>
             <li className="flex-1 text-center flex items-center justify-center">
               <a
                 onClick={() => scrollToSection("experience")}
-                className="group no-underline text-lg text-[#334A52] transition-colors cursor-pointer relative"
+                className="group no-underline text-lg text-[var(--color-primary)] transition-colors cursor-pointer relative"
               >
                 Formation
-                <span className="absolute left-0 bottom-[-3px] w-full h-[2px] bg-[#334A52] rounded-[15px] scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
+                <span className="absolute left-0 bottom-[-3px] w-full h-[2px] bg-[var(--color-primary)] rounded-[15px] scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
               </a>
             </li>
             <li className="flex-1 text-center flex items-center justify-center">
@@ -131,19 +131,19 @@ const Header = () => {
             <li className="flex-1 text-center flex items-center justify-center">
               <a
                 onClick={() => scrollToSection("projects")}
-                className="group no-underline text-lg text-[#334A52] transition-colors cursor-pointer relative"
+                className="group no-underline text-lg text-[var(--color-primary)] transition-colors cursor-pointer relative"
               >
                 Projets
-                <span className="absolute left-0 bottom-[-3px] w-full h-[2px] bg-[#334A52] rounded-[15px] scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
+                <span className="absolute left-0 bottom-[-3px] w-full h-[2px] bg-[var(--color-primary)] rounded-[15px] scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
               </a>
             </li>
             <li className="flex-1 text-center flex items-center justify-center">
               <a
                 onClick={() => scrollToSection("contact")}
-                className="group no-underline text-lg text-[#334A52] transition-colors cursor-pointer relative"
+                className="group no-underline text-lg text-[var(--color-primary)] transition-colors cursor-pointer relative"
               >
                 Contact
-                <span className="absolute left-0 bottom-[-3px] w-full h-[2px] bg-[#334A52] rounded-[15px] scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
+                <span className="absolute left-0 bottom-[-3px] w-full h-[2px] bg-[var(--color-primary)] rounded-[15px] scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
               </a>
             </li>
           </ul>
@@ -172,7 +172,7 @@ const Header = () => {
           className="md:hidden fixed inset-0 bg-white z-[100] flex flex-col items-center justify-center animate-fade-in"
         >
           <button
-            className="absolute top-4 right-4 text-3xl text-[#334A52] cursor-pointer"
+            className="absolute top-4 right-4 text-3xl text-[var(--color-primary)] cursor-pointer"
             onClick={toggleMenu}
             aria-label="Close menu"
           >
@@ -183,7 +183,7 @@ const Header = () => {
               <li className="text-center">
                 <a
                   onClick={() => scrollToSection("about")}
-                  className="no-underline text-2xl text-[#334A52] font-bold cursor-pointer"
+                  className="no-underline text-2xl text-[var(--color-primary)] font-bold cursor-pointer"
                 >
                   À propos
                 </a>
@@ -191,7 +191,7 @@ const Header = () => {
               <li className="text-center">
                 <a
                   onClick={() => scrollToSection("experience")}
-                  className="no-underline text-2xl text-[#334A52] font-bold cursor-pointer"
+                  className="no-underline text-2xl text-[var(--color-primary)] font-bold cursor-pointer"
                 >
                   Formation
                 </a>
@@ -199,7 +199,7 @@ const Header = () => {
               <li className="text-center">
                 <a
                   onClick={() => scrollToSection("projects")}
-                  className="no-underline text-2xl text-[#334A52] font-bold cursor-pointer"
+                  className="no-underline text-2xl text-[var(--color-primary)] font-bold cursor-pointer"
                 >
                   Projets
                 </a>
@@ -207,7 +207,7 @@ const Header = () => {
               <li className="text-center">
                 <a
                   onClick={() => scrollToSection("contact")}
-                  className="no-underline text-2xl text-[#334A52] font-bold cursor-pointer"
+                  className="no-underline text-2xl text-[var(--color-primary)] font-bold cursor-pointer"
                 >
                   Contact
                 </a>

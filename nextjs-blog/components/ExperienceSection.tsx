@@ -56,19 +56,19 @@ const ExperienceSection = () => {
   };
 
   const TechBadge = ({ children }: { children: React.ReactNode }) => (
-    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#334A52] border border-[#334A52] text-white rounded-full text-xs transition-all hover:bg-gray-100 hover:text-[#334A52] whitespace-nowrap">
+    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[var(--color-primary)] border border-[var(--color-primary)] text-white rounded-full text-xs transition-all hover:bg-gray-100 hover:text-[var(--color-primary)] whitespace-nowrap">
       {children}
     </div>
   );
 
   const SkillBadge = ({ children }: { children: React.ReactNode }) => (
-    <div className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-[#334A52] border border-[#334A52] text-white rounded-full text-xs md:text-sm transition-all hover:bg-gray-100 hover:text-[#334A52] whitespace-nowrap">
+    <div className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-[var(--color-primary)] border border-[var(--color-primary)] text-white rounded-full text-xs md:text-sm transition-all hover:bg-gray-100 hover:text-[var(--color-primary)] whitespace-nowrap">
       {children}
     </div>
   );
 
   const JobTypeBadge = ({ children }: { children: React.ReactNode }) => (
-    <div className="inline-flex items-center px-3 py-1 bg-[#59C3F0] text-white rounded-full text-xs font-medium whitespace-nowrap">
+    <div className="inline-flex items-center px-3 py-1 bg-[var(--color-secondary)] text-white rounded-full text-xs font-medium whitespace-nowrap">
       {children}
     </div>
   );
@@ -79,30 +79,30 @@ const ExperienceSection = () => {
       <div className="flex flex-row flex-wrap justify-center gap-2 md:gap-3 mb-5 md:mb-8">
         <button
           onClick={() => handleTabChange("experience")}
-          className={`min-w-[28%] md:min-w-0 md:w-auto px-3 py-2 md:px-5 md:py-2.5 border-2 border-[#334A52] rounded-[25px] cursor-pointer text-sm md:text-base transition-all duration-300 font-['sofia-pro-regular'] ${
+          className={`min-w-[28%] md:min-w-0 md:w-auto px-3 py-2 md:px-5 md:py-2.5 border-2 border-[var(--color-primary)] rounded-[25px] cursor-pointer text-sm md:text-base transition-all duration-300 font-['sofia-pro-regular'] ${
             activeTab === "experience"
-              ? "bg-[#334A52] text-white"
-              : "bg-transparent text-[#334A52] hover:bg-gray-100"
+              ? "bg-[var(--color-primary)] text-white"
+              : "bg-transparent text-[var(--color-primary)] hover:bg-gray-100"
           }`}
         >
           Expériences
         </button>
         <button
           onClick={() => handleTabChange("studies")}
-          className={`min-w-[28%] md:min-w-0 md:w-auto px-3 py-2 md:px-5 md:py-2.5 border-2 border-[#334A52] rounded-[25px] cursor-pointer text-sm md:text-base transition-all duration-300 font-['sofia-pro-regular'] ${
+          className={`min-w-[28%] md:min-w-0 md:w-auto px-3 py-2 md:px-5 md:py-2.5 border-2 border-[var(--color-primary)] rounded-[25px] cursor-pointer text-sm md:text-base transition-all duration-300 font-['sofia-pro-regular'] ${
             activeTab === "studies"
-              ? "bg-[#334A52] text-white"
-              : "bg-transparent text-[#334A52] hover:bg-gray-100"
+              ? "bg-[var(--color-primary)] text-white"
+              : "bg-transparent text-[var(--color-primary)] hover:bg-gray-100"
           }`}
         >
           Formation
         </button>
         <button
           onClick={() => handleTabChange("skills")}
-          className={`min-w-[28%] md:min-w-0 md:w-auto px-3 py-2 md:px-5 md:py-2.5 border-2 border-[#334A52] rounded-[25px] cursor-pointer text-sm md:text-base transition-all duration-300 font-['sofia-pro-regular'] ${
+          className={`min-w-[28%] md:min-w-0 md:w-auto px-3 py-2 md:px-5 md:py-2.5 border-2 border-[var(--color-primary)] rounded-[25px] cursor-pointer text-sm md:text-base transition-all duration-300 font-['sofia-pro-regular'] ${
             activeTab === "skills"
-              ? "bg-[#334A52] text-white"
-              : "bg-transparent text-[#334A52] hover:bg-gray-100"
+              ? "bg-[var(--color-primary)] text-white"
+              : "bg-transparent text-[var(--color-primary)] hover:bg-gray-100"
           }`}
         >
           Compétences
@@ -127,7 +127,7 @@ const ExperienceSection = () => {
                 <div className="hidden md:block absolute left-[48px] top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                   <div className="relative flex items-center justify-center">
                     <div className="absolute w-6 h-6 bg-gray-50 rounded-full shadow-md transition-transform duration-300 group-hover:scale-125" />
-                    <div className="absolute w-4 h-4 bg-[#59C3F0] rounded-full transition-transform duration-300 group-hover:scale-150" />
+                    <div className="absolute w-4 h-4 bg-[var(--color-secondary)] rounded-full transition-transform duration-300 group-hover:scale-150" />
                   </div>
                 </div>
                 
@@ -139,7 +139,7 @@ const ExperienceSection = () => {
                       </p>
                       <JobTypeBadge>Alternance</JobTypeBadge>
                     </div>
-                    <h3 className="text-lg md:text-2xl font-bold text-[#334A52]">
+                    <h3 className="text-lg md:text-2xl font-bold text-[var(--color-primary)]">
                       Analyste Développeur
                     </h3>
                     <p className="text-base md:text-lg text-gray-600">
@@ -170,7 +170,7 @@ const ExperienceSection = () => {
                 <div className="hidden md:block absolute left-[48px] top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                   <div className="relative flex items-center justify-center">
                     <div className="absolute w-6 h-6 bg-gray-50 rounded-full shadow-md transition-transform duration-300 group-hover:scale-125" />
-                    <div className="absolute w-4 h-4 bg-[#59C3F0] rounded-full transition-transform duration-300 group-hover:scale-150" />
+                    <div className="absolute w-4 h-4 bg-[var(--color-secondary)] rounded-full transition-transform duration-300 group-hover:scale-150" />
                   </div>
                 </div>
                 
@@ -182,7 +182,7 @@ const ExperienceSection = () => {
                       </p>
                       <JobTypeBadge>Alternance</JobTypeBadge>
                     </div>
-                    <h3 className="text-lg md:text-2xl font-bold text-[#334A52]">
+                    <h3 className="text-lg md:text-2xl font-bold text-[var(--color-primary)]">
                       Développeur Full-stack
                     </h3>
                     <p className="text-base md:text-lg text-gray-600">
@@ -216,7 +216,7 @@ const ExperienceSection = () => {
                 <div className="hidden md:block absolute left-[48px] top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                   <div className="relative flex items-center justify-center">
                     <div className="absolute w-6 h-6 bg-gray-50 rounded-full shadow-md transition-transform duration-300 group-hover:scale-125" />
-                    <div className="absolute w-4 h-4 bg-[#59C3F0] rounded-full transition-transform duration-300 group-hover:scale-150" />
+                    <div className="absolute w-4 h-4 bg-[var(--color-secondary)] rounded-full transition-transform duration-300 group-hover:scale-150" />
                   </div>
                 </div>
                 
@@ -228,7 +228,7 @@ const ExperienceSection = () => {
                       </p>
                       <JobTypeBadge>Stage</JobTypeBadge>
                     </div>
-                    <h3 className="text-lg md:text-2xl font-bold text-[#334A52]">
+                    <h3 className="text-lg md:text-2xl font-bold text-[var(--color-primary)]">
                       Développeur Web
                     </h3>
                     <p className="text-base md:text-lg text-gray-600">
@@ -267,7 +267,7 @@ const ExperienceSection = () => {
                 <div className="hidden md:block absolute left-[48px] top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                   <div className="relative flex items-center justify-center">
                     <div className="absolute w-6 h-6 bg-gray-50 rounded-full shadow-md transition-transform duration-300 group-hover:scale-125" />
-                    <div className="absolute w-4 h-4 bg-[#59C3F0] rounded-full transition-transform duration-300 group-hover:scale-150" />
+                    <div className="absolute w-4 h-4 bg-[var(--color-secondary)] rounded-full transition-transform duration-300 group-hover:scale-150" />
                   </div>
                 </div>
                 
@@ -276,7 +276,7 @@ const ExperienceSection = () => {
                     <p className="text-xs md:text-sm text-gray-500">
                       2025-2027
                     </p>
-                    <h3 className="text-lg md:text-2xl font-bold text-[#334A52]">
+                    <h3 className="text-lg md:text-2xl font-bold text-[var(--color-primary)]">
                       Master of Science Technique - Architecte de Systèmes d'Information
                     </h3>
                     <p className="text-base md:text-lg text-gray-600">
@@ -295,7 +295,7 @@ const ExperienceSection = () => {
                 <div className="hidden md:block absolute left-[48px] top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                   <div className="relative flex items-center justify-center">
                     <div className="absolute w-6 h-6 bg-gray-50 rounded-full shadow-md transition-transform duration-300 group-hover:scale-125" />
-                    <div className="absolute w-4 h-4 bg-[#59C3F0] rounded-full transition-transform duration-300 group-hover:scale-150" />
+                    <div className="absolute w-4 h-4 bg-[var(--color-secondary)] rounded-full transition-transform duration-300 group-hover:scale-150" />
                   </div>
                 </div>
                 
@@ -304,7 +304,7 @@ const ExperienceSection = () => {
                     <p className="text-xs md:text-sm text-gray-500">
                       2022-2025
                     </p>
-                    <h3 className="text-lg md:text-2xl font-bold text-[#334A52]">
+                    <h3 className="text-lg md:text-2xl font-bold text-[var(--color-primary)]">
                       BUT Informatique
                     </h3>
                     <p className="text-base md:text-lg text-gray-600">
@@ -332,8 +332,8 @@ const ExperienceSection = () => {
               {/* Frontend */}
               <div className="bg-transparent hover:bg-white/30 rounded-2xl p-4 md:p-5 backdrop-blur-sm border border-white/50 transition-all duration-300">
                 <div className="flex items-center gap-3 mb-4">
-                  <FaDesktop className="text-[#334A52] text-lg md:text-xl" />
-                  <h4 className="text-base md:text-lg font-bold text-[#334A52]">Frontend</h4>
+                  <FaDesktop className="text-[var(--color-primary)] text-lg md:text-xl" />
+                  <h4 className="text-base md:text-lg font-bold text-[var(--color-primary)]">Frontend</h4>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <SkillBadge><SiReact /> React</SkillBadge>
@@ -348,8 +348,8 @@ const ExperienceSection = () => {
               {/* Backend */}
               <div className="bg-transparent hover:bg-white/30 rounded-2xl p-4 md:p-5 backdrop-blur-sm border border-white/50 transition-all duration-300">
                 <div className="flex items-center gap-3 mb-4">
-                  <FaServer className="text-[#334A52] text-lg md:text-xl" />
-                  <h4 className="text-base md:text-lg font-bold text-[#334A52]">Backend</h4>
+                  <FaServer className="text-[var(--color-primary)] text-lg md:text-xl" />
+                  <h4 className="text-base md:text-lg font-bold text-[var(--color-primary)]">Backend</h4>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <SkillBadge><FaNodeJs /> Node.js</SkillBadge>
@@ -363,8 +363,8 @@ const ExperienceSection = () => {
               {/* Database */}
               <div className="bg-transparent hover:bg-white/30 rounded-2xl p-4 md:p-5 backdrop-blur-sm border border-white/50 transition-all duration-300">
                 <div className="flex items-center gap-3 mb-4">
-                  <FaDatabase className="text-[#334A52] text-lg md:text-xl" />
-                  <h4 className="text-base md:text-lg font-bold text-[#334A52]">Bases de données</h4>
+                  <FaDatabase className="text-[var(--color-primary)] text-lg md:text-xl" />
+                  <h4 className="text-base md:text-lg font-bold text-[var(--color-primary)]">Bases de données</h4>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <SkillBadge><SiPostgresql /> PostgreSQL</SkillBadge>
@@ -376,8 +376,8 @@ const ExperienceSection = () => {
               {/* Tools */}
               <div className="bg-transparent hover:bg-white/30 rounded-2xl p-4 md:p-5 backdrop-blur-sm border border-white/50 transition-all duration-300">
                 <div className="flex items-center gap-3 mb-4">
-                  <FaTools className="text-[#334A52] text-lg md:text-xl" />
-                  <h4 className="text-base md:text-lg font-bold text-[#334A52]">Outils</h4>
+                  <FaTools className="text-[var(--color-primary)] text-lg md:text-xl" />
+                  <h4 className="text-base md:text-lg font-bold text-[var(--color-primary)]">Outils</h4>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <SkillBadge><SiDocker /> Docker</SkillBadge>
@@ -390,8 +390,8 @@ const ExperienceSection = () => {
               {/* Languages */}
               <div className="bg-transparent hover:bg-white/30 rounded-2xl p-4 md:p-5 backdrop-blur-sm border border-white/50 transition-all duration-300">
                 <div className="flex items-center gap-3 mb-4">
-                  <FaCode className="text-[#334A52] text-lg md:text-xl" />
-                  <h4 className="text-base md:text-lg font-bold text-[#334A52]">Langages</h4>
+                  <FaCode className="text-[var(--color-primary)] text-lg md:text-xl" />
+                  <h4 className="text-base md:text-lg font-bold text-[var(--color-primary)]">Langages</h4>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <SkillBadge><SiJavascript /> JavaScript</SkillBadge>
@@ -408,8 +408,8 @@ const ExperienceSection = () => {
               {/* Desktop */}
               <div className="bg-transparent hover:bg-white/30 rounded-2xl p-4 md:p-5 backdrop-blur-sm border border-white/50 transition-all duration-300">
                 <div className="flex items-center gap-3 mb-4">
-                  <FaLaptopCode className="text-[#334A52] text-lg md:text-xl" />
-                  <h4 className="text-base md:text-lg font-bold text-[#334A52]">Bureau</h4>
+                  <FaLaptopCode className="text-[var(--color-primary)] text-lg md:text-xl" />
+                  <h4 className="text-base md:text-lg font-bold text-[var(--color-primary)]">Bureau</h4>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <SkillBadge><SiOpengl /> OpenGL</SkillBadge>
