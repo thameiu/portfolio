@@ -15,6 +15,7 @@ import Image from 'next/image';
 import "animate.css";
 import Loader from "../components/Loader";
 import ExperienceSection from "../components/ExperienceSection";
+import ContactSection from "../components/ContactSection";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<string>("experience");
@@ -122,53 +123,12 @@ export default function Home() {
         <h2 className="uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
           Contact
         </h2>
-        <div className="w-full max-w-[95vw] md:max-w-4xl mx-auto rounded-2xl text-left bg-gray-50/95 shadow-2xl p-5 md:p-10 flex flex-col items-start gap-5 md:gap-6">
-          <a 
-            href="mailto:hernandez.mathieu19@gmail.com" 
-            className="flex items-center gap-3 md:gap-4 text-[var(--color-primary)] no-underline transition-colors hover:text-[var(--color-accent)] w-full group"
-          >
-            <FaEnvelope className="text-2xl md:text-4xl flex-shrink-0 transition-transform group-hover:scale-110" />
-            <span className="text-sm md:text-lg break-all leading-tight">E-mail : hernandez.mathieu19@gmail.com</span>
-          </a>
-          <a 
-            href="tel:+33662011741" 
-            className="flex items-center gap-3 md:gap-4 text-[var(--color-primary)] no-underline transition-colors hover:text-[var(--color-accent)] w-full group"
-          >
-            <FaPhoneAlt className="text-2xl md:text-4xl flex-shrink-0 transition-transform group-hover:scale-110" />
-            <span className="text-sm md:text-lg leading-tight">Téléphone : 06 62 01 17 41</span>
-          </a>
-          <a 
-            href="/CV_HERNANDEZ_MATHIEU_2025.pdf" 
-            download 
-            className="flex items-center gap-3 md:gap-4 text-[var(--color-primary)] no-underline transition-colors hover:text-[var(--color-accent)] w-full group"
-          >
-            <FaFileDownload className="text-2xl md:text-4xl flex-shrink-0 transition-transform group-hover:scale-110" />
-            <span className="text-sm md:text-lg leading-tight">Télécharger mon CV</span>
-          </a>
-          <a 
-            href="https://www.linkedin.com/in/mathieu-hernandez-306914264/" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="flex items-center gap-3 md:gap-4 text-[var(--color-primary)] no-underline transition-colors hover:text-[var(--color-accent)] w-full group"
-          >
-            <FaLinkedin className="text-2xl md:text-4xl flex-shrink-0 transition-transform group-hover:scale-110" />
-            <span className="text-sm md:text-lg leading-tight">Mon profil LinkedIn</span>
-          </a>
-          <a 
-            href="https://github.com/thameiu" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="flex items-center gap-3 md:gap-4 text-[var(--color-primary)] no-underline transition-colors hover:text-[var(--color-accent)] w-full group"
-          >
-            <FaGithub className="text-2xl md:text-4xl flex-shrink-0 transition-transform group-hover:scale-110" />
-            <span className="text-sm md:text-lg leading-tight">Mon profil Github</span>
-          </a>
-        </div>
+        <ContactSection />
       </Section>
 
       {/* Footer */}
       <footer className="bg-[var(--color-primary)] text-white text-center text-xs md:text-sm px-3 md:px-5 py-4 rounded-[50px]">
-        <p>&copy; {new Date().getFullYear()} Mathieu Hernandez. Tous droits réservés.</p>
+        <p>&copy; {new Date().getFullYear()} Mathieu Hernandez.</p>
       </footer>
     </div>
   );
