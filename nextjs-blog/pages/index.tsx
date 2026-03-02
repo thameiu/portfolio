@@ -16,6 +16,7 @@ import "animate.css";
 import Loader from "../components/Loader";
 import ExperienceSection from "../components/ExperienceSection";
 import ContactSection from "../components/ContactSection";
+import CuteLinks from "../components/CuteLinks";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<string>("experience");
@@ -126,9 +127,15 @@ export default function Home() {
         <ContactSection />
       </Section>
 
+      {/* Friends and stuff */}
+
+      <CuteLinks />
+
       {/* Footer */}
-      <footer className="bg-[var(--color-primary)] text-white text-center text-xs md:text-sm px-3 md:px-5 py-4 rounded-[50px]">
-        <p>&copy; {new Date().getFullYear()} Mathieu Hernandez.</p>
+      <footer className="w-full flex items-center justify-center px-6 md:px-12 py-5 mt-8 border-t border-white/10">
+        <p className="text-[var(--color-accent)] text-xs md:text-sm font-['sofia-pro-regular']">
+          &copy; {new Date().getFullYear()} Mathieu Hernandez.
+        </p>
       </footer>
     </div>
   );
