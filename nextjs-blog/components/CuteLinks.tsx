@@ -21,7 +21,7 @@ export default function CuteLinks() {
 
 
       <div className="w-full max-w-[95vw] md:max-w-4xl flex flex-row items-center justify-start gap-2 pt-4 px-4 md:px-0">
-        <CuteLink href="/chat" src="/badge.webp" alt="chat" borderColor="var(--color-accent)" />
+        <CuteLink href="/chat" src="/thameiu.webp" alt="chat" borderColor="var(--color-accent)" />
         <CuteLink href="https://www.axelmanguian.fr" src="/axelmanguian.webp" alt="Axel Manguian" borderColor="#066767" />
         <CuteLink href="https://ergosix-rc.vercel.app/" src="/ergosix.webp" alt="Ergosix Recrutement" borderColor="#3D6D2D" />
         <CuteLink href="https://in.tern.et/products/winrar-archive-messenger-bag-prod" src="https://cyber.dabamos.de/88x31/winrar4.gif" alt="Winrar Bag" borderColor="#" />
