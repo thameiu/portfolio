@@ -21,7 +21,7 @@ export default function CuteLinks() {
 
 
       <div className="w-full max-w-[95vw] md:max-w-4xl flex flex-row items-center justify-start gap-2 pt-4 px-4 md:px-0">
-        <CuteLink href="/chat" src="/mathieu.png" alt="Axel Manguian" borderColor="var(--color-accent)" />
+        <CuteLink href="/chat" src="/badge.png" alt="Axel Manguian" borderColor="var(--color-accent)" />
         <CuteLink href="https://www.axelmanguian.fr" src="/axelmanguian.png" alt="Axel Manguian" borderColor="#066767" />
  
       </div>
