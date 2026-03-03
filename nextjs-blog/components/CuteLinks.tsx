@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function CuteLinks() {
 
-    const CuteLink = ({ href, src, alt, borderColor }: { href: string; src: string; alt: string , borderColor:string}) => (
+    const CuteLink = ({ href, src, alt, borderColor=null }: { href: string; src: string; alt: string , borderColor?:string}) => (
       href ? (
         <Link href={href} target="_blank" rel="noopener noreferrer" className='transition-all md:hover:-translate-y-1'>
             <img 
@@ -12,7 +12,7 @@ export default function CuteLinks() {
             width={80} 
             height={20} 
             className='transition-all rounded border w-[68px] h-auto md:w-[80px] md:h-5'
-            style={{ borderColor }}
+            style={{ borderColor: borderColor || 'transparent' }}
             />
         </Link>
       ) : (
@@ -23,7 +23,7 @@ export default function CuteLinks() {
             width={80} 
             height={20} 
             className='transition-all rounded border w-[68px] h-auto md:w-[80px] md:h-5'
-            style={{ borderColor }}
+            style={{ borderColor: borderColor || 'transparent' }}
             />
         </div>
       )
@@ -35,12 +35,16 @@ export default function CuteLinks() {
           <CuteLink href="https://www.axelmanguian.fr" src="/axelmanguian.webp" alt="Axel Manguian" borderColor="#066767" />
           <CuteLink href="https://ergosix-rc.vercel.app/" src="/ergosix.webp" alt="Ergosix Recrutement" borderColor="#3D6D2D" />
           <CuteLink href="https://react-icons.github.io/react-icons/" src="/react-icons.gif" alt="React Icons" borderColor="#E91E63" />
+          <CuteLink href="https://github.com/timothygebhard/js-colormaps" src="/jscolormaps.webp" alt="JS Colormaps by timothygebhard on GitHub" />
           <CuteLink href="https://www.pdf24.org/fr/" src="/pdf24.webp" alt="Download PDF24" borderColor="#67B1FF" />
           <CuteLink href="https://temp-mail.org/" src="/tempmail.webp" alt="Temp Mail" borderColor="#00C497" />
-          <CuteLink href="https://in.tern.et/products/winrar-archive-messenger-bag-prod" src="https://cyber.dabamos.de/88x31/winrar4.gif" alt="Winrar Bag" borderColor="#" />
+          <CuteLink href="https://in.tern.et/products/winrar-archive-messenger-bag-prod" src="https://cyber.dabamos.de/88x31/winrar4.gif" alt="Cool Winrar Bag" borderColor="#" />
+          <CuteLink href="https://in.tern.et/products/r4-messenger-bag-tern%C2%AE-bundle" src="/R4.webp" alt="Very Cool R4 Bag" borderColor="#AAAAAA" />
+          <CuteLink href="https://davrilsupply.com/" src="/davrilsupply.webp" alt="DAVRILSUPPLY" borderColor="#FFFFFF" />
           <CuteLink href="https://dyskinesiaa.com/" src="/dyskinesiaa.webp" alt="Check out dyskinesiaa" borderColor="#000000" />
+          <CuteLink href="" src="https://cyber.dabamos.de/88x31/hasmile.gif" alt="Smile !" borderColor="#" />
           <CuteLink href="" src="https://cyber.dabamos.de/88x31/rainbow_bev.gif" alt="Love is love" borderColor="#" />
-          {/* TODO : R4 (bag),  */}
+          {/* TODO : Bitoduc.fr  */}
       </div>
     )
 }
