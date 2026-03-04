@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function CuteLinks() {
 
-    const CuteLink = ({ href, src, alt, borderColor=null }: { href: string; src: string; alt: string , borderColor?:string}) => (
+    const CuteLink = ({ href, src, alt, borderColor=null }: { href?: string; src: string; alt: string , borderColor?:string}) => (
       href ? (
         <Link href={href} target="_blank" rel="noopener noreferrer" className='transition-all md:hover:-translate-y-1'>
             <img 
@@ -22,7 +22,7 @@ export default function CuteLinks() {
             alt={alt} 
             width={80} 
             height={20} 
-            className='transition-all rounded border w-[68px] h-auto md:w-[80px] md:h-5'
+            className='transition-all rounded w-[68px] h-auto md:w-[80px] md:h-5'
             style={{ borderColor: borderColor || 'transparent' }}
             />
         </div>
@@ -44,9 +44,9 @@ export default function CuteLinks() {
           <CuteLink href="https://in.tern.et/products/r4-messenger-bag-tern%C2%AE-bundle" src="/R4.webp" alt="Very Cool R4 Bag" borderColor="#AAAAAA" />
           {/* <CuteLink href="https://davrilsupply.com/" src="/davrilsupply.webp" alt="DAVRILSUPPLY" borderColor="#FFFFFF" /> */}
           <CuteLink href="https://dyskinesiaa.com/" src="/dyskinesiaa.webp" alt="Check out dyskinesiaa" borderColor="#000000" />
-          <CuteLink href="" src="https://cyber.dabamos.de/88x31/hasmile.gif" alt="Smile !" borderColor="#" />
-          <CuteLink href="" src="https://cyber.dabamos.de/88x31/rainbow_bev.gif" alt="Love is love" borderColor="#" />
-          {/* TODO : Bitoduc.fr  */}
+          <CuteLink src="https://cyber.dabamos.de/88x31/hasmile.gif" alt="Smile !" borderColor="#" />
+          <CuteLink src="https://cyber.dabamos.de/88x31/rainbow_bev.gif" alt="Love is love" borderColor="#" />
+          {/* TODO : EZGif, Ile.a.gammes, Bruno */}
       </div>
     )
 }
