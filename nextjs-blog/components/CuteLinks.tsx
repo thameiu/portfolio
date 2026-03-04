@@ -33,7 +33,7 @@ export default function CuteLinks() {
         <div className="w-full max-w-[95vw] md:max-w-4xl mx-auto flex flex-wrap justify-center md:justify-start items-center gap-2 pt-4 px-4 md:px-0">
           <CuteLink href="/chat" src="/thameiu.webp" alt="chat" borderColor="var(--color-accent)" />
           <CuteLink href="https://www.axelmanguian.fr" src="/axelmanguian.webp" alt="Axel Manguian" borderColor="#066767" />
-          <CuteLink href="https://soundcloud.com/mydriax" src="/mydriax.gif" alt="Stream Mydriax" borderColor="#444444" />
+          <CuteLink href="https://soundcloud.com/mydriax" src="/mydriax.gif" alt="Stream Mydriax" borderColor="#24004C" />
           <CuteLink href="https://ergosix-rc.vercel.app/" src="/ergosix.webp" alt="Ergosix Recrutement" borderColor="#3D6D2D" />
           <CuteLink href="https://react-icons.github.io/react-icons/" src="/react-icons.gif" alt="React Icons" borderColor="#E91E63" />
           <CuteLink href="https://github.com/timothygebhard/js-colormaps" src="/jscolormaps.webp" alt="JS Colormaps by timothygebhard on GitHub" />
