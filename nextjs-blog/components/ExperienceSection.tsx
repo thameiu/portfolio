@@ -6,6 +6,7 @@ import { VscAzureDevops } from "react-icons/vsc";
 import { PiFileCSharp } from "react-icons/pi";
 import { GiFlame } from "react-icons/gi";
 import { IoPeople } from "react-icons/io5";
+import { SkillBadge, TechBadge, JobTypeBadge, WindevIcon } from "./Utils";
 
 const ExperienceSection = () => {
   const [activeTab, setActiveTab] = useState<string>("experience");
@@ -55,23 +56,6 @@ const ExperienceSection = () => {
     }
   };
 
-  const TechBadge = ({ children }: { children: React.ReactNode }) => (
-    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[var(--color-primary)] border border-[var(--color-primary)] text-white rounded-full text-xs transition-all hover:bg-gray-100 hover:text-[var(--color-primary)] whitespace-nowrap">
-      {children}
-    </div>
-  );
-
-  const SkillBadge = ({ children }: { children: React.ReactNode }) => (
-    <div className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-[var(--color-primary)] border border-[var(--color-primary)] text-white rounded-full text-xs md:text-sm transition-all hover:bg-gray-100 hover:text-[var(--color-primary)] whitespace-nowrap">
-      {children}
-    </div>
-  );
-
-  const JobTypeBadge = ({ children }: { children: React.ReactNode }) => (
-    <div className="inline-flex items-center px-3 py-1 bg-[var(--color-secondary)] text-white rounded-full text-xs font-medium whitespace-nowrap">
-      {children}
-    </div>
-  );
 
   return (
     <div className="w-full max-w-[90vw] md:max-w-4xl mx-auto bg-gray-50/95 rounded-3xl shadow-2xl p-5 md:p-6">
@@ -153,7 +137,7 @@ const ExperienceSection = () => {
                   </p>
 
                   <div className="flex flex-wrap gap-2">
-                    <TechBadge><FaWindows />WinDev</TechBadge>
+                    <TechBadge><WindevIcon />WinDev</TechBadge>
                     <TechBadge><SiDotnet /> ASP.NET MVC</TechBadge>
                     <TechBadge><SiDotnet />Kendo UI MVC</TechBadge>
                     <TechBadge><VscAzureDevops /> Azure DevOps</TechBadge>
@@ -415,7 +399,7 @@ const ExperienceSection = () => {
                   <SkillBadge><SiOpengl /> OpenGL</SkillBadge>
                   <SkillBadge><SiQt /> Qt</SkillBadge>
                   <SkillBadge><FaJava /> NetBeans</SkillBadge>
-                  <SkillBadge><FaWindows /> WinDev</SkillBadge>
+                  <SkillBadge><WindevIcon /> WinDev</SkillBadge>
                 </div>
               </div>
             </div>
