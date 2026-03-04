@@ -44,8 +44,8 @@ export default function CuteLinks() {
           <CuteLink href="https://in.tern.et/products/r4-messenger-bag-tern%C2%AE-bundle" src="/R4.webp" alt="Very Cool R4 Bag" borderColor="#AAAAAA" />
           {/* <CuteLink href="https://davrilsupply.com/" src="/davrilsupply.webp" alt="DAVRILSUPPLY" borderColor="#FFFFFF" /> */}
           <CuteLink href="https://dyskinesiaa.com/" src="/dyskinesiaa.webp" alt="Check out dyskinesiaa" borderColor="#000000" />
-          <CuteLink src="https://cyber.dabamos.de/88x31/hasmile.gif" alt="Smile !" borderColor="#" />
-          <CuteLink src="https://cyber.dabamos.de/88x31/rainbow_bev.gif" alt="Love is love" borderColor="#" />
+          <CuteLink src="https://cyber.dabamos.de/88x31/hasmile.gif" alt="Smile !"/>
+          <CuteLink src="https://cyber.dabamos.de/88x31/rainbow_bev.gif" alt="Love is love" />
           {/* TODO : EZGif, Ile.a.gammes, Bruno */}
       </div>
     )
