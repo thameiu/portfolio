@@ -8,7 +8,7 @@ const ContactSection = () => {
   const linkClass = "flex items-center gap-3 md:gap-4 text-[var(--color-primary)] no-underline transition-all hover:text-[var(--color-secondary)] w-full group";
   const iconClass = "text-2xl md:text-4xl flex-shrink-0 transition-transform group-hover:scale-110 text-[var(--color-primary)]";
 
-  const getEmail = () => ["hernandez.mathieu19", "gmail", "com"].join("@").replace("@gmail", "@gmail");
+  const getEmail = () => "hernandez.mathieu19@gmail.com";
 
   useEffect(() => {
     setEmailDisplay(getEmail());
