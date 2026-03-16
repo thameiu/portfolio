@@ -136,3 +136,19 @@ b {
   font-style: normal;
   font-display: swap;
 }
+
+/* CV Viewer – no scroll, no white background, fit to container */
+.cv-viewer,
+.cv-viewer .rpv-core__viewer,
+.cv-viewer .rpv-core__inner-container,
+.cv-viewer .rpv-core__inner-pages {
+  height: 100% !important;
+  overflow: hidden !important;
+  background: transparent !important;
+}
+
+.cv-viewer .rpv-core__inner-page,
+.cv-viewer .rpv-core__page-layer {
+  background: transparent !important;
+  box-shadow: none !important;
+}

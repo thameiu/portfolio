@@ -1,9 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
-import { FaLinkedin, FaPhoneAlt, FaFileDownload, FaEnvelope, FaGithub } from "react-icons/fa";
+import dynamic from "next/dynamic";
+import { FaLinkedin, FaFileDownload, FaEnvelope, FaGithub } from "react-icons/fa";
+
+const CVModal = dynamic(() => import("./CVModal"), { ssr: false });
 
 const ContactSection = () => {
   const [emailDisplay, setEmailDisplay] = useState("");
+  const [isCVOpen, setIsCVOpen] = useState(false);
 
   const linkClass = "flex items-center gap-3 md:gap-4 text-[var(--color-primary)] no-underline transition-all hover:text-[var(--color-secondary)] w-full group";
   const iconClass = "text-2xl md:text-4xl flex-shrink-0 transition-transform group-hover:scale-110 text-[var(--color-primary)]";
@@ -14,7 +18,7 @@ const ContactSection = () => {
     setEmailDisplay(getEmail());
   }, []);
   
-  return (
+  return (<>
     <div className="w-full max-w-[95vw] md:max-w-4xl mx-auto rounded-2xl text-left bg-gray-50/95 shadow-2xl p-5 md:p-10 flex flex-col items-start gap-4 md:gap-5 hover:cursor-pointer">
       
       <a className={linkClass} onClick={() => { navigator.clipboard.writeText(getEmail()); setEmailDisplay("E-mail copié !"); setTimeout(() => setEmailDisplay(getEmail()), 1000); }}>
@@ -29,16 +33,12 @@ const ContactSection = () => {
 
       <div className="w-full h-px bg-gray-200" />
 
-      <a
-        href="/CV_HERNANDEZ_MATHIEU_2025.pdf"
-        download
-        className={linkClass}
-      >
+      <a onClick={() => setIsCVOpen(true)} className={linkClass}>
         <FaFileDownload className={iconClass} />
         <div className="flex flex-col min-w-0">
           <span className="text-xs text-gray-400 font-medium uppercase tracking-wide">CV</span>
           <span className="text-sm md:text-lg font-semibold text-[var(--color-primary)] group-hover:text-[var(--color-secondary)] transition-colors">
-            Télécharger mon CV
+            Mon CV
           </span>
         </div>
       </a>
@@ -78,7 +78,9 @@ const ContactSection = () => {
       </a>
 
     </div>
-  );
+
+    {isCVOpen && <CVModal onClose={() => setIsCVOpen(false)} />}
+  </>);
 };
 
 export default ContactSection;
