@@ -20,8 +20,8 @@ const ProjectGrid = () => {
         previewImage="/2clock/2clock-preview.png"
         width="360px"
         height="280px"
-        projectLink="https://2clock-mar-8.fr"
-        projectLinkText="Consulter la landing page de 2clock"
+        projectLink="https://github.com/abakar-oumar-abdallah/T-DEV-700"
+        projectLinkText="Consulter le dépôt de 2clock"
         screenshots={[
           "/2clock/2clock-1.png",
           "/2clock/2clock-2.png",

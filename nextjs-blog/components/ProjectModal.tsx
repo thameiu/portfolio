@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { FaChevronLeft, FaChevronRight, FaExternalLinkAlt, FaTimes } from "react-icons/fa";
+import Link from "next/link";
 
 interface ProjectModalProps {
   title: string;
@@ -300,18 +301,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             )}
           </div>
 
-          <div className="text-left my-6 md:my-8 mx-auto w-full max-w-3xl bg-[var(--color-primary)]/5 p-4 md:p-6 rounded-lg border-l-4 border-primary">
-            <h3 className="mt-0 text-[var(--color-primary)] text-lg md:text-xl mb-3 md:mb-4 font-bold">
-              Fonctionnalités Clés & Technique :
-            </h3>
-            <ul className="list-disc pl-5 md:pl-6 space-y-2">
-              {features.map((feature, index) => (
-                <li key={index} className="text-sm md:text-base leading-relaxed text-gray-800">
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </div>
+
 
         {screenshots.length > 0 && (
         <div className="relative w-[85%] md:w-full mx-auto mt-4 md:mt-6">
@@ -389,18 +379,33 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                 />
             ))}
             </div>
+          <div className="text-left my-6 md:my-8 mx-auto w-full max-w-3xl md:p-6 rounded-lg">
+            <h3 className="mt-0 text-[var(--color-primary)] text-lg md:text-xl mb-3 md:mb-4 font-bold">
+              Fonctionnalités Clés & Technique :
+            </h3>
+            <ul className="list-disc pl-5 md:pl-6 space-y-2">
+              {features.map((feature, index) => (
+                <li key={index} className="text-sm md:text-base leading-relaxed text-gray-800">
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         )}
 
           {projectLink && (
-            <a
+            <Link
               href={projectLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 md:mt-8 inline-flex items-center justify-center gap-2 md:gap-3 text-[var(--color-primary)] hover:text-[var(--color-secondary)] font-bold text-base md:text-xl transition-colors hover:underline mx-auto"
+              className="inline-flex items-center justify-center gap-2 md:gap-3 font-bold text-base md:text-xl transition-colors hover:underline mx-auto"
+              style={{ color: 'var(--color-primary)' }}
+              onMouseEnter={e => e.currentTarget.style.color = 'var(--color-secondary)'}
+              onMouseLeave={e => e.currentTarget.style.color = 'var(--color-primary)'}
             >
               <FaExternalLinkAlt />{projectLinkText}
-            </a>
+            </Link>
           )}
         </div>
       </div>
