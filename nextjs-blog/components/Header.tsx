@@ -1,198 +1,248 @@
-import { useEffect, useState } from "react";
-import Image from "next/image";
+import { useEffect, useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 const Header = () => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [hovering, setHovering] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!hasInteracted) setIsVisible(true);
-    }, 5000);
-
-    const handleInteraction = () => {
-      if (!hasInteracted) {
-        setHasInteracted(true);
-        setIsVisible(true);
-      }
-    };
-
-    window.addEventListener('scroll', handleInteraction);
-    window.addEventListener('mousemove', handleInteraction);
-    window.addEventListener('keydown', handleInteraction);
-    window.addEventListener('click', handleInteraction);
-    window.addEventListener('touchstart', handleInteraction);
-
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('scroll', handleInteraction);
-      window.removeEventListener('mousemove', handleInteraction);
-      window.removeEventListener('keydown', handleInteraction);
-      window.removeEventListener('click', handleInteraction);
-      window.removeEventListener('touchstart', handleInteraction);
-    };
-  }, [hasInteracted]);
+  const [hovering, setHovering] = useState(false);
+  const isClickScrolling = useRef(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      if (scrollY === 0) {
-        setIsVisible(true);
-      } else if (scrollY > lastScrollY && !hovering) {
-        setIsVisible(false);
-      }
-      setLastScrollY(scrollY);
+      const currentScrollY = window.scrollY;
+      const isMobile = window.innerWidth < 768;
 
-      // Track active section
-      const sections = ["about", "experience", "projects", "contact"];
-      for (const id of [...sections].reverse()) {
-        const el = document.getElementById(id);
-        if (el && scrollY >= el.offsetTop - 100) {
-          setActiveSection(id);
-          break;
+      if (isMobile) {
+        setIsVisible(true);
+        // Don't hide on mobile
+      } else {
+        const isModalOpen = document.querySelector('[class*="z-[1000]"], [class*="z-[2000]"]');
+
+        if (isModalOpen) {
+          setIsVisible(false);
+          return;
+        }
+
+        if (currentScrollY > lastScrollY && currentScrollY > 100 && !hovering) {
+          setIsVisible(false);
+        } else {
+          setIsVisible(true);
         }
       }
+
+      // If we hit the very bottom of the page and aren't click-scrolling, force "contact"
+      // to handle cases where the contact section is too short to hit the observer threshold
+      if (!isClickScrolling.current) {
+        if (window.innerHeight + currentScrollY >= document.documentElement.scrollHeight - 10) {
+          setActiveSection("contact");
+        }
+      }
+
+      setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleMouseMove = (event: MouseEvent) => {
+        if (window.innerWidth >= 768 && event.clientY < 50) {
+            setIsVisible(true);
+        }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("mousemove", handleMouseMove);
+    
+    handleScroll(); // Initial check
+
+    return () => {
+        window.removeEventListener("scroll", handleScroll);
+        window.removeEventListener("mousemove", handleMouseMove);
+    }
   }, [lastScrollY, hovering]);
 
   useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
-      const modals = document.querySelectorAll('[class*="z-[1000]"], [class*="z-[2000]"]');
-      const isModalOpen = modals.length > 0;
-      if (isModalOpen) {
-        setIsVisible(false);
-      } else if (event.clientY < 20) {
-        setIsVisible(true);
-      }
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !isClickScrolling.current) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-30% 0px -30% 0px" }
+    );
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    const sections = ["about", "experience", "projects", "contact"];
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const offset = window.innerWidth >= 768 ? -80 : -30;
-      window.scrollTo({ top: element.offsetTop + offset, behavior: "smooth" });
-    }
+    const isMobile = window.innerWidth < 768;
     setMenuVisible(false);
-  };
+    
+    // Immediately set active and block observer updates during smooth scroll
+    isClickScrolling.current = true;
+    setActiveSection(sectionId);
+    setTimeout(() => {
+      isClickScrolling.current = false;
+    }, 1000); // Wait for smooth scroll to finish
 
-  const toggleMenu = () => setMenuVisible((prev) => !prev);
+    const executeScroll = () => {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        const offset = -80;
+        window.scrollTo({ top: element.offsetTop + offset, behavior: "smooth" });
+      }
+    };
+
+    if (isMobile) {
+      // Wait for the morph animation to close completely before scrolling,
+      // avoiding layout jumps while Framer Motion calculates coordinates.
+      setTimeout(executeScroll, 300);
+    } else {
+      executeScroll();
+    }
+  };
 
   const navItems = [
     { id: "about", label: "À propos" },
-    { id: "experience", label: "Formation" },
-  ];
-  const navItemsRight = [
+    { id: "experience", label: "Parcours" },
     { id: "projects", label: "Projets" },
     { id: "contact", label: "Contact" },
   ];
-const NavItem = ({ id, label, mobile = false }: { id: string; label: string; mobile?: boolean }) => {
-    const isActive = activeSection === id;
-    return (
-      <li className={mobile ? "text-center" : "flex-1 text-center flex items-center justify-center"}>
-        <span
-          onClick={() => scrollToSection(id)}
-          className={`
-            relative cursor-pointer select-none
-            ${mobile
-              ? "block text-2xl font-bold px-6 py-2 rounded-full"
-              : "text-lg font-semibold px-4 py-1.5 rounded-full"
-            }
-          `}
-        >
-          {/* Background pill — always in DOM, fades via opacity */}
-          <span
-            aria-hidden="true"
-            className="absolute inset-0 rounded-full bg-[var(--color-primary)]"
-            style={{
-              opacity: isActive ? 1 : 0,
-              transition: 'opacity 0.4s ease-in-out',
-            }}
-          />
-          {/* Text — always in DOM, color transitions via style */}
-          <span
-            className="relative z-10"
-            style={{
-              color: isActive ? 'white' : 'var(--color-primary)',
-              transition: 'color 0.4s ease-in-out',
-            }}
-          >
-            {label}
-          </span>
-        </span>
-      </li>
-    );
-  };
+
   return (
     <>
-      {/* Desktop Header */}
-      <div
-        className={`hidden md:flex fixed top-2.5 left-1/2 -translate-x-1/2 w-[80%] max-w-[900px] h-[50px] bg-white/90 rounded-[25px] shadow-lg transition-all duration-300 items-center justify-center z-[100] ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full pointer-events-none'
-        }`}
-        onMouseEnter={() => setHovering(true)}
-        onMouseLeave={() => setHovering(false)}
+      <motion.header
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: isVisible ? 0 : -100, opacity: isVisible ? 1 : 0 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="fixed top-4 left-0 w-full z-50 flex justify-start md:justify-center px-4 pointer-events-none"
       >
-        <nav className="w-full flex items-center justify-center px-4">
-          <ul className="list-none flex flex-row flex-1 justify-evenly items-center p-0 m-0">
-            {navItems.map(item => <NavItem key={item.id} {...item} />)}
-
-            <li className="flex-1 text-center flex items-center justify-center">
-              <span onClick={() => scrollToSection("about")} className="cursor-pointer">
-                <Image
-                  src="/portfolio-logo.png"
-                  width={36}
-                  height={36}
-                  alt="Logo Initiales de Mathieu Hernandez"
-                  priority
-                  className="w-9 h-9 object-contain"
-                />
-              </span>
-            </li>
-
-            {navItemsRight.map(item => <NavItem key={item.id} {...item} />)}
-          </ul>
-        </nav>
-      </div>
-
-      {/* Mobile Menu Button */}
-      <button
-        className="md:hidden fixed top-4 left-4 z-[101] w-[60px] h-[60px] bg-white/90 rounded-full shadow-lg border-none cursor-pointer flex items-center justify-center"
-        onClick={toggleMenu}
-        aria-label="Toggle menu"
-      >
-        <Image src="/portfolio-logo.png" width={40} height={40} alt="logo" priority className="mt-1" />
-      </button>
-
-      {/* Mobile Menu Overlay */}
-      {menuVisible && (
-        <div className="md:hidden fixed inset-0 bg-white z-[100] flex flex-col items-center justify-center animate-fade-in">
-          <button
-            className="absolute top-4 right-4 text-3xl text-[var(--color-primary)] font-bold cursor-pointer"
-            onClick={toggleMenu}
-            aria-label="Close menu"
-          >
-            ✖
-          </button>
-          <nav className="w-full flex items-center justify-center">
-            <ul className="list-none flex flex-col items-center gap-5 p-0 m-0">
-              {[...navItems, ...navItemsRight].map(item => (
-                <NavItem key={item.id} {...item} mobile />
-              ))}
+        <div 
+          className="pointer-events-auto flex"
+          onMouseEnter={() => setHovering(true)}
+          onMouseLeave={() => setHovering(false)}
+        >
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center justify-center h-[50px] p-1 rounded-full bg-black/30 backdrop-blur-lg border border-white/10 shadow-lg w-max relative">
+            <ul className="flex items-center justify-between h-full relative">
+              {navItems.map((item) => {
+                const isActive = activeSection === item.id;
+                return (
+                  <li
+                    key={item.id}
+                    className="relative cursor-pointer flex items-center justify-center h-full transition-colors duration-300 text-white/80 hover:text-white font-['Sora'] font-semibold whitespace-nowrap px-5 lg:px-7"
+                    onClick={() => scrollToSection(item.id)}
+                  >
+                    <span className={`relative z-10 transition-colors ${isActive ? 'text-[var(--color-accent)]' : ''}`}>
+                        {item.label}
+                    </span>
+                    {isActive && (
+                      <motion.div
+                        className="absolute inset-0 bg-white/10 -z-0 rounded-full"
+                        layoutId="active-pill-desktop"
+                        transition={{
+                          type: "spring",
+                          stiffness: 800,
+                          damping: 40,
+                          mass: 0.5,
+                        }}
+                        style={{ borderRadius: 9999 }}
+                      />
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </nav>
+            
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            {!menuVisible && (
+              <motion.button
+                layoutId="mobile-menu-container"
+                onClick={() => setMenuVisible(true)}
+                className="flex items-center justify-center w-[50px] h-[50px] bg-black/30 backdrop-blur-xl border border-white/10 shadow-lg text-white/80 hover:text-white transition-colors"
+                style={{ borderRadius: 25 }}
+                transition={{ type: "tween", ease: "circInOut", duration: 0.25 }}
+              >
+                <FaBars size={22} />
+              </motion.button>
+            )}
+          </div>
         </div>
-      )}
+      </motion.header>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {menuVisible && (
+          <motion.div
+            layoutId="mobile-menu-container"
+            className="fixed inset-0 z-[1000] bg-black/80 backdrop-blur-3xl md:hidden overflow-hidden flex flex-col items-center justify-center"
+            onClick={() => setMenuVisible(false)}
+            style={{ borderRadius: 0 }}
+            transition={{ type: "tween", ease: "circInOut", duration: 0.25 }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.15 }}
+              className="relative w-full px-8"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <ul className="flex flex-col items-center justify-center gap-4 w-full">
+                {navItems.map((item) => {
+                  const isActive = activeSection === item.id;
+                  return (
+                    <li
+                      key={item.id}
+                      className="relative cursor-pointer flex items-center justify-center h-full transition-colors duration-300 text-white/80 hover:text-white font-['Sora'] font-semibold whitespace-nowrap px-8 py-3 text-2xl sm:text-3xl w-full"
+                      onClick={() => scrollToSection(item.id)}
+                    >
+                      <span className={`relative z-10 transition-colors ${isActive ? 'text-[var(--color-accent)]' : ''}`}>
+                          {item.label}
+                      </span>
+                      {isActive && (
+                        <motion.div
+                          className="absolute inset-0 bg-white/10 -z-0 rounded-full"
+                          layoutId="active-pill-mobile"
+                          transition={{
+                            type: "spring",
+                            stiffness: 800,
+                            damping: 40,
+                            mass: 0.5,
+                          }}
+                          style={{ borderRadius: 9999 }}
+                        />
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </motion.div>
+            <div className="absolute top-4 left-4">
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                onClick={() => setMenuVisible(false)} 
+                className="flex items-center justify-center w-[50px] h-[50px] text-white/80 hover:text-white transition-colors"
+              >
+                <FaTimes size={28} />
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };
