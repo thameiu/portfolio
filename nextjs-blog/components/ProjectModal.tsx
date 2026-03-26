@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { FaChevronLeft, FaChevronRight, FaExternalLinkAlt, FaTimes } from "react-icons/fa";
 import Link from "next/link";
@@ -11,6 +11,8 @@ interface ProjectModalProps {
   techStack?: React.ReactNode;
   projectLink?: string;
   projectLinkText?: string;
+  color?: string;
+  light?: boolean;
   onClose: () => void;
 }
 
@@ -22,8 +24,23 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   techStack,
   projectLink,
   projectLinkText = "Consulter le projet",
+  color = "var(--color-primary)",
+  light,
   onClose,
 }) => {
+  const getContrastYIQ = (hexcolor: string = "") => {
+    if (!hexcolor || hexcolor.startsWith("var")) return 'white';
+    hexcolor = hexcolor.replace("#", "");
+    if (hexcolor.length === 3) hexcolor = hexcolor.split("").map(c => c + c).join("");
+    const r = parseInt(hexcolor.substring(0, 2), 16);
+    const g = parseInt(hexcolor.substring(2, 2), 16);
+    const b = parseInt(hexcolor.substring(4, 2), 16);
+    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+    return (yiq >= 128) ? 'black' : 'white';
+  };
+
+  const adaptiveTextColor = getContrastYIQ(color);
+
   const [isFocused, setIsFocused] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -52,15 +69,24 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
     
-    // Add custom scrollbar styles for modal
-    const style = document.createElement('style');
-    style.id = 'modal-scrollbar-style';
-    style.innerHTML = `
-      .modal-overlay::-webkit-scrollbar-track {
-        background: transparent;
-      }
-    `;
-    document.head.appendChild(style);
+      // Add custom scrollbar styles for modal
+      const style = document.createElement('style');
+      style.id = 'modal-scrollbar-style';
+      style.innerHTML = `
+        .modal-overlay::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .modal-overlay::-webkit-scrollbar-thumb {
+          background-color: ${color};
+          border-radius: 20px;
+          border: 3px solid transparent;
+          background-clip: content-box;
+        }
+        .modal-overlay::-webkit-scrollbar {
+          width: 12px;
+        }
+      `;
+      document.head.appendChild(style);
     
     return () => { 
       document.documentElement.style.overflow = "";
@@ -70,7 +96,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         styleEl.remove();
       }
     };
-  }, []);
+  }, [color]);
 
   // Update translate position when image changes
   useEffect(() => {
@@ -188,7 +214,14 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     className="fixed inset-0 bg-black/92 backdrop-blur-sm z-[2000] flex items-center justify-center animate-fade-in"
     onClick={closeLightbox}
   >
-    <div className="relative w-[90vw] h-[70vh] md:w-[85vw] md:h-[80vh] mb-6">
+          <div className="relative w-[90vw] h-[70vh] md:w-[85vw] md:h-[80vh] mb-6">
+            <button
+              className="absolute top-4 right-4 md:top-5 md:right-5 flex items-center justify-center text-white/80 hover:text-white text-2xl transition-colors z-[3000]"
+              onClick={closeLightbox}
+              aria-label="Fermer"
+            >
+              <FaTimes />
+            </button>
       <div
         className="relative w-full h-full overflow-hidden"
             ref={lightboxRef}
@@ -201,17 +234,11 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             onTouchEnd={dragEnd}
             style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
             >
-            <button
-              className="absolute top-4 right-4 md:top-5 md:right-5 bg-black/50 hover:bg-white/20 border border-white/30 rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-white/90 hover:text-white text-lg md:text-xl transition-all hover:scale-110 z-30"
-              onClick={closeLightbox}
-              aria-label="Fermer"
-            >
-              <FaTimes />
-            </button>
 
             {screenshots.length > 1 && (
               <button
-                className="absolute left-2 md:left-5 top-1/2 -translate-y-1/2 text-white/70 hover:text-[var(--color-secondary)] text-3xl md:text-4xl transition-all hover:scale-125 z-20 drop-shadow-lg"
+                className="absolute left-2 md:left-5 top-1/2 -translate-y-1/2 hover:scale-125 transition-all text-3xl md:text-4xl z-20 drop-shadow-lg opacity-80 hover:opacity-100"
+                style={{ color }}
                 onClick={prevImage}
                 disabled={isTransitioning}
               >
@@ -245,7 +272,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
             {screenshots.length > 1 && (
               <button
-                className="absolute right-2 md:right-5 top-1/2 -translate-y-1/2 text-white/70 hover:text-[var(--color-secondary)] text-3xl md:text-4xl transition-all hover:scale-125 z-20 drop-shadow-lg"
+                className="absolute right-2 md:right-5 top-1/2 -translate-y-1/2 hover:scale-125 transition-all text-3xl md:text-4xl z-20 drop-shadow-lg opacity-80 hover:opacity-100"
+                style={{ color }}
                 onClick={nextImage}
                 disabled={isTransitioning}
               >
@@ -259,11 +287,12 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             {screenshots.map((_, index) => (
                 <div
                 key={index}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                    index === currentImageIndex
-                    ? 'w-8 bg-[var(--color-accent)]'
-                    : 'w-2 bg-[var(--color-accent)]/40'
-                }`}
+                className="h-1.5 rounded-full transition-all duration-300"
+                style={{
+                  width: index === currentImageIndex ? '32px' : '8px',
+                  backgroundColor: color,
+                  opacity: index === currentImageIndex ? 1 : 0.4
+                }}
                 />
             ))}
             </div>
@@ -274,29 +303,50 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
       {/* Modal */}
       <div
-        className="modal-overlay fixed inset-0 bg-black/60 flex justify-center items-start z-[1000] overflow-y-auto py-5 md:py-10 px-4 animate-fade-in"
+        className="modal-overlay fixed inset-0 bg-black/50 backdrop-blur-3xl flex justify-center items-start z-[1000] overflow-y-auto animate-fade-in"
         onClick={onClose}
-        style={{
-          scrollbarColor: 'rgba(140, 225, 254, 0.7) transparent'
-        }}
       >
         <div
-          className="w-full max-w-4xl bg-gray-50/95 rounded-xl shadow-2xl relative flex flex-col p-6 md:p-10 animate-slide-in mb-12"
+          className="w-full min-h-screen relative flex flex-col p-6 md:p-16 animate-slide-in pb-20"
           onClick={(e) => e.stopPropagation()}
         >
           <button
-            className="absolute top-3 right-4 md:top-4 md:right-5 text-2xl md:text-3xl text-[var(--color-primary)] hover:text-red-500 transition-colors z-10"
+            className="absolute top-4 right-4 md:top-5 md:right-5 flex items-center justify-center w-[50px] h-[50px] text-white/80 hover:text-white transition-colors z-50 text-2xl"
             onClick={onClose}
           >
-            ✖
+            <FaTimes />
           </button>
 
-          <div className="text-center mb-4 md:mb-6">
-            <h1 className="text-3xl md:text-5xl font-bold text-[var(--color-primary)] mb-2 md:mb-4">{title}</h1>
-            <p className="text-base md:text-lg text-gray-600 mb-4 md:mb-6 px-2 md:px-5">{description}</p>
+          <div className="text-center mb-8 md:mb-12 mt-10 md:mt-0 max-w-6xl mx-auto w-full">
+            <h1 
+              className="text-5xl md:text-6xl lg:text-8xl font-black tracking-tight mb-4 md:mb-8 drop-shadow-lg"
+              style={{ color }}
+            >
+              {title}
+            </h1>
+            <p className="text-lg md:text-2xl text-white/80 mb-6 md:mb-10 px-2 md:px-5 leading-relaxed max-w-4xl mx-auto">{description}</p>
             {techStack && (
-              <div className="flex flex-wrap gap-2 md:gap-3 justify-center">
-                {techStack}
+              <div className="flex flex-wrap gap-2 md:gap-3 justify-center max-w-4xl mx-auto">
+                {React.Children.map(techStack as any, (child) => {
+                  if (child && (child as any).type === React.Fragment) {
+                    return React.Children.map((child as any).props.children, (badge) => {
+                      if (React.isValidElement(badge)) {
+                        return React.cloneElement(badge as React.ReactElement, {
+                          color: color,
+                          light: light
+                        } as any);
+                      }
+                      return badge;
+                    });
+                  }
+                  if (React.isValidElement(child)) {
+                    return React.cloneElement(child as React.ReactElement, {
+                      color: color,
+                      light: light
+                    } as any);
+                  }
+                  return child;
+                })}
               </div>
             )}
           </div>
@@ -304,9 +354,20 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
 
         {screenshots.length > 0 && (
-        <div className="relative w-[85%] md:w-full mx-auto mt-4 md:mt-6">
+        <div className="relative w-full max-w-7xl mx-auto mt-4 md:mt-8">
+          <div className="flex items-center justify-center gap-2 md:gap-6">
+            {screenshots.length > 1 && (
+                <button
+                className="flex-shrink-0 hover:scale-125 transition-all text-3xl md:text-5xl z-10 drop-shadow-lg opacity-80 hover:opacity-100 p-2"
+                style={{ color }}
+                onClick={(e) => { e.stopPropagation(); prevImage(e); }}
+                disabled={isTransitioning}
+                >
+                <FaChevronLeft />
+                </button>
+            )}
             <div
-            className="relative h-48 md:h-96 overflow-hidden cursor-grab rounded-lg"
+            className="flex-1 w-full relative h-[40vh] md:h-[65vh] overflow-hidden cursor-grab rounded-2xl"
             onClick={toggleFocus}
             title="Cliquez pour agrandir"
             ref={carouselRef}
@@ -319,15 +380,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             onTouchEnd={dragEnd}
             style={{ cursor: isDragging ? 'grabbing' : 'zoom-in' }}
             >
-            {screenshots.length > 1 && (
-                <button
-                className="absolute left-0 md:left-2 top-1/2 -translate-y-1/2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] text-2xl md:text-4xl transition-all hover:scale-125 z-10 drop-shadow-md"
-                onClick={prevImage}
-                disabled={isTransitioning}
-                >
-                <FaChevronLeft />
-                </button>
-            )}
 
             <div
                 className="flex h-full w-full"
@@ -337,16 +389,16 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                 }}
             >
                 {screenshots.map((src, index) => (
-                <div className="min-w-full h-full flex items-center justify-center" key={index}>
-                    <div className="relative w-full h-full">
+                <div className="min-w-full h-full flex items-center justify-center p-4 md:p-8" key={index}>
+                    <div className="relative w-full h-full drop-shadow-2xl">
                     <Image
                         src={src}
                         alt={`${title} screenshot ${index + 1}`}
                         fill
-                        className="object-contain saturate-125 pointer-events-none"
+                        className="object-contain saturate-125 pointer-events-none rounded-xl"
                         quality={100}
                         priority={index === currentImageIndex}
-                        sizes="(max-width: 768px) 100vw, 800px"
+                        sizes="(max-width: 768px) 100vw, 1200px"
                         unoptimized
                         draggable={false}
                     />
@@ -355,38 +407,52 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                 ))}
             </div>
 
+            </div>
             {screenshots.length > 1 && (
                 <button
-                className="absolute right-0 md:right-2 top-1/2 -translate-y-1/2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] text-2xl md:text-4xl transition-all hover:scale-125 z-10 drop-shadow-md"
-                onClick={nextImage}
+                className="flex-shrink-0 hover:scale-125 transition-all text-3xl md:text-5xl z-10 drop-shadow-lg opacity-80 hover:opacity-100 p-2"
+                style={{ color }}
+                onClick={(e) => { e.stopPropagation(); nextImage(e); }}
                 disabled={isTransitioning}
                 >
                 <FaChevronRight />
                 </button>
             )}
-            </div>
+          </div>
 
             {/* Dot Indicators for Carousel */}
-            <div className="flex gap-1.5 justify-center mt-3">
+            <div className="flex gap-1.5 justify-center mt-3 relative z-20">
             {screenshots.map((_, index) => (
                 <div
                 key={index}
-                className={`h-1 rounded-full transition-all duration-300 ${
-                    index === currentImageIndex
-                    ? 'w-6 bg-[var(--color-primary)]'
-                    : 'w-1.5 bg-[var(--color-primary)]/50'
-                }`}
+                className="h-1.5 rounded-full transition-all duration-300 cursor-pointer"
+                style={{
+                  width: index === currentImageIndex ? '24px' : '6px',
+                  backgroundColor: color,
+                  opacity: index === currentImageIndex ? 1 : 0.5
+                }}
+                onMouseOver={(e) => {
+                  if (index !== currentImageIndex) e.currentTarget.style.opacity = '0.8';
+                }}
+                onMouseOut={(e) => {
+                   if (index !== currentImageIndex) e.currentTarget.style.opacity = '0.5';
+                }}
+                onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(index); }}
                 />
             ))}
             </div>
-          <div className="text-left my-6 md:my-8 mx-auto w-full max-w-3xl md:p-6 rounded-lg">
-            <h3 className="mt-0 text-[var(--color-primary)] text-lg md:text-xl mb-3 md:mb-4 font-bold">
-              Fonctionnalités Clés & Technique :
+          <div className="text-left my-10 md:my-16 mx-auto w-full p-6 md:p-10 rounded-2xl">
+            <h3 className="mt-0 text-white text-2xl md:text-3xl mb-6 font-bold tracking-tight border-b border-white/10 pb-4">
+              Fonctionnalités Clés & Technique
             </h3>
-            <ul className="list-disc pl-5 md:pl-6 space-y-2">
+            <ul className="list-none pl-0 space-y-4">
               {features.map((feature, index) => (
-                <li key={index} className="text-sm md:text-base leading-relaxed text-gray-800">
-                  {feature}
+                <li key={index} className="flex text-base md:text-lg leading-relaxed text-white/80 relative items-start">
+                        <div
+                          className="w-2.5 h-2.5 rounded-full mt-1.5 mr-3 md:mr-4 flex-shrink-0"
+                          style={{ backgroundColor: color }}
+                        />
+                  <span>{feature}</span>
                 </li>
               ))}
             </ul>
@@ -399,10 +465,11 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
               href={projectLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 md:gap-3 font-bold text-base md:text-xl transition-colors hover:underline mx-auto"
-              style={{ color: 'var(--color-primary)' }}
-              onMouseEnter={e => e.currentTarget.style.color = 'var(--color-secondary)'}
-              onMouseLeave={e => e.currentTarget.style.color = 'var(--color-primary)'}
+              className="inline-flex items-center justify-center gap-3 font-bold text-lg md:text-xl transition-all px-8 py-4 md:px-12 md:py-5 rounded-full hover:scale-105 mx-auto mt-4 md:mt-8 mb-10"
+              style={{ 
+                backgroundColor: color,
+                color: light ? 'black' : 'white'
+              }}
             >
               <FaExternalLinkAlt />{projectLinkText}
             </Link>

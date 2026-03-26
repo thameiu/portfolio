@@ -13,6 +13,8 @@ interface ProjectCardProps {
   techStack?: React.ReactNode;
   projectLink?: string;
   projectLinkText?: string;
+  color?: string;
+  light?: boolean;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -26,6 +28,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   techStack,
   projectLink,
   projectLinkText = "Consulter le projet",
+  color = "var(--color-primary)",
+  light,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isCardHovered, setIsCardHovered] = useState(false);
@@ -112,7 +116,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         {/* Content */}
         <div className="p-5 pb-3 flex-1 flex flex-col justify-between">
           <div>
-            <h3 className="text-2xl font-bold text-[var(--color-primary)] mb-2 group-hover:text-[var(--color-secondary)] transition-colors">
+            <h3 
+              className="text-2xl font-bold mb-2 transition-colors duration-300 text-[var(--color-primary)] group-hover:text-[var(--color-secondary)]"
+            >
               {title}
             </h3>
             <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
@@ -121,7 +127,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           </div>
           
           {/* Click indicator */}
-          <div className="mt-2 flex items-center gap-2 text-xs text-[var(--color-secondary)] font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+          <div 
+            className="mt-2 flex items-center gap-2 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity text-[var(--color-secondary)]"
+          >
             <span>Voir plus</span>
             <svg className="w-4 h-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -140,6 +148,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           techStack={techStack}
           projectLink={projectLink}
           projectLinkText={projectLinkText}
+          color={color}
+          light={light}
           onClose={() => setIsOpen(false)}
         />
       )}

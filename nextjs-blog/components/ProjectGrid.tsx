@@ -5,12 +5,22 @@ import { DiNetbeans } from "react-icons/di";
 
 // ProjectGrid component - contains all projects shown on the
 const ProjectGrid = () => {
-  const TechBadge = ({ children }: { children: React.ReactNode }) => (
-    <div className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-[var(--color-primary)] border border-primary text-white rounded-full text-xs md:text-sm transition-all hover:bg-gray-100 hover:text-[var(--color-primary)] whitespace-nowrap">
+  const TechBadge = ({ children, color, light }: { children: React.ReactNode; color?: string; light?: boolean }) => (
+    <div 
+      className={`inline-flex items-center gap-1.5 md:gap-2 px-3 py-1.5 md:px-4 md:py-2 border rounded-full text-xs md:text-sm transition-all hover:!bg-white whitespace-nowrap ${
+        light 
+          ? 'text-black hover:!text-black' 
+          : 'text-white hover:text-[var(--hover-color)]'
+      }`}
+      style={{ 
+        backgroundColor: color || 'var(--color-primary)', 
+        borderColor: color || 'var(--color-primary)',
+        '--hover-color': color || 'var(--color-primary)'
+      } as React.CSSProperties}
+    >
       {children}
     </div>
   );
-
   return (
     <div className="flex flex-wrap gap-4 md:gap-5 justify-center px-4 md:px-5 mt-10 md:mt-12">
       {/* --- 2CLOCK --- */}
@@ -20,6 +30,7 @@ const ProjectGrid = () => {
         previewImage="/2clock/2clock-preview.png"
         width="360px"
         height="280px"
+        color="#FF331E"
         projectLink="https://github.com/abakar-oumar-abdallah/T-DEV-700"
         projectLinkText="Consulter le dépôt de 2clock"
         screenshots={[
@@ -70,6 +81,7 @@ const ProjectGrid = () => {
         previewImage="/pathfinder/miratlas-preview.png"
         width="360px"
         height="280px"
+        color="#8DC63F"
         projectLink="https://miratlas.com"
         projectLinkText="Consulter le site de Miratlas"
         screenshots={[
@@ -106,6 +118,7 @@ const ProjectGrid = () => {
         previewImage="/ggps/ggps-preview.png"
         width="360px"
         height="280px"
+        color="#980000"
         screenshots={[
           "/ggps/ggps-1.png",
           "/ggps/ggps-2.png",
@@ -167,6 +180,7 @@ const ProjectGrid = () => {
         previewImage="/glproject/glproject-preview.png"
         width="360px"
         height="280px"
+        color="#2889AA"
         screenshots={[
           "/glproject/glproject-1.png",
           "/glproject/glproject-2.png"
@@ -194,6 +208,7 @@ const ProjectGrid = () => {
         previewImage="/finder/finder-preview.png"
         width="360px"
         height="280px"
+        color="#FFA52C"
         screenshots={[
           "/finder/finder-1.png",
           "/finder/finder-2.png"
@@ -245,6 +260,8 @@ const ProjectGrid = () => {
         previewImage="/forcedot/forcedot-preview.png"
         width="360px"
         height="280px"
+        color="#EED7E8"
+        light
         screenshots={[
           "/forcedot/forcedot-1.png",
           "/forcedot/forcedot-2.png"
