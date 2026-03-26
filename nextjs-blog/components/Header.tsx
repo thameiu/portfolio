@@ -9,6 +9,26 @@ const Header = () => {
   const [activeSection, setActiveSection] = useState<string>("");
   const [hovering, setHovering] = useState(false);
   const isClickScrolling = useRef(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
+
+  useEffect(() => {
+    // On mobile, show immediately. On desktop, wait for 4s or mouse movement.
+    if (window.innerWidth < 768) {
+      setHasInteracted(true);
+    } else {
+      const timer = setTimeout(() => setHasInteracted(true), 4000);
+      const onInteract = () => setHasInteracted(true);
+      
+      window.addEventListener("mousemove", onInteract, { once: true });
+      window.addEventListener("scroll", onInteract, { once: true });
+
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener("mousemove", onInteract);
+        window.removeEventListener("scroll", onInteract);
+      };
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,9 +46,11 @@ const Header = () => {
           return;
         }
 
-        if (currentScrollY > lastScrollY && currentScrollY > 100 && !hovering) {
+        if (hovering) {
+          setIsVisible(true);
+        } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
           setIsVisible(false);
-        } else {
+        } else if (currentScrollY < lastScrollY || currentScrollY <= 100) {
           setIsVisible(true);
         }
       }
@@ -117,11 +139,13 @@ const Header = () => {
     { id: "contact", label: "Contact" },
   ];
 
+  const shouldShow = isVisible && hasInteracted;
+
   return (
     <>
       <motion.header
         initial={{ y: -100, opacity: 0 }}
-        animate={{ y: isVisible ? 0 : -100, opacity: isVisible ? 1 : 0 }}
+        animate={{ y: shouldShow ? 0 : -100, opacity: shouldShow ? 1 : 0 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className="fixed top-4 left-0 w-full z-50 flex justify-start md:justify-center px-4 pointer-events-none"
       >
@@ -131,7 +155,7 @@ const Header = () => {
           onMouseLeave={() => setHovering(false)}
         >
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center justify-center h-[50px] p-1 rounded-full bg-black/30 backdrop-blur-lg border border-white/10 shadow-lg w-max relative">
+          <nav className="hidden md:flex items-center justify-center h-[50px] p-1 rounded-full bg-[var(--color-primary)]/30 backdrop-blur-lg border border-white/10 shadow-lg w-max relative">
             <ul className="flex items-center justify-between h-full relative">
               {navItems.map((item) => {
                 const isActive = activeSection === item.id;
@@ -169,7 +193,7 @@ const Header = () => {
               <motion.button
                 layoutId="mobile-menu-container"
                 onClick={() => setMenuVisible(true)}
-                className="flex items-center justify-center w-[50px] h-[50px] bg-black/30 backdrop-blur-xl border border-white/10 shadow-lg text-white/80 hover:text-white transition-colors"
+                className="flex items-center justify-center w-[50px] h-[50px] bg-[var(--color-primary)]/30 backdrop-blur-xl border border-white/10 shadow-lg text-white/80 hover:text-white transition-colors"
                 style={{ borderRadius: 25 }}
                 transition={{ type: "tween", ease: "circInOut", duration: 0.25 }}
               >
@@ -185,7 +209,7 @@ const Header = () => {
         {menuVisible && (
           <motion.div
             layoutId="mobile-menu-container"
-            className="fixed inset-0 z-[1000] bg-black/80 backdrop-blur-3xl md:hidden overflow-hidden flex flex-col items-center justify-center"
+            className="fixed inset-0 z-[1000]  bg-[var(--color-primary)]/70 backdrop-blur-3xl md:hidden overflow-hidden flex flex-col items-center justify-center"
             onClick={() => setMenuVisible(false)}
             style={{ borderRadius: 0 }}
             transition={{ type: "tween", ease: "circInOut", duration: 0.25 }}
