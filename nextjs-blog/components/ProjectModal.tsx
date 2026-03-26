@@ -210,10 +210,10 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     <>
       {/* Lightbox Overlay */}
       {isFocused && screenshots.length > 0 && (
-<div
-    className="fixed inset-0 bg-black/92 backdrop-blur-sm z-[2000] flex items-center justify-center animate-fade-in"
-    onClick={closeLightbox}
-  >
+      <div
+          className="fixed inset-0 bg-black/92 backdrop-blur-sm z-[2000] flex items-center justify-center animate-fade-in"
+          onClick={closeLightbox}
+        >
           <div className="relative w-[90vw] h-[70vh] md:w-[85vw] md:h-[80vh] mb-6">
             <button
               className="absolute top-4 right-4 md:top-5 md:right-5 flex items-center justify-center text-white/80 hover:text-white text-2xl transition-colors z-[3000]"
@@ -303,7 +303,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
       {/* Modal */}
       <div
-        className="modal-overlay fixed inset-0 bg-black/50 backdrop-blur-3xl flex justify-center items-start z-[1000] overflow-y-auto animate-fade-in"
+        className={`modal-overlay fixed inset-0 bg-black/80 backdrop-blur-xl flex justify-center items-start z-[1000] overflow-y-auto animate-fade-in`}
         onClick={onClose}
       >
         <div
@@ -317,7 +317,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             <FaTimes />
           </button>
 
-          <div className="text-center mb-8 md:mb-12 mt-10 md:mt-0 max-w-6xl mx-auto w-full">
+          <div className="text-center mb-2 md:mb-12 mt-10 md:mt-0 max-w-6xl mx-auto w-full">
             <h1 
               className="text-5xl md:text-6xl lg:text-8xl font-black tracking-tight mb-4 md:mb-8 drop-shadow-lg"
               style={{ color }}
@@ -354,7 +354,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
 
         {screenshots.length > 0 && (
-        <div className="relative w-full max-w-7xl mx-auto mt-4 md:mt-8">
+        <div className="relative w-full max-w-7xl mx-auto mt-0 md:mt-8">
           <div className="flex items-center justify-center gap-2 md:gap-6">
             {screenshots.length > 1 && (
                 <button
@@ -367,7 +367,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                 </button>
             )}
             <div
-            className="flex-1 w-full relative h-[40vh] md:h-[65vh] overflow-hidden cursor-grab rounded-2xl"
+            className="flex-1 w-full relative h-[25vh] md:h-[65vh] overflow-hidden cursor-grab rounded-2xl"
             onClick={toggleFocus}
             title="Cliquez pour agrandir"
             ref={carouselRef}
@@ -389,8 +389,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                 }}
             >
                 {screenshots.map((src, index) => (
-                <div className="min-w-full h-full flex items-center justify-center p-4 md:p-8" key={index}>
-                    <div className="relative w-full h-full drop-shadow-2xl">
+                <div className="min-w-full h-full flex items-center justify-center p-0 md:p-8" key={index}>
+                    <div className="relative w-full h-full">
                     <Image
                         src={src}
                         alt={`${title} screenshot ${index + 1}`}
@@ -421,7 +421,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           </div>
 
             {/* Dot Indicators for Carousel */}
-            <div className="flex gap-1.5 justify-center mt-3 relative z-20">
+            <div className="flex gap-1.5 justify-center md:mt-3 relative z-20">
             {screenshots.map((_, index) => (
                 <div
                 key={index}
