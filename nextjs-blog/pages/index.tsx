@@ -44,7 +44,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen p-2 flex flex-col justify-start items-center font-['sofia-pro-regular']">
+    <div className="min-h-screen p-2 flex flex-col justify-start items-center font-['Sora']">
       <Head>
         <title>Portfolio - Mathieu HERNANDEZ</title>
         <meta name="description" content="Portfolio de Mathieu HERNANDEZ - Développeur Full-Stack" />
@@ -133,7 +133,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="w-full flex items-center justify-center px-6 md:px-12 py-5 mt-8 border-t border-white/10">
-        <p className="text-[var(--color-accent)] text-xs md:text-sm font-['sofia-pro-regular']">
+        <p className="text-[var(--color-accent)] text-xs md:text-sm font-['Sora']">
           &copy; {new Date().getFullYear()} Mathieu Hernandez.
         </p>
       </footer>

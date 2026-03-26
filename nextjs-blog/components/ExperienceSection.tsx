@@ -63,7 +63,7 @@ const ExperienceSection = () => {
       <div className="flex flex-row flex-wrap justify-center gap-2 md:gap-3 mb-5 md:mb-8">
         <button
           onClick={() => handleTabChange("experience")}
-          className={`min-w-[28%] md:min-w-0 md:w-auto px-3 py-2 md:px-5 md:py-2.5 border-2 border-[var(--color-primary)] rounded-[25px] cursor-pointer text-sm md:text-base transition-all duration-300 font-['sofia-pro-regular'] ${
+          className={`min-w-[28%] md:min-w-0 md:w-auto px-3 py-2 md:px-5 md:py-2.5 border-2 border-[var(--color-primary)] rounded-[25px] cursor-pointer text-sm md:text-base transition-all duration-300 font-['Sora'] ${
             activeTab === "experience"
               ? "bg-[var(--color-primary)] text-white"
               : "bg-transparent text-[var(--color-primary)] hover:bg-gray-100"
@@ -73,7 +73,7 @@ const ExperienceSection = () => {
         </button>
         <button
           onClick={() => handleTabChange("studies")}
-          className={`min-w-[28%] md:min-w-0 md:w-auto px-3 py-2 md:px-5 md:py-2.5 border-2 border-[var(--color-primary)] rounded-[25px] cursor-pointer text-sm md:text-base transition-all duration-300 font-['sofia-pro-regular'] ${
+          className={`min-w-[28%] md:min-w-0 md:w-auto px-3 py-2 md:px-5 md:py-2.5 border-2 border-[var(--color-primary)] rounded-[25px] cursor-pointer text-sm md:text-base transition-all duration-300 font-['Sora'] ${
             activeTab === "studies"
               ? "bg-[var(--color-primary)] text-white"
               : "bg-transparent text-[var(--color-primary)] hover:bg-gray-100"
@@ -83,7 +83,7 @@ const ExperienceSection = () => {
         </button>
         <button
           onClick={() => handleTabChange("skills")}
-          className={`min-w-[28%] md:min-w-0 md:w-auto px-3 py-2 md:px-5 md:py-2.5 border-2 border-[var(--color-primary)] rounded-[25px] cursor-pointer text-sm md:text-base transition-all duration-300 font-['sofia-pro-regular'] ${
+          className={`min-w-[28%] md:min-w-0 md:w-auto px-3 py-2 md:px-5 md:py-2.5 border-2 border-[var(--color-primary)] rounded-[25px] cursor-pointer text-sm md:text-base transition-all duration-300 font-['Sora'] ${
             activeTab === "skills"
               ? "bg-[var(--color-primary)] text-white"
               : "bg-transparent text-[var(--color-primary)] hover:bg-gray-100"
