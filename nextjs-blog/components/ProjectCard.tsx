@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 import ProjectModal from "./ProjectModal";
 
 interface ProjectCardProps {
@@ -65,15 +66,17 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   return (
     <>
       {/* Project Card */}
-      <div
-        className="group relative bg-white rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 flex flex-col w-full sm:w-[360px]"
-        style={{ height: height || '380px' }}
+      <motion.div
+        layoutId={`project-card-${title}`}
+        className="group relative bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl overflow-hidden cursor-pointer transition-colors transition-shadow duration-300 hover:shadow-2xl flex flex-col w-full sm:w-[360px]"
+        whileHover={{ y: -8 }}
+        style={{ height: height || '380px', borderRadius: '16px' }}
         onClick={openModal}
         onMouseEnter={() => setIsCardHovered(true)}
         onMouseLeave={() => setIsCardHovered(false)}
       >
         {/* Image Container with Sliding Animation */}
-        <div className="relative w-full h-[60%] overflow-hidden bg-gray-100">
+        <div className="relative w-full h-[60%] overflow-hidden bg-white/5">
           <div 
             className="flex h-full transition-transform duration-700 ease-in-out"
             style={{ transform: `translateX(-${previewIndex * 100}%)` }}
@@ -114,14 +117,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         </div>
 
         {/* Content */}
-        <div className="p-5 pb-3 flex-1 flex flex-col justify-between">
+        <div className="p-5 pb-3 flex-1 flex flex-col justify-between text-white">
           <div>
             <h3 
-              className="text-2xl font-bold mb-2 transition-colors duration-300 text-[var(--color-primary)] group-hover:text-[var(--color-secondary)]"
+              className="text-2xl font-bold mb-2 transition-colors duration-300 text-white/90 group-hover:text-[var(--color-secondary)]"
             >
               {title}
             </h3>
-            <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
+            <p className="text-sm text-white/70 leading-relaxed line-clamp-3">
               {description}
             </p>
           </div>
@@ -136,23 +139,25 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             </svg>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Modal */}
-      {isOpen && (
-        <ProjectModal
-          title={title}
-          description={description}
-          features={features}
-          screenshots={screenshots}
-          techStack={techStack}
-          projectLink={projectLink}
-          projectLinkText={projectLinkText}
-          color={color}
-          light={light}
-          onClose={() => setIsOpen(false)}
-        />
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <ProjectModal
+            title={title}
+            description={description}
+            features={features}
+            screenshots={screenshots}
+            techStack={techStack}
+            projectLink={projectLink}
+            projectLinkText={projectLinkText}
+            color={color}
+            light={light}
+            onClose={() => setIsOpen(false)}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 };

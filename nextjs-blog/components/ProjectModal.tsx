@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { FaChevronLeft, FaChevronRight, FaExternalLinkAlt, FaTimes } from "react-icons/fa";
 import Link from "next/link";
 
@@ -89,14 +90,22 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
       document.head.appendChild(style);
     
     return () => { 
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
+      // Do nothing here for the scroll unlocking.
+      // Unlocking is handled by the synchronous handleClose to prevent scrollbar jumping during layout animation
       const styleEl = document.getElementById('modal-scrollbar-style');
       if (styleEl) {
         styleEl.remove();
       }
     };
   }, [color]);
+
+  const handleClose = () => {
+    // Unlock instantly BEFORE the exit animation kicks in completely with Framer Motion, 
+    // avoiding the sudden scrollbar pop at the very end.
+    document.documentElement.style.overflow = "";
+    document.body.style.overflow = "";
+    onClose();
+  };
 
   // Update translate position when image changes
   useEffect(() => {
@@ -196,7 +205,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         if (isFocused) setIsFocused(false);
-        else onClose();
+        else handleClose();
       }
       if (e.key === "ArrowRight") nextImage();
       if (e.key === "ArrowLeft") prevImage();
@@ -302,17 +311,22 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
       )}
 
       {/* Modal */}
-      <div
-        className={`modal-overlay fixed inset-0 bg-black/80 backdrop-blur-xl flex justify-center items-start z-[1000] overflow-y-auto animate-fade-in`}
-        onClick={onClose}
+      <motion.div
+        layoutId={`project-card-${title}`}
+        className={`modal-overlay fixed inset-0 bg-black/80 backdrop-blur-xl flex justify-center items-start z-[1000] overflow-y-auto`}
+        onClick={handleClose}
+        style={{ borderRadius: '0px' }}
       >
-        <div
-          className="w-full min-h-screen relative flex flex-col p-6 md:p-16 animate-slide-in pb-20"
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, transition: { delay: 0.1, duration: 0.3 } }}
+          exit={{ opacity: 0, transition: { duration: 0.1 } }}
+          className="w-full min-h-screen relative flex flex-col p-6 md:p-16 pb-20"
           onClick={(e) => e.stopPropagation()}
         >
           <button
             className="absolute top-4 right-4 md:top-5 md:right-5 flex items-center justify-center w-[50px] h-[50px] text-white/80 hover:text-white transition-colors z-50 text-2xl"
-            onClick={onClose}
+            onClick={handleClose}
           >
             <FaTimes />
           </button>
@@ -474,8 +488,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
               <FaExternalLinkAlt />{projectLinkText}
             </Link>
           )}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </>
   );
 };
