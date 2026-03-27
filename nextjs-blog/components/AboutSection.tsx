@@ -5,10 +5,10 @@ import Section from "./Section";
 const AboutSection: React.FC = () => {
   return (
     <Section id="about" className="flex flex-col justify-center items-center pt-[10vh] w-full box-border my-10 md:my-16">
-      <h2 className="uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
+      <h2 className="fade-in-section uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
         À propos
       </h2>
-      <div className="w-[90vw] md:w-[80vw] overflow-hidden bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl flex flex-col lg:flex-row shadow-2xl justify-center box-border relative min-h-[400px]">
+      <div className="fade-in-section w-full max-w-[90vw] md:max-w-7xl mx-auto overflow-hidden bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl flex flex-col lg:flex-row justify-center box-border relative min-h-[400px]">
         {/* Full-height Image Container with CSS Mask for true opacity blending */}
         <div className="relative w-full lg:w-[40%] h-[300px] lg:h-auto flex-shrink-0"
              style={{

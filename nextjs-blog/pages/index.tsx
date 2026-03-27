@@ -75,7 +75,7 @@ export default function Home() {
 
       {/* Experience Section */}
       <Section id="experience" className="mt-[10vh] md:my-16 w-full px-4">
-        <h2 className="uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
+        <h2 className="fade-in-section uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
           Parcours et Compétences
         </h2>
         <ExperienceSection />
@@ -83,7 +83,7 @@ export default function Home() {
 
       {/* Projects Section */}
       <Section id="projects" className="mt-[10vh] w-full">
-        <h2 className="uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
+        <h2 className="fade-in-section uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
           Projets
         </h2>
         <ProjectGrid />
@@ -91,7 +91,7 @@ export default function Home() {
 
     {/* Contact Section */}
       <Section id="contact" className="mt-[15vh] mb-[20vh] w-full px-4">
-        <h2 className="uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
+        <h2 className="fade-in-section uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 md:mb-10 text-center text-white font-['archivo-black'] tracking-tight">
           Contact
         </h2>
         <ContactSection />

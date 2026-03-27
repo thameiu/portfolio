@@ -1,11 +1,11 @@
 export const TechBadge = ({ children }: { children: React.ReactNode }) => (
-    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[var(--color-primary)] border border-[var(--color-primary)] text-white rounded-full text-xs transition-all hover:bg-gray-100 hover:text-[var(--color-primary)] group/badge whitespace-nowrap">
+    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[var(--color-primary)] border border-white text-white rounded-full text-xs transition-all hover:bg-gray-100 hover:text-[var(--color-primary)] group/badge whitespace-nowrap">
         {children}
     </div>
 );
 
 export const SkillBadge = ({ children }: { children: React.ReactNode }) => (
-    <div className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-[var(--color-primary)] border border-[var(--color-primary)] text-white rounded-full text-xs md:text-sm transition-all hover:bg-gray-100 hover:text-[var(--color-primary)] group/badge whitespace-nowrap">
+    <div className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-[var(--color-primary)] border border-white text-white rounded-full text-xs md:text-sm transition-all hover:bg-gray-100 hover:text-[var(--color-primary)] group/badge whitespace-nowrap">
         {children}
     </div>
 );

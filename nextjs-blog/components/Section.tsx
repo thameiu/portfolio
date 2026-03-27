@@ -12,7 +12,6 @@ const Section: React.FC<SectionProps> = ({ id, children, className = '' }) => {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    // Détecte si on est sur mobile
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
@@ -24,7 +23,6 @@ const Section: React.FC<SectionProps> = ({ id, children, className = '' }) => {
   }, []);
 
   useEffect(() => {
-    // Si on est sur mobile, toujours visible (pas d'animations)
     if (isMobile) {
       setIsVisible(true);
       return;
@@ -55,11 +53,8 @@ const Section: React.FC<SectionProps> = ({ id, children, className = '' }) => {
     <section
       id={id}
       ref={sectionRef}
-      className={`${className} ${
-        isMobile 
-          ? '' 
-          : `transition-opacity duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`
-      }`}
+      className={`${className} group/section`}
+      data-visible={isVisible || isMobile}
     >
       {children}
     </section>

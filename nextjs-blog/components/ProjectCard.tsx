@@ -68,7 +68,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       {/* Project Card */}
       <motion.div
         layoutId={`project-card-${title}`}
-        className="group relative bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl overflow-hidden cursor-pointer transition-colors transition-shadow duration-300 hover:shadow-2xl flex flex-col w-full sm:w-[360px]"
+        className="fade-in-section group relative bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl overflow-hidden cursor-pointer transition-colors transition-shadow duration-300 hover:shadow-2xl flex flex-col w-full sm:w-[360px]"
         whileHover={{ y: -8 }}
         style={{ height: height || '380px', borderRadius: '16px' }}
         onClick={openModal}
