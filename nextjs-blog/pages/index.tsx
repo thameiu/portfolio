@@ -136,6 +136,8 @@ export default function PortfolioV2() {
     const shouldUseNativeScroll = window.matchMedia(
       "(max-width: 1023px), (pointer: coarse), (prefers-reduced-motion: reduce)"
     ).matches;
+
+    document.body.classList.toggle("v2-smooth", !shouldUseNativeScroll);
     const smoother = shouldUseNativeScroll
       ? null
       : ScrollSmoother.create({
@@ -146,6 +148,7 @@ export default function PortfolioV2() {
         });
 
     return () => {
+      document.body.classList.remove("v2-smooth");
       smoother?.kill();
       ScrollTrigger.getAll().forEach(t => t.kill());
     };

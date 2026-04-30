@@ -14,22 +14,32 @@ export default function AboutV2() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // ── Title: slides in from left ──
-      gsap.fromTo(titleRef.current,
-        { x: -80, opacity: 0 },
-        {
-          x: 0, opacity: 1,
-          scrollTrigger: { trigger: sectionRef.current, start: "top 85%", end: "top 40%", scrub: 0.6 },
-        }
-      );
-      // ── Title exits upward ──
-      gsap.fromTo(titleRef.current,
-        { y: 0, opacity: 1 },
-        {
-          y: -60, opacity: 0,
-          scrollTrigger: { trigger: sectionRef.current, start: "bottom 70%", end: "bottom 20%", scrub: 0.6 },
-        }
-      );
+      const title = titleRef.current;
+      const section = sectionRef.current;
+      if (!title || !section) return;
+
+      // Match the same progressive title behavior as "Parcours"
+      title.style.opacity = "0";
+      title.style.transform = "translateX(-80px)";
+      title.style.willChange = "transform, opacity";
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 85%",
+        end: "bottom 20%",
+        scrub: 0.6,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const inProgress = Math.min(1, progress / 0.42);
+          const outProgress = Math.min(1, Math.max(0, (progress - 0.58) / 0.28));
+          const opacity = Math.max(0, inProgress * (1 - outProgress));
+          const x = -80 * (1 - inProgress);
+          const y = -60 * outProgress;
+          title.style.opacity = String(opacity);
+          title.style.transform = `translate(${x}px, ${y}px)`;
+        },
+      });
+
       // ── Content fades in ──
       gsap.fromTo(contentRef.current,
         { y: 40, opacity: 0 },
@@ -37,7 +47,7 @@ export default function AboutV2() {
           y: 0, opacity: 1, duration: 0.8, ease: "power2.out",
           scrollTrigger: {
             trigger: contentRef.current,
-            start: "top 80%",
+            start: "top 85%",
             toggleActions: "play none none none",
           },
         }
