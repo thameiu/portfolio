@@ -453,6 +453,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
   const decorRefs    = useRef<(HTMLDivElement | null)[]>([]);
   const spinRefs     = useRef<(SVGGElement | null)[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const iconLayout = getIconLayout(project.iconType);
 
@@ -460,92 +461,137 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
     const mq = window.matchMedia("(max-width: 1023px)");
     const sync = () => setIsMobile(mq.matches);
     sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
+    if (mq.addEventListener) {
+      mq.addEventListener("change", sync);
+      return () => mq.removeEventListener("change", sync);
+    }
+    mq.addListener(sync);
+    return () => mq.removeListener(sync);
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setPrefersReducedMotion(mq.matches);
+    sync();
+    if (mq.addEventListener) {
+      mq.addEventListener("change", sync);
+      return () => mq.removeEventListener("change", sync);
+    }
+    mq.addListener(sync);
+    return () => mq.removeListener(sync);
   }, []);
 
   /* ScrollTrigger animation */
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+    const useSimplifiedMotion = isMobile || prefersReducedMotion;
+    const layoutForMotion = getIconLayout(project.iconType);
+
     const ctx = gsap.context(() => {
       gsap.set(hugeTitleRef.current, { opacity: 0 });
-      gsap.set(logoRef.current,      { opacity: 0 });
-      gsap.set(contentRef.current,   { opacity: 0 });
-      gsap.set(carouselRef.current,  { opacity: 0 });
-      gsap.set(decorRefs.current,    { opacity: 0 });
+      if (useSimplifiedMotion) {
+        gsap.set(logoRef.current,     { opacity: 0, y: 16 });
+        gsap.set(contentRef.current,  { opacity: 0, y: 16 });
+        gsap.set(carouselRef.current, { opacity: 0, y: 16 });
+        gsap.set(decorRefs.current,   { opacity: 0.08 });
 
-      /* Floating icons */
-      decorRefs.current.forEach((el, i) => {
-        if (!el) return;
-        const baseRot  = iconLayout[i]?.rotation ?? 0;
-        const floatRot = (i % 2 === 0 ? 1 : -1) * (8 + (i % 3) * 2);
-        gsap.set(el, { rotate: baseRot });
-        gsap.to(el, {
-          y: (i % 2 === 0 ? -1 : 1) * (10 + (i % 3) * 4),
-          x: (i % 2 === 0 ?  1 : -1) * (6  + (i % 4) * 3),
-          rotate: baseRot + floatRot,
-          duration: 3.8 + i * 0.35,
-          repeat: -1, yoyo: true, ease: "sine.inOut",
+        const reveal = gsap.timeline({ paused: true })
+          .to([logoRef.current, contentRef.current, carouselRef.current], {
+            opacity: 1,
+            y: 0,
+            duration: 0.45,
+            ease: "power2.out",
+            stagger: 0.06,
+          });
+
+        ScrollTrigger.create({
+          trigger: sectionRef.current,
+          start: "top 78%",
+          end: "bottom 18%",
+          onEnter:     () => { setProjectActive(`${project.id}-pin`, true); reveal.play(); },
+          onEnterBack: () => { setProjectActive(`${project.id}-pin`, true); reveal.play(); },
+          onLeave:     () => setProjectActive(`${project.id}-pin`, false),
+          onLeaveBack: () => setProjectActive(`${project.id}-pin`, false),
         });
-      });
+      } else {
+        gsap.set(logoRef.current,      { opacity: 0 });
+        gsap.set(contentRef.current,   { opacity: 0 });
+        gsap.set(carouselRef.current,  { opacity: 0 });
+        gsap.set(decorRefs.current,    { opacity: 0 });
 
-      /* Main scrubbed trigger — pin the section itself */
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top top",
-        end: `+=${PROJECT_PIN_DISTANCE}`,
-        pin: sectionRef.current,
-        pinSpacing: true,
-        scrub: 1,
-        anticipatePin: 0,
-        onRefresh: () => {
-          const spacer = sectionRef.current?.parentElement;
-          if (spacer) {
-            spacer.style.background = project.bgColor;
-            spacer.style.marginBottom = "0px";
-          }
-        },
-        onEnter:     () => setProjectActive(`${project.id}-pin`, true),
-        onEnterBack: () => setProjectActive(`${project.id}-pin`, true),
-        onLeave:     () => setProjectActive(`${project.id}-pin`, false),
-        onLeaveBack: () => setProjectActive(`${project.id}-pin`, false),
-        onUpdate: (self) => {
-          const p = self.progress;
+        /* Floating icons */
+        decorRefs.current.forEach((el, i) => {
+          if (!el) return;
+          const baseRot  = layoutForMotion[i]?.rotation ?? 0;
+          const floatRot = (i % 2 === 0 ? 1 : -1) * (8 + (i % 3) * 2);
+          gsap.set(el, { rotate: baseRot });
+          gsap.to(el, {
+            y: (i % 2 === 0 ? -1 : 1) * (10 + (i % 3) * 4),
+            x: (i % 2 === 0 ?  1 : -1) * (6  + (i % 4) * 3),
+            rotate: baseRot + floatRot,
+            duration: 3.8 + i * 0.35,
+            repeat: -1, yoyo: true, ease: "sine.inOut",
+          });
+        });
 
-          /* Big logo appears early during cover, then fades out before info. */
-          const hugeIn  = gsap.utils.clamp(0, 1, (p - 0.10) / 0.07);
-          const hugeOut = gsap.utils.clamp(0, 1, (p - 0.30) / 0.08);
-          gsap.set(hugeTitleRef.current, { opacity: hugeIn * (1 - hugeOut) });
+        /* Main scrubbed trigger — pin the section itself */
+        ScrollTrigger.create({
+          trigger: sectionRef.current,
+          start: "top top",
+          end: `+=${PROJECT_PIN_DISTANCE}`,
+          pin: sectionRef.current,
+          pinSpacing: true,
+          scrub: 1,
+          anticipatePin: 0,
+          onRefresh: () => {
+            const spacer = sectionRef.current?.parentElement;
+            if (spacer) {
+              spacer.style.background = project.bgColor;
+              spacer.style.marginBottom = "0px";
+            }
+          },
+          onEnter:     () => setProjectActive(`${project.id}-pin`, true),
+          onEnterBack: () => setProjectActive(`${project.id}-pin`, true),
+          onLeave:     () => setProjectActive(`${project.id}-pin`, false),
+          onLeaveBack: () => setProjectActive(`${project.id}-pin`, false),
+          onUpdate: (self) => {
+            const p = self.progress;
 
-          /* Info appears after cover is established, then stays fixed while next covers. */
-          const info = gsap.utils.clamp(0, 1, (p - 0.34) / 0.06);
-          gsap.set(logoRef.current,    { opacity: info });
-          gsap.set(contentRef.current, { opacity: info });
-          gsap.set(carouselRef.current,{ opacity: info });
-          gsap.set(decorRefs.current,  { opacity: info * 0.24 });
+            /* Big logo appears early during cover, then fades out before info. */
+            const hugeIn  = gsap.utils.clamp(0, 1, (p - 0.10) / 0.07);
+            const hugeOut = gsap.utils.clamp(0, 1, (p - 0.30) / 0.08);
+            gsap.set(hugeTitleRef.current, { opacity: hugeIn * (1 - hugeOut) });
 
-          /* Scroll-driven icon rotation */
-          if (project.iconType === "clock") {
-            spinRefs.current.forEach(el => {
-              if (el) el.setAttribute("transform", `rotate(${p * 360} 60 60)`);
-            });
-          } else if (project.iconType === "circles") {
-            spinRefs.current.forEach(el => {
-              if (el) el.style.transform = `rotate(${p * 180}deg)`;
-            });
-          } else if (project.iconType === "satellite") {
-            const speed = [110, -160, 80, -130, 60, -95, 140];
-            spinRefs.current.forEach(el => {
-              if (!el) return;
-              const rings = el.querySelectorAll("[data-path-ring]");
-              rings.forEach((ring, i) => {
-                const angle = p * speed[i % speed.length];
-                (ring as SVGGElement).setAttribute("transform", `rotate(${angle} 350 220)`);
+            /* Info appears after cover is established, then stays fixed while next covers. */
+            const info = gsap.utils.clamp(0, 1, (p - 0.34) / 0.06);
+            gsap.set(logoRef.current,    { opacity: info });
+            gsap.set(contentRef.current, { opacity: info });
+            gsap.set(carouselRef.current,{ opacity: info });
+            gsap.set(decorRefs.current,  { opacity: info * 0.24 });
+
+            /* Scroll-driven icon rotation */
+            if (project.iconType === "clock") {
+              spinRefs.current.forEach(el => {
+                if (el) el.setAttribute("transform", `rotate(${p * 360} 60 60)`);
               });
-            });
-          }
-        },
-      });
+            } else if (project.iconType === "circles") {
+              spinRefs.current.forEach(el => {
+                if (el) el.style.transform = `rotate(${p * 180}deg)`;
+              });
+            } else if (project.iconType === "satellite") {
+              const speed = [110, -160, 80, -130, 60, -95, 140];
+              spinRefs.current.forEach(el => {
+                if (!el) return;
+                const rings = el.querySelectorAll("[data-path-ring]");
+                rings.forEach((ring, i) => {
+                  const angle = p * speed[i % speed.length];
+                  (ring as SVGGElement).setAttribute("transform", `rotate(${angle} 350 220)`);
+                });
+              });
+            }
+          },
+        });
+      }
 
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -564,7 +610,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
       setProjectActive(`${project.id}-viewport`, false);
       ctx.revert();
     };
-  }, []);
+  }, [isMobile, prefersReducedMotion, project.bgColor, project.iconType, project.id]);
 
   const { isDark, accentColor, bgColor } = project;
   const textPrimary = isDark ? "rgba(255,255,255,0.92)" : "rgba(15,8,8,0.88)";
@@ -573,22 +619,30 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
   const isRgbast = project.id === "rgbast";
   const isGgps = project.id === "ggps";
   const isPathfinder = project.id === "pathfinder";
+  const useSimplifiedMotion = isMobile || prefersReducedMotion;
 
   return (
     <section
       ref={sectionRef}
       id={`v2-project-${project.id}`}
       style={{
-        height: "100vh",
+        height: useSimplifiedMotion ? "auto" : "100vh",
+        minHeight: "100svh",
         position: "relative",
         overflow: "hidden",
         zIndex: 10 + index,
         background: bgColor,
-        marginTop: -PROJECT_OVERLAP,
+        marginTop: useSimplifiedMotion ? 0 : -PROJECT_OVERLAP,
       }}
     >
       <div ref={panelRef}
-        style={{ position: "relative", height: "100%", overflow: "hidden", background: bgColor }}>
+        style={{
+          position: "relative",
+          height: useSimplifiedMotion ? "auto" : "100%",
+          minHeight: "100svh",
+          overflow: "hidden",
+          background: bgColor,
+        }}>
 
         {/* Project-specific subtle backdrops */}
         {isRgbast && (
@@ -659,26 +713,28 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
         ))}
 
         {/* Big centered title — logo appears at 50%, info appears during fade-out */}
-        <div ref={hugeTitleRef} style={{
-          position: "absolute", top: "50%", left: "50%",
-          transform: "translate(-50%, -50%)",
-          opacity: 0, zIndex: 3, pointerEvents: "none",
-          textAlign: "center", width: "100%", height: "100%",
-          display: "flex", alignItems: "center", justifyContent: "center",
-        }}>
-          {project.titleSvg ? (
-            <Image src={project.titleSvg} alt={project.title}
-              width={1200} height={300}
-              style={{ width: "min(78vw, 920px)", height: "auto", maxHeight: "42vh", objectFit: "contain" }}/>
-          ) : (
-            <span style={{
-              fontFamily: "'Mango Grotesque','archivo-black',sans-serif",
-              fontSize: "clamp(5rem, 16vw, 17rem)", color: accentColor,
-              fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.01em",
-              display: "block",
-            }}>{project.title}</span>
-          )}
-        </div>
+        {!useSimplifiedMotion && (
+          <div ref={hugeTitleRef} style={{
+            position: "absolute", top: "50%", left: "50%",
+            transform: "translate(-50%, -50%)",
+            opacity: 0, zIndex: 3, pointerEvents: "none",
+            textAlign: "center", width: "100%", height: "100%",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            {project.titleSvg ? (
+              <Image src={project.titleSvg} alt={project.title}
+                width={1200} height={300}
+                style={{ width: "min(78vw, 920px)", height: "auto", maxHeight: "42vh", objectFit: "contain" }}/>
+            ) : (
+              <span style={{
+                fontFamily: "'Mango Grotesque','archivo-black',sans-serif",
+                fontSize: "clamp(5rem, 16vw, 17rem)", color: accentColor,
+                fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.01em",
+                display: "block",
+              }}>{project.title}</span>
+            )}
+          </div>
+        )}
 
         {/* Layout */}
         <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: isMobile ? "column" : "row", zIndex: 6 }}>

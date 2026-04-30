@@ -104,10 +104,13 @@ export default function HeaderV2() {
       const el = document.getElementById(id);
       if (!el) return;
       const baseTop = window.scrollY + el.getBoundingClientRect().top;
+      const isMobileViewport = window.innerWidth < 768;
       const isProjectAnchor = id.startsWith("v2-project-");
       const isContactAnchor = id === "v2-contact";
       const targetTop = isContactAnchor
-        ? Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
+        ? isMobileViewport
+          ? Math.max(0, baseTop - 16)
+          : Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
         : isProjectAnchor
           ? baseTop + window.innerHeight * 0.42
           : Math.max(0, baseTop - 80);

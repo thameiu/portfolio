@@ -133,12 +133,17 @@ export default function PortfolioV2() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
-    const smoother = ScrollSmoother.create({
-      wrapper:  "#smooth-wrapper",
-      content:  "#smooth-content",
-      smooth:   1.4,
-      effects:  true,
-    });
+    const shouldUseNativeScroll = window.matchMedia(
+      "(max-width: 1023px), (pointer: coarse), (prefers-reduced-motion: reduce)"
+    ).matches;
+    const smoother = shouldUseNativeScroll
+      ? null
+      : ScrollSmoother.create({
+          wrapper: "#smooth-wrapper",
+          content: "#smooth-content",
+          smooth: 1.4,
+          effects: true,
+        });
 
     return () => {
       smoother?.kill();
