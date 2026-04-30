@@ -136,6 +136,10 @@ export default function PortfolioV2() {
     const shouldUseNativeScroll = window.matchMedia(
       "(max-width: 1023px), (pointer: coarse), (prefers-reduced-motion: reduce)"
     ).matches;
+    ScrollTrigger.config({
+      limitCallbacks: true,
+      ignoreMobileResize: shouldUseNativeScroll,
+    });
 
     document.body.classList.toggle("v2-smooth", !shouldUseNativeScroll);
     const smoother = shouldUseNativeScroll

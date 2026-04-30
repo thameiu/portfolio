@@ -182,6 +182,7 @@ function Carousel({ images, accentColor, isDark }: {
   const idxRef       = useRef(0);
   const lockRef      = useRef(false);
   const trTimerRef   = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const focusOverlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     idxRef.current = idx;
@@ -259,34 +260,42 @@ function Carousel({ images, accentColor, isDark }: {
     const saved = {
       htmlOverflow: html.style.overflow,
       bodyOverflow: body.style.overflow,
-      bodyPosition: body.style.position,
-      bodyTop: body.style.top,
-      bodyLeft: body.style.left,
-      bodyRight: body.style.right,
-      bodyWidth: body.style.width,
+      htmlOverscrollBehavior: html.style.overscrollBehavior,
       bodyOverscrollBehavior: body.style.overscrollBehavior,
+      htmlTouchAction: html.style.touchAction,
+      bodyTouchAction: body.style.touchAction,
     };
-    const scrollY = window.scrollY;
 
     html.style.overflow = "hidden";
     body.style.overflow = "hidden";
-    body.style.position = "fixed";
-    body.style.top = `-${scrollY}px`;
-    body.style.left = "0";
-    body.style.right = "0";
-    body.style.width = "100%";
+    html.style.overscrollBehavior = "none";
     body.style.overscrollBehavior = "none";
+    html.style.touchAction = "none";
+    body.style.touchAction = "none";
+
+    const preventScroll = (e: Event) => {
+      const overlay = focusOverlayRef.current;
+      const target = e.target as Node | null;
+      if (!overlay || !target || !overlay.contains(target)) {
+        e.preventDefault();
+        return;
+      }
+      // In the focus overlay, carousel gestures are handled manually.
+      e.preventDefault();
+    };
+
+    window.addEventListener("wheel", preventScroll, { passive: false, capture: true });
+    window.addEventListener("touchmove", preventScroll, { passive: false, capture: true });
 
     return () => {
+      window.removeEventListener("wheel", preventScroll, true);
+      window.removeEventListener("touchmove", preventScroll, true);
       html.style.overflow = saved.htmlOverflow;
       body.style.overflow = saved.bodyOverflow;
-      body.style.position = saved.bodyPosition;
-      body.style.top = saved.bodyTop;
-      body.style.left = saved.bodyLeft;
-      body.style.right = saved.bodyRight;
-      body.style.width = saved.bodyWidth;
+      html.style.overscrollBehavior = saved.htmlOverscrollBehavior;
       body.style.overscrollBehavior = saved.bodyOverscrollBehavior;
-      window.scrollTo(0, scrollY);
+      html.style.touchAction = saved.htmlTouchAction;
+      body.style.touchAction = saved.bodyTouchAction;
     };
   }, [focused]);
 
@@ -320,6 +329,7 @@ function Carousel({ images, accentColor, isDark }: {
       {/* ── lightbox ── */}
       {focused && (
         <div
+          ref={focusOverlayRef}
           style={{
             position: "fixed", inset: 0, zIndex: 2000,
             background: "rgba(0,0,0,0.94)", backdropFilter: "blur(12px)",
@@ -594,15 +604,18 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
         });
 
         /* Main scrubbed trigger — pin the section itself */
+        const pinDistance = isMobile
+          ? Math.round(window.innerHeight * PROJECT_PIN_DISTANCE_MOBILE_FACTOR)
+          : PROJECT_PIN_DISTANCE;
+
         ScrollTrigger.create({
           trigger: sectionRef.current,
-          start: isMobile ? "top top+=1" : "top top",
-          end: () => `+=${Math.round(isMobile ? window.innerHeight * PROJECT_PIN_DISTANCE_MOBILE_FACTOR : PROJECT_PIN_DISTANCE)}`,
+          start: "top top",
+          end: `+=${pinDistance}`,
           pin: sectionRef.current,
           pinSpacing: true,
-          scrub: isMobile ? 0.45 : 1,
+          scrub: isMobile ? true : 1,
           anticipatePin: 0,
-          invalidateOnRefresh: true,
           onRefresh: () => {
             const spacer = sectionRef.current?.parentElement;
             if (spacer) {
@@ -844,8 +857,8 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
             justifyContent: isMobile ? "flex-end" : "center",
             paddingLeft: isMobile ? "6vw" : "8vw",
             paddingRight: isMobile ? "6vw" : "3vw",
-            paddingTop: isMobile ? "14vh" : "0",
-            paddingBottom: isMobile ? "8vh" : "0",
+            paddingTop: isMobile ? "10vh" : "0",
+            paddingBottom: isMobile ? "14vh" : "0",
           }}>
             {/* Small logo */}
             <div ref={logoRef} style={{ opacity: 0, marginBottom: "1.5rem", display: "inline-block" }}>
