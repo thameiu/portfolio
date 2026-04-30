@@ -12,7 +12,7 @@ import {
 const PROJECT_PIN_DISTANCE = 1800;
 const PROJECT_PIN_DISTANCE_MOBILE_FACTOR = 2.45;
 export const PROJECT_OVERLAP = 650;
-const PROJECT_OVERLAP_MOBILE = 80;
+const PROJECT_OVERLAP_MOBILE = 460;
 
 /* ═══════════════════════════════════════════════
    ICONS
@@ -501,14 +501,9 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
   const logoRef      = useRef<HTMLDivElement>(null);
   const contentRef   = useRef<HTMLDivElement>(null);
   const carouselRef  = useRef<HTMLDivElement>(null);
-  const mobileScrollRef = useRef<HTMLDivElement>(null);
   const decorRefs    = useRef<(HTMLDivElement | null)[]>([]);
   const spinRefs     = useRef<(SVGGElement | null)[]>([]);
-  const infoScrollableRef = useRef(false);
-  const touchYRef = useRef<number | null>(null);
-  const touchInSectionRef = useRef(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isInfoScrollable, setIsInfoScrollable] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const iconLayout = getIconLayout(project.iconType);
@@ -630,22 +625,14 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
           },
           onEnter:     () => setProjectActive(`${project.id}-pin`, true),
           onEnterBack: () => setProjectActive(`${project.id}-pin`, true),
-          onLeave:     () => {
-            setProjectActive(`${project.id}-pin`, false);
-            infoScrollableRef.current = false;
-            setIsInfoScrollable(false);
-          },
-          onLeaveBack: () => {
-            setProjectActive(`${project.id}-pin`, false);
-            infoScrollableRef.current = false;
-            setIsInfoScrollable(false);
-          },
+          onLeave:     () => setProjectActive(`${project.id}-pin`, false),
+          onLeaveBack: () => setProjectActive(`${project.id}-pin`, false),
           onUpdate: (self) => {
             const p = self.progress;
 
             /* Big logo appears early during cover, then fades out before info. */
-            const hugeIn  = gsap.utils.clamp(0, 1, (p - 0.10) / 0.07);
-            const hugeOut = gsap.utils.clamp(0, 1, (p - 0.30) / 0.08);
+            const hugeIn  = gsap.utils.clamp(0, 1, (p - 0.03) / 0.09);
+            const hugeOut = gsap.utils.clamp(0, 1, (p - 0.24) / 0.10);
             gsap.set(hugeTitleRef.current, { opacity: hugeIn * (1 - hugeOut) });
 
             /* Info appears after cover is established, then stays fixed while next covers. */
@@ -654,24 +641,6 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
             gsap.set(contentRef.current, { opacity: info });
             gsap.set(carouselRef.current,{ opacity: info });
             gsap.set(decorRefs.current,  { opacity: info * 0.24 });
-
-            if (isMobile) {
-              const scroller = mobileScrollRef.current;
-              const maxScroll = scroller ? Math.max(0, scroller.scrollHeight - scroller.clientHeight) : 0;
-              const hasOverflow = maxScroll > 0;
-              /* Wait until info fade-in is fully established before allowing inner scroll. */
-              const canScrollInfo =
-                hasOverflow &&
-                p >= 0.46 &&
-                p < 0.97;
-              if (infoScrollableRef.current !== canScrollInfo) {
-                infoScrollableRef.current = canScrollInfo;
-                setIsInfoScrollable(canScrollInfo);
-                if (!canScrollInfo && mobileScrollRef.current && p < 0.46) {
-                  mobileScrollRef.current.scrollTop = 0;
-                }
-              }
-            }
 
             /* Scroll-reactive background motion */
             if (isMobile) {
@@ -740,102 +709,9 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
     return () => {
       setProjectActive(`${project.id}-pin`, false);
       setProjectActive(`${project.id}-viewport`, false);
-      infoScrollableRef.current = false;
-      setIsInfoScrollable(false);
       ctx.revert();
     };
   }, [isMobile, prefersReducedMotion, project.bgColor, project.iconType, project.id]);
-
-  useEffect(() => {
-    if (!isMobile) return;
-    const scroller = mobileScrollRef.current;
-    const section = sectionRef.current;
-    if (!scroller || !section) return;
-
-    const isTouchInsideSection = (touch: Touch) => {
-      const rect = section.getBoundingClientRect();
-      return (
-        touch.clientX >= rect.left &&
-        touch.clientX <= rect.right &&
-        touch.clientY >= rect.top &&
-        touch.clientY <= rect.bottom
-      );
-    };
-
-    const isTouchOnTopOfThisSection = (touch: Touch) => {
-      const topEl = document.elementFromPoint(touch.clientX, touch.clientY);
-      return !!topEl && section.contains(topEl);
-    };
-
-    const isInfoActuallyVisible = () => {
-      const content = contentRef.current;
-      const logo = logoRef.current;
-      if (!content || !logo) return false;
-      const contentOpacity = Number.parseFloat(window.getComputedStyle(content).opacity || "0");
-      const logoOpacity = Number.parseFloat(window.getComputedStyle(logo).opacity || "0");
-      return contentOpacity > 0.92 && logoOpacity > 0.92;
-    };
-
-    const onTouchStart = (e: TouchEvent) => {
-      const t = e.touches[0];
-      if (!t) return;
-      touchInSectionRef.current =
-        isTouchInsideSection(t) &&
-        isTouchOnTopOfThisSection(t) &&
-        isInfoActuallyVisible();
-      touchYRef.current = touchInSectionRef.current ? t.clientY : null;
-    };
-
-    const onTouchMove = (e: TouchEvent) => {
-      const t0 = e.touches[0];
-      if (!t0) return;
-      if (!touchInSectionRef.current && isTouchInsideSection(t0) && isTouchOnTopOfThisSection(t0) && isInfoActuallyVisible()) {
-        touchInSectionRef.current = true;
-        touchYRef.current = t0.clientY;
-      }
-      if (!touchInSectionRef.current) return;
-      if (!isTouchOnTopOfThisSection(t0)) return;
-      if (!isInfoActuallyVisible()) return;
-      if (!infoScrollableRef.current) return;
-      if (touchYRef.current === null) return;
-
-      const y = t0.clientY;
-      if (y == null) return;
-
-      const delta = touchYRef.current - y;
-      touchYRef.current = y;
-      if (!delta) return;
-
-      const maxScroll = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
-      if (maxScroll <= 0) return;
-
-      const atTop = scroller.scrollTop <= 0;
-      const atBottom = scroller.scrollTop >= maxScroll - 1;
-      const down = delta > 0;
-      const up = delta < 0;
-      const canConsume = (down && !atBottom) || (up && !atTop);
-      if (!canConsume) return;
-
-      e.preventDefault();
-      scroller.scrollTop = Math.max(0, Math.min(maxScroll, scroller.scrollTop + delta));
-    };
-
-    const onTouchEnd = () => {
-      touchYRef.current = null;
-      touchInSectionRef.current = false;
-    };
-
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: false });
-    window.addEventListener("touchend", onTouchEnd, { passive: true });
-    window.addEventListener("touchcancel", onTouchEnd, { passive: true });
-    return () => {
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchmove", onTouchMove);
-      window.removeEventListener("touchend", onTouchEnd);
-      window.removeEventListener("touchcancel", onTouchEnd);
-    };
-  }, [isMobile]);
 
   const { isDark, accentColor, bgColor } = project;
   const textPrimary = isDark ? "rgba(255,255,255,0.92)" : "rgba(15,8,8,0.88)";
@@ -970,14 +846,9 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
           minHeight: "100vh",
           display: "flex",
           flexDirection: isMobile ? "column" : "row",
-          maxHeight: isMobile ? "100vh" : undefined,
-          overflowY: isMobile ? "auto" : "visible",
-          overscrollBehaviorY: isMobile ? "auto" : "auto",
-          WebkitOverflowScrolling: isMobile ? "touch" : "auto",
-          touchAction: isMobile ? "pan-y" : "auto",
+          overflowY: "visible",
           zIndex: 6,
         }}
-        ref={mobileScrollRef}
         >
 
           {/* Left column */}
@@ -988,8 +859,8 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
             justifyContent: isMobile ? "flex-end" : "center",
             paddingLeft: isMobile ? "6vw" : "8vw",
             paddingRight: isMobile ? "6vw" : "3vw",
-            paddingTop: isMobile ? "10vh" : "0",
-            paddingBottom: isMobile ? "8vh" : "0",
+            paddingTop: isMobile ? "9vh" : "0",
+            paddingBottom: isMobile ? "6vh" : "0",
           }}>
             <div style={{ paddingRight: isMobile ? "0.25rem" : 0 }}>
               {/* Small logo */}

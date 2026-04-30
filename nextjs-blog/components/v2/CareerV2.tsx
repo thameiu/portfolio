@@ -176,6 +176,9 @@ export default function CareerV2() {
       const title   = titleRef.current;
       const section = sectionRef.current;
       if (!title || !section) return;
+      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+      const titleStart = isMobile ? "top 96%" : "top 85%";
+      const titleEnd = isMobile ? "bottom 28%" : "bottom 20%";
 
       title.style.opacity   = "0";
       title.style.transform = "translateX(-80px)";
@@ -183,8 +186,8 @@ export default function CareerV2() {
 
       ScrollTrigger.create({
         trigger: section,
-        start: "top 85%",
-        end: "bottom 20%",
+        start: titleStart,
+        end: titleEnd,
         scrub: 0.6,
         onUpdate: (self) => {
           const progress    = self.progress;

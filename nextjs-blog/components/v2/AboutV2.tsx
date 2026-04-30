@@ -17,6 +17,9 @@ export default function AboutV2() {
       const title = titleRef.current;
       const section = sectionRef.current;
       if (!title || !section) return;
+      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+      const titleStart = isMobile ? "top 96%" : "top 85%";
+      const titleEnd = isMobile ? "bottom 28%" : "bottom 20%";
 
       // Match the same progressive title behavior as "Parcours"
       title.style.opacity = "0";
@@ -25,8 +28,8 @@ export default function AboutV2() {
 
       ScrollTrigger.create({
         trigger: section,
-        start: "top 85%",
-        end: "bottom 20%",
+        start: titleStart,
+        end: titleEnd,
         scrub: 0.6,
         onUpdate: (self) => {
           const progress = self.progress;
@@ -47,7 +50,7 @@ export default function AboutV2() {
           y: 0, opacity: 1, duration: 0.8, ease: "power2.out",
           scrollTrigger: {
             trigger: contentRef.current,
-            start: "top 85%",
+            start: isMobile ? "top 94%" : "top 85%",
             toggleActions: "play none none none",
           },
         }
