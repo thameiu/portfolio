@@ -10,7 +10,9 @@ import {
 } from "react-icons/si";
 
 const PROJECT_PIN_DISTANCE = 1800;
+const PROJECT_PIN_DISTANCE_MOBILE_FACTOR = 1.35;
 export const PROJECT_OVERLAP = 650;
+const PROJECT_OVERLAP_MOBILE = 240;
 
 /* ═══════════════════════════════════════════════
    ICONS
@@ -247,6 +249,45 @@ function Carousel({ images, accentColor, isDark }: {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
+  }, [focused]);
+
+  useEffect(() => {
+    if (!focused) return;
+
+    const html = document.documentElement;
+    const body = document.body;
+    const saved = {
+      htmlOverflow: html.style.overflow,
+      bodyOverflow: body.style.overflow,
+      bodyPosition: body.style.position,
+      bodyTop: body.style.top,
+      bodyLeft: body.style.left,
+      bodyRight: body.style.right,
+      bodyWidth: body.style.width,
+      bodyOverscrollBehavior: body.style.overscrollBehavior,
+    };
+    const scrollY = window.scrollY;
+
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    body.style.overscrollBehavior = "none";
+
+    return () => {
+      html.style.overflow = saved.htmlOverflow;
+      body.style.overflow = saved.bodyOverflow;
+      body.style.position = saved.bodyPosition;
+      body.style.top = saved.bodyTop;
+      body.style.left = saved.bodyLeft;
+      body.style.right = saved.bodyRight;
+      body.style.width = saved.bodyWidth;
+      body.style.overscrollBehavior = saved.bodyOverscrollBehavior;
+      window.scrollTo(0, scrollY);
+    };
   }, [focused]);
 
   useEffect(() => {
@@ -555,12 +596,13 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
         /* Main scrubbed trigger — pin the section itself */
         ScrollTrigger.create({
           trigger: sectionRef.current,
-          start: "top top",
-          end: `+=${PROJECT_PIN_DISTANCE}`,
+          start: isMobile ? "top top+=1" : "top top",
+          end: () => `+=${Math.round(isMobile ? window.innerHeight * PROJECT_PIN_DISTANCE_MOBILE_FACTOR : PROJECT_PIN_DISTANCE)}`,
           pin: sectionRef.current,
           pinSpacing: true,
           scrub: isMobile ? 0.45 : 1,
-          anticipatePin: isMobile ? 1 : 0,
+          anticipatePin: 0,
+          invalidateOnRefresh: true,
           onRefresh: () => {
             const spacer = sectionRef.current?.parentElement;
             if (spacer) {
@@ -589,12 +631,10 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
 
             /* Scroll-reactive background motion */
             if (isMobile) {
-              // Keep mobile motion subtle to avoid visual vibration.
-              decorRefs.current.forEach((el, i) => {
+              // Keep mobile background stable to prevent visual jitter.
+              decorRefs.current.forEach(el => {
                 if (!el) return;
-                const xDrift = (i % 2 === 0 ? 1 : -1) * (2 + (i % 3)) * (p - 0.5);
-                const yDrift = (i % 2 === 0 ? -1 : 1) * (4 + (i % 2)) * (p - 0.5);
-                gsap.set(el, { x: xDrift, y: yDrift, overwrite: "auto" });
+                gsap.set(el, { x: 0, y: 0, overwrite: "auto" });
               });
 
               if (project.iconType === "clock") {
@@ -668,6 +708,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
   const isGgps = project.id === "ggps";
   const isPathfinder = project.id === "pathfinder";
   const useSimplifiedMotion = prefersReducedMotion;
+  const projectOverlap = isMobile ? PROJECT_OVERLAP_MOBILE : PROJECT_OVERLAP;
 
   return (
     <section
@@ -681,7 +722,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
         overflow: useSimplifiedMotion ? "visible" : "hidden",
         zIndex: 10 + index,
         background: bgColor,
-        marginTop: useSimplifiedMotion ? 0 : -PROJECT_OVERLAP,
+        marginTop: useSimplifiedMotion ? 0 : -projectOverlap,
       }}
     >
       <div ref={panelRef}
@@ -803,8 +844,8 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
             justifyContent: isMobile ? "flex-end" : "center",
             paddingLeft: isMobile ? "6vw" : "8vw",
             paddingRight: isMobile ? "6vw" : "3vw",
-            paddingTop: isMobile ? "18vh" : "0",
-            paddingBottom: isMobile ? "2vh" : "0",
+            paddingTop: isMobile ? "14vh" : "0",
+            paddingBottom: isMobile ? "8vh" : "0",
           }}>
             {/* Small logo */}
             <div ref={logoRef} style={{ opacity: 0, marginBottom: "1.5rem", display: "inline-block" }}>

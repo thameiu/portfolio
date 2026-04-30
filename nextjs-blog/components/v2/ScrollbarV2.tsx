@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 
@@ -21,10 +21,24 @@ export default function ScrollbarV2() {
   const thumbRef = useRef<HTMLDivElement>(null);
   const draggingRef = useRef(false);
   const dragOffsetRef = useRef(0);
+  const [hideOnMobile, setHideOnMobile] = useState(false);
 
   const sectionIds = useMemo(() => Object.keys(COLOR_BY_SECTION), []);
 
   useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px), (pointer: coarse)");
+    const sync = () => setHideOnMobile(mq.matches);
+    sync();
+    if (mq.addEventListener) {
+      mq.addEventListener("change", sync);
+      return () => mq.removeEventListener("change", sync);
+    }
+    mq.addListener(sync);
+    return () => mq.removeListener(sync);
+  }, []);
+
+  useEffect(() => {
+    if (hideOnMobile) return;
     gsap.registerPlugin(ScrollSmoother);
 
     const thumb = thumbRef.current;
@@ -134,7 +148,9 @@ export default function ScrollbarV2() {
       window.removeEventListener("resize", updateGeometry);
       window.removeEventListener("resize", update);
     };
-  }, [sectionIds]);
+  }, [hideOnMobile, sectionIds]);
+
+  if (hideOnMobile) return null;
 
   return (
     <div
