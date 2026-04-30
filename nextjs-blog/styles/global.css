@@ -1,3 +1,4 @@
+@import url('https://fonts.cdnfonts.com/css/mango-grotesque');
 @import "tailwindcss";
 
 :root {
@@ -68,9 +69,6 @@ img {
   height: auto;
 }
 
-b {
-  /* color: #334A52; */
-}
 
 /* Canvas styling */
 #topo-canvas {
@@ -249,7 +247,7 @@ b {
   font-style: italic;
 }
 
-/* CV Viewer – no scroll, no white background, fit to container */
+/* CV Viewer - no scroll, no white background, fit to container */
 .cv-viewer,
 .cv-viewer .rpv-core__viewer,
 .cv-viewer .rpv-core__inner-container,

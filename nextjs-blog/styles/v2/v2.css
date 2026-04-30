@@ -1,0 +1,244 @@
+/* =====================================================
+   V2 PORTFOLIO - CUSTOM CSS
+   Only things that can't be expressed in Tailwind.
+   ===================================================== */
+
+/* ── Mango Grotesque is imported from global.css ── */
+
+/* ── Smooth-scroll wrapper (ScrollSmoother) ── */
+body.v2-page #smooth-wrapper {
+  overflow: hidden;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+body.v2-page #smooth-content {
+  overflow: visible;
+  width: 100%;
+}
+
+/* Default page background matches Hero to avoid visible seam during transitions */
+html.v2-page, body.v2-page {
+  background: #FFFAFB;
+}
+
+/* ── Hero glitch characters ── */
+.v2-char {
+  display: inline-block;
+  min-width: 0.38em;
+  text-align: center;
+  transition: color 0.04s;
+  will-change: contents;
+}
+.v2-char.space {
+  min-width: 0.3em;
+}
+
+/* ── Section mega-title ── */
+.v2-mega-title {
+  font-family: 'Mango Grotesque', 'archivo-black', sans-serif;
+  font-size: clamp(3.25rem, 12vw, 15vw);
+  line-height: 0.86;
+  letter-spacing: 0.02em;
+  font-weight: 800;
+  text-transform: uppercase;
+  will-change: transform, opacity;
+}
+
+/* ── Project icon watermarks ── */
+.proj-icon-watermark {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.07;
+  pointer-events: none;
+  user-select: none;
+}
+.proj-icon-watermark.left  { left: 2%; }
+.proj-icon-watermark.right { right: 2%; }
+
+/* ── ASCII Cat ── */
+.cat-art {
+  font-family: 'Courier New', 'Lucida Console', monospace;
+  font-size: 13px;
+  line-height: 1.45;
+  white-space: pre;
+  user-select: none;
+}
+.cat-char {
+  color: rgba(255, 255, 255, 0.55);
+  cursor: default;
+  display: inline;
+}
+
+/* ── Side decor canvas ── */
+body.v2-page .side-decor-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.2;
+  transition: opacity 0.24s ease;
+}
+@media (max-width: 767px) {
+  body.v2-page .side-decor-canvas {
+    opacity: 0.12;
+  }
+}
+
+body.v2-page #smooth-content > section > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Career tabs indicator ── */
+.v2-tab-indicator {
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  background: #881111;
+  transition: left 0.35s cubic-bezier(0.4,0,0.2,1), width 0.35s cubic-bezier(0.4,0,0.2,1);
+  border-radius: 1px;
+}
+
+body.v2-project-active .side-decor-canvas {
+  opacity: 0 !important;
+}
+
+/* Loader pulsing and force-scroll while loading to avoid layout jumps */
+@keyframes v2-pulse-scale {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.08); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.v2-loader-icon {
+  will-change: transform, opacity;
+  animation: v2-pulse-scale 900ms cubic-bezier(.2,.9,.2,1) infinite;
+}
+
+/* keep scrollbar visible during loading to prevent layout jump */
+html.v2-loading {
+  overflow-y: scroll;
+}
+
+body.v2-page *::selection {
+  background: #DD3A3A;
+  color: #120D0D;
+}
+body.v2-page *::-moz-selection {
+  background: #DD3A3A;
+  color: #120D0D;
+}
+
+html.v2-page::-webkit-scrollbar,
+body.v2-page::-webkit-scrollbar,
+body.v2-page *::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+html.v2-page::-webkit-scrollbar-track,
+body.v2-page::-webkit-scrollbar-track,
+body.v2-page *::-webkit-scrollbar-track {
+  background: transparent !important;
+  display: none !important;
+}
+html.v2-page::-webkit-scrollbar-thumb,
+body.v2-page::-webkit-scrollbar-thumb,
+body.v2-page *::-webkit-scrollbar-thumb {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+html.v2-page,
+body.v2-page,
+body.v2-page * {
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+}
+
+.v2-carousel-side-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 25;
+  border: none;
+  background: none;
+  font-size: 2.3rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.2s ease, text-shadow 0.2s ease, transform 0.2s ease;
+}
+.v2-carousel-side-nav-left {
+  left: 2px;
+}
+.v2-carousel-side-nav-right {
+  right: 2px;
+}
+.v2-carousel-side-nav:hover {
+  opacity: 1;
+  text-shadow: 0 0 18px currentColor;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.v2-tech-pill {
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+.v2-tech-pill:hover {
+  background: var(--pill-accent) !important;
+  border-color: var(--pill-accent) !important;
+  color: #fff !important;
+}
+
+.v2-career-pill {
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+.v2-career-pill:hover {
+  background: #881111 !important;
+  border-color: #881111 !important;
+  color: #fff !important;
+}
+
+.v2-contact-card:hover .v2-contact-icon {
+  color: #DD3A3A !important;
+}
+
+.v2-contact-grid {
+  position: relative;
+}
+
+.v2-contact-grid > * + * {
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+
+@media (min-width: 640px) {
+  .v2-contact-grid > * + * {
+    border-top: none;
+  }
+  .v2-contact-grid::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    transform: translateX(-0.5px);
+    background: rgba(255,255,255,0.07);
+    pointer-events: none;
+  }
+  .v2-contact-grid::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    transform: translateY(-0.5px);
+    background: rgba(255,255,255,0.07);
+    pointer-events: none;
+  }
+}

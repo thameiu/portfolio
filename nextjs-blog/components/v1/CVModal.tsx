@@ -1,7 +1,6 @@
 "use client";
-import { useEffect } from "react";
-import { SpecialZoomLevel, Viewer, Worker } from "@react-pdf-viewer/core";
-import "@react-pdf-viewer/core/lib/styles/index.css";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { FaFileDownload, FaTimes } from "react-icons/fa";
 
 const CV_FILE = "/CV_Mathieu_Hernandez.pdf";
@@ -11,6 +10,12 @@ interface CVModalProps {
 }
 
 const CVModal: React.FC<CVModalProps> = ({ onClose }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = ""; };
@@ -32,14 +37,16 @@ const CVModal: React.FC<CVModalProps> = ({ onClose }) => {
     a.click();
   };
 
-  return (
+  if (!mounted) return null;
+
+  const modalContent = (
     <div
-      className="fixed inset-0 z-[1000] bg-black/92 backdrop-blur-sm flex flex-col items-center p-4 md:p-6 animate-fade-in"
+      className="fixed inset-0 z-[9999] bg-black/92 backdrop-blur-sm flex flex-col items-center p-0 animate-fade-in"
       onClick={onClose}
     >
       {/* Header */}
       <div
-        className="flex items-center justify-between w-full max-w-4xl mb-4 flex-shrink-0"
+        className="flex items-center justify-between w-full px-4 md:px-6 py-3 flex-shrink-0"
         onClick={e => e.stopPropagation()}
       >
         <span className="text-white font-semibold text-lg"></span>
@@ -62,19 +69,20 @@ const CVModal: React.FC<CVModalProps> = ({ onClose }) => {
       </div>
 
       {/* PDF Viewer */}
-      <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-        <div
-          className="flex-1 w-full max-w-4xl cv-viewer"
-          onClick={e => e.stopPropagation()}
-        >
-          <Viewer
-            fileUrl={CV_FILE}
-            defaultScale={SpecialZoomLevel.PageFit}
-          />
-        </div>
-      </Worker>
+      <div
+        className="flex-1 w-full px-2 md:px-4 pb-3"
+        onClick={e => e.stopPropagation()}
+      >
+        <iframe
+          src={CV_FILE}
+          title="CV Mathieu Hernandez"
+          className="w-full h-full border-0 bg-transparent"
+        />
+      </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 };
 
 export default CVModal;
