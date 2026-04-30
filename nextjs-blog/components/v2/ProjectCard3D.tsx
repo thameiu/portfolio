@@ -503,7 +503,10 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
   const carouselRef  = useRef<HTMLDivElement>(null);
   const decorRefs    = useRef<(HTMLDivElement | null)[]>([]);
   const spinRefs     = useRef<(SVGGElement | null)[]>([]);
+  const infoScrollRef = useRef<HTMLDivElement>(null);
+  const infoScrollableRef = useRef(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isInfoScrollable, setIsInfoScrollable] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const iconLayout = getIconLayout(project.iconType);
@@ -625,8 +628,16 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
           },
           onEnter:     () => setProjectActive(`${project.id}-pin`, true),
           onEnterBack: () => setProjectActive(`${project.id}-pin`, true),
-          onLeave:     () => setProjectActive(`${project.id}-pin`, false),
-          onLeaveBack: () => setProjectActive(`${project.id}-pin`, false),
+          onLeave:     () => {
+            setProjectActive(`${project.id}-pin`, false);
+            infoScrollableRef.current = false;
+            setIsInfoScrollable(false);
+          },
+          onLeaveBack: () => {
+            setProjectActive(`${project.id}-pin`, false);
+            infoScrollableRef.current = false;
+            setIsInfoScrollable(false);
+          },
           onUpdate: (self) => {
             const p = self.progress;
 
@@ -641,6 +652,14 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
             gsap.set(contentRef.current, { opacity: info });
             gsap.set(carouselRef.current,{ opacity: info });
             gsap.set(decorRefs.current,  { opacity: info * 0.24 });
+
+            if (isMobile) {
+              const canScrollInfo = p >= 0.40 && p < 0.82;
+              if (infoScrollableRef.current !== canScrollInfo) {
+                infoScrollableRef.current = canScrollInfo;
+                setIsInfoScrollable(canScrollInfo);
+              }
+            }
 
             /* Scroll-reactive background motion */
             if (isMobile) {
@@ -709,6 +728,8 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
     return () => {
       setProjectActive(`${project.id}-pin`, false);
       setProjectActive(`${project.id}-viewport`, false);
+      infoScrollableRef.current = false;
+      setIsInfoScrollable(false);
       ctx.revert();
     };
   }, [isMobile, prefersReducedMotion, project.bgColor, project.iconType, project.id]);
@@ -860,51 +881,62 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
             paddingTop: isMobile ? "10vh" : "0",
             paddingBottom: isMobile ? "14vh" : "0",
           }}>
-            {/* Small logo */}
-            <div ref={logoRef} style={{ opacity: 0, marginBottom: "1.5rem", display: "inline-block" }}>
-              {project.titleSvg ? (
-                <Image src={project.titleSvg} alt={project.title}
-                  width={760} height={210}
-                  style={{ width: "min(32vw,22rem)", minWidth: "10rem", height: "auto", objectFit: "contain" }}/>
-              ) : (
-                <span style={{
-                  fontFamily: "'Mango Grotesque','archivo-black',sans-serif",
-                  fontSize: "clamp(2.2rem,5vw,6rem)", color: accentColor,
-                  fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.01em",
-                }}>{project.title}</span>
-              )}
-            </div>
-
-            {/* Textual content */}
-            <div ref={contentRef} style={{ opacity: 0 }}>
-              <span className="block text-xs font-bold uppercase tracking-[0.3em] mb-4"
-                style={{ color: accentColor, fontFamily: "'Sora',sans-serif" }}>
-                {String(index + 1).padStart(2, "0")} /
-              </span>
-              <p className="text-sm md:text-base leading-relaxed mb-3"
-                style={{ color: textPrimary, fontFamily: "'Sora',sans-serif" }}>
-                {project.description}
-              </p>
-              <p className="text-xs leading-relaxed mb-5"
-                style={{ color: textMuted, fontFamily: "'Sora',sans-serif" }}>
-                {project.details}
-              </p>
-              <div className="flex flex-wrap gap-2 mb-6">
-                {project.techStack.map(t => (
-                  <span key={t} className="v2-tech-pill inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium tracking-wide border"
-                    style={{ color: accentColor, borderColor: borderCol, background: `${accentColor}10`, fontFamily: "'Sora',sans-serif", borderRadius: 6, ["--pill-accent" as string]: accentColor }}>
-                    {TECH_ICON[t] && <span className="text-[0.9em]">{TECH_ICON[t]}</span>}
-                    {t}
-                  </span>
-                ))}
+            <div
+              ref={infoScrollRef}
+              style={{
+                maxHeight: isMobile ? "58vh" : "none",
+                overflowY: isMobile ? (isInfoScrollable ? "auto" : "hidden") : "visible",
+                overscrollBehavior: isMobile ? "contain" : "auto",
+                WebkitOverflowScrolling: "touch",
+                paddingRight: isMobile ? "0.25rem" : 0,
+              }}
+            >
+              {/* Small logo */}
+              <div ref={logoRef} style={{ opacity: 0, marginBottom: "1.5rem", display: "inline-block" }}>
+                {project.titleSvg ? (
+                  <Image src={project.titleSvg} alt={project.title}
+                    width={760} height={210}
+                    style={{ width: "min(32vw,22rem)", minWidth: "10rem", height: "auto", objectFit: "contain" }}/>
+                ) : (
+                  <span style={{
+                    fontFamily: "'Mango Grotesque','archivo-black',sans-serif",
+                    fontSize: "clamp(2.2rem,5vw,6rem)", color: accentColor,
+                    fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.01em",
+                  }}>{project.title}</span>
+                )}
               </div>
-              {project.link && (
-                <a href={project.link} target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest border-b pb-0.5 transition-opacity hover:opacity-70"
-                  style={{ color: accentColor, borderColor: accentColor, fontFamily: "'Sora',sans-serif" }}>
-                  {project.linkText ?? "Voir le projet"} →
-                </a>
-              )}
+
+              {/* Textual content */}
+              <div ref={contentRef} style={{ opacity: 0 }}>
+                <span className="block text-xs font-bold uppercase tracking-[0.3em] mb-4"
+                  style={{ color: accentColor, fontFamily: "'Sora',sans-serif" }}>
+                  {String(index + 1).padStart(2, "0")} /
+                </span>
+                <p className="text-sm md:text-base leading-relaxed mb-3"
+                  style={{ color: textPrimary, fontFamily: "'Sora',sans-serif" }}>
+                  {project.description}
+                </p>
+                <p className="text-xs leading-relaxed mb-5"
+                  style={{ color: textMuted, fontFamily: "'Sora',sans-serif" }}>
+                  {project.details}
+                </p>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {project.techStack.map(t => (
+                    <span key={t} className="v2-tech-pill inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium tracking-wide border"
+                      style={{ color: accentColor, borderColor: borderCol, background: `${accentColor}10`, fontFamily: "'Sora',sans-serif", borderRadius: 6, ["--pill-accent" as string]: accentColor }}>
+                      {TECH_ICON[t] && <span className="text-[0.9em]">{TECH_ICON[t]}</span>}
+                      {t}
+                    </span>
+                  ))}
+                </div>
+                {project.link && (
+                  <a href={project.link} target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest border-b pb-0.5 transition-opacity hover:opacity-70"
+                    style={{ color: accentColor, borderColor: accentColor, fontFamily: "'Sora',sans-serif" }}>
+                    {project.linkText ?? "Voir le projet"} →
+                  </a>
+                )}
+              </div>
             </div>
           </div>
 

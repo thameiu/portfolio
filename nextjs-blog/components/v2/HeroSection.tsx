@@ -16,7 +16,7 @@ const KERN: Record<string, Record<number, string>> = {
 function GlitchLine({ text, lineRef }: { text: string; lineRef: React.RefObject<(HTMLSpanElement | null)[]> }) {
   const kern = KERN[text] ?? {};
   return (
-    <span className="block">
+    <span className="block" style={{ whiteSpace: "nowrap", width: "max-content" }}>
       {text.split("").map((ch, i) => (
         <span
           key={i}
@@ -153,6 +153,7 @@ export default function HeroSection() {
       style={{
         background: "#FFFAFB",
         paddingTop: "clamp(1.5rem, 4vh, 3rem)",
+        overflowX: "visible",
       }}
     >
       {/* Name */}
@@ -163,6 +164,8 @@ export default function HeroSection() {
           fontFamily: "'Mango Grotesque', 'archivo-black', sans-serif",
           fontSize: "clamp(6.1rem, 20.5vw, 26rem)",
           color: "#881111",
+          whiteSpace: "nowrap",
+          width: "max-content",
         }}
         aria-label={`${LINE1} ${LINE2}`}
       >
