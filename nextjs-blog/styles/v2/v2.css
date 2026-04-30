@@ -108,7 +108,7 @@ body.v2-project-active .side-decor-canvas {
   opacity: 0 !important;
 }
 
-/* Loader pulsing and force-scroll while loading to avoid layout jumps */
+/* Loader pulsing */
 @keyframes v2-pulse-scale {
   0% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.08); opacity: 0.9; }
@@ -119,9 +119,21 @@ body.v2-project-active .side-decor-canvas {
   animation: v2-pulse-scale 900ms cubic-bezier(.2,.9,.2,1) infinite;
 }
 
-/* keep scrollbar visible during loading to prevent layout jump */
-html.v2-loading {
-  overflow-y: scroll;
+/* hide scrollbar while loader is visible */
+html.v2-loading,
+body.v2-loading {
+  overflow: hidden !important;
+}
+html.v2-loading::-webkit-scrollbar,
+body.v2-loading::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
+html.v2-loading,
+body.v2-loading {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none;
 }
 
 body.v2-page *::selection {
@@ -139,6 +151,7 @@ body.v2-page *::-webkit-scrollbar {
   width: 0 !important;
   height: 0 !important;
   background: transparent !important;
+  display: none !important;
 }
 html.v2-page::-webkit-scrollbar-track,
 body.v2-page::-webkit-scrollbar-track,
@@ -158,6 +171,7 @@ body.v2-page,
 body.v2-page * {
   scrollbar-width: none;
   scrollbar-color: transparent transparent;
+  -ms-overflow-style: none;
 }
 
 .v2-carousel-side-nav {

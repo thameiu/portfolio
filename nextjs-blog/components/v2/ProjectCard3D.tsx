@@ -484,7 +484,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
   /* ScrollTrigger animation */
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    const useSimplifiedMotion = isMobile || prefersReducedMotion;
+    const useSimplifiedMotion = prefersReducedMotion;
     const layoutForMotion = getIconLayout(project.iconType);
 
     const ctx = gsap.context(() => {
@@ -494,6 +494,20 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
         gsap.set(contentRef.current,  { opacity: 0, y: 16 });
         gsap.set(carouselRef.current, { opacity: 0, y: 16 });
         gsap.set(decorRefs.current,   { opacity: 0.08 });
+
+        decorRefs.current.forEach((el, i) => {
+          if (!el) return;
+          const baseRot = layoutForMotion[i]?.rotation ?? 0;
+          gsap.set(el, { rotate: baseRot });
+          gsap.to(el, {
+            y: (i % 2 === 0 ? -1 : 1) * (7 + (i % 3) * 2),
+            x: (i % 2 === 0 ? 1 : -1) * (4 + (i % 2) * 2),
+            duration: 4.6 + i * 0.3,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+          });
+        });
 
         const reveal = gsap.timeline({ paused: true })
           .to([logoRef.current, contentRef.current, carouselRef.current], {
@@ -523,6 +537,10 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
         decorRefs.current.forEach((el, i) => {
           if (!el) return;
           const baseRot  = layoutForMotion[i]?.rotation ?? 0;
+          if (isMobile) {
+            gsap.set(el, { rotate: baseRot });
+            return;
+          }
           const floatRot = (i % 2 === 0 ? 1 : -1) * (8 + (i % 3) * 2);
           gsap.set(el, { rotate: baseRot });
           gsap.to(el, {
@@ -541,8 +559,8 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
           end: `+=${PROJECT_PIN_DISTANCE}`,
           pin: sectionRef.current,
           pinSpacing: true,
-          scrub: 1,
-          anticipatePin: 0,
+          scrub: isMobile ? 0.45 : 1,
+          anticipatePin: isMobile ? 1 : 0,
           onRefresh: () => {
             const spacer = sectionRef.current?.parentElement;
             if (spacer) {
@@ -569,25 +587,55 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
             gsap.set(carouselRef.current,{ opacity: info });
             gsap.set(decorRefs.current,  { opacity: info * 0.24 });
 
-            /* Scroll-driven icon rotation */
-            if (project.iconType === "clock") {
-              spinRefs.current.forEach(el => {
-                if (el) el.setAttribute("transform", `rotate(${p * 360} 60 60)`);
-              });
-            } else if (project.iconType === "circles") {
-              spinRefs.current.forEach(el => {
-                if (el) el.style.transform = `rotate(${p * 180}deg)`;
-              });
-            } else if (project.iconType === "satellite") {
-              const speed = [110, -160, 80, -130, 60, -95, 140];
-              spinRefs.current.forEach(el => {
+            /* Scroll-reactive background motion */
+            if (isMobile) {
+              // Keep mobile motion subtle to avoid visual vibration.
+              decorRefs.current.forEach((el, i) => {
                 if (!el) return;
-                const rings = el.querySelectorAll("[data-path-ring]");
-                rings.forEach((ring, i) => {
-                  const angle = p * speed[i % speed.length];
-                  (ring as SVGGElement).setAttribute("transform", `rotate(${angle} 350 220)`);
-                });
+                const xDrift = (i % 2 === 0 ? 1 : -1) * (2 + (i % 3)) * (p - 0.5);
+                const yDrift = (i % 2 === 0 ? -1 : 1) * (4 + (i % 2)) * (p - 0.5);
+                gsap.set(el, { x: xDrift, y: yDrift, overwrite: "auto" });
               });
+
+              if (project.iconType === "clock") {
+                spinRefs.current.forEach(el => {
+                  if (el) el.setAttribute("transform", `rotate(${p * 90} 60 60)`);
+                });
+              } else if (project.iconType === "circles") {
+                spinRefs.current.forEach(el => {
+                  if (el) el.style.transform = `rotate(${p * 45}deg)`;
+                });
+              } else if (project.iconType === "satellite") {
+                const speed = [26, -34, 20, -28, 16, -22, 30];
+                spinRefs.current.forEach(el => {
+                  if (!el) return;
+                  const rings = el.querySelectorAll("[data-path-ring]");
+                  rings.forEach((ring, i) => {
+                    const angle = p * speed[i % speed.length];
+                    (ring as SVGGElement).setAttribute("transform", `rotate(${angle} 350 220)`);
+                  });
+                });
+              }
+            } else {
+              if (project.iconType === "clock") {
+                spinRefs.current.forEach(el => {
+                  if (el) el.setAttribute("transform", `rotate(${p * 360} 60 60)`);
+                });
+              } else if (project.iconType === "circles") {
+                spinRefs.current.forEach(el => {
+                  if (el) el.style.transform = `rotate(${p * 180}deg)`;
+                });
+              } else if (project.iconType === "satellite") {
+                const speed = [110, -160, 80, -130, 60, -95, 140];
+                spinRefs.current.forEach(el => {
+                  if (!el) return;
+                  const rings = el.querySelectorAll("[data-path-ring]");
+                  rings.forEach((ring, i) => {
+                    const angle = p * speed[i % speed.length];
+                    (ring as SVGGElement).setAttribute("transform", `rotate(${angle} 350 220)`);
+                  });
+                });
+              }
             }
           },
         });
@@ -619,17 +667,18 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
   const isRgbast = project.id === "rgbast";
   const isGgps = project.id === "ggps";
   const isPathfinder = project.id === "pathfinder";
-  const useSimplifiedMotion = isMobile || prefersReducedMotion;
+  const useSimplifiedMotion = prefersReducedMotion;
 
   return (
     <section
       ref={sectionRef}
       id={`v2-project-${project.id}`}
+      className="min-h-screen"
       style={{
         height: useSimplifiedMotion ? "auto" : "100vh",
-        minHeight: "100svh",
+        minHeight: "100vh",
         position: "relative",
-        overflow: "hidden",
+        overflow: useSimplifiedMotion ? "visible" : "hidden",
         zIndex: 10 + index,
         background: bgColor,
         marginTop: useSimplifiedMotion ? 0 : -PROJECT_OVERLAP,
@@ -639,8 +688,8 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
         style={{
           position: "relative",
           height: useSimplifiedMotion ? "auto" : "100%",
-          minHeight: "100svh",
-          overflow: "hidden",
+          minHeight: "100vh",
+          overflow: useSimplifiedMotion ? "visible" : "hidden",
           background: bgColor,
         }}>
 
@@ -737,7 +786,14 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
         )}
 
         {/* Layout */}
-        <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: isMobile ? "column" : "row", zIndex: 6 }}>
+        <div style={{
+          position: useSimplifiedMotion ? "relative" : "absolute",
+          inset: useSimplifiedMotion ? undefined : 0,
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          zIndex: 6,
+        }}>
 
           {/* Left column */}
           <div style={{
