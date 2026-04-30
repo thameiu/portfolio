@@ -122,9 +122,13 @@ export default function PortfolioV2() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const prevRestoration = window.history.scrollRestoration;
+    window.history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
     document.documentElement.classList.add("v2-page");
     document.body.classList.add("v2-page");
     return () => {
+      window.history.scrollRestoration = prevRestoration;
       document.documentElement.classList.remove("v2-page");
       document.body.classList.remove("v2-page");
     };
@@ -150,6 +154,9 @@ export default function PortfolioV2() {
           smooth: 1.4,
           effects: true,
         });
+
+    if (smoother) smoother.scrollTop(0);
+    else window.scrollTo(0, 0);
 
     return () => {
       document.body.classList.remove("v2-smooth");

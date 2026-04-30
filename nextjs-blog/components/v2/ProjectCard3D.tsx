@@ -10,9 +10,9 @@ import {
 } from "react-icons/si";
 
 const PROJECT_PIN_DISTANCE = 1800;
-const PROJECT_PIN_DISTANCE_MOBILE_FACTOR = 1.35;
+const PROJECT_PIN_DISTANCE_MOBILE_FACTOR = 2.45;
 export const PROJECT_OVERLAP = 650;
-const PROJECT_OVERLAP_MOBILE = 240;
+const PROJECT_OVERLAP_MOBILE = 80;
 
 /* ═══════════════════════════════════════════════
    ICONS
@@ -501,10 +501,12 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
   const logoRef      = useRef<HTMLDivElement>(null);
   const contentRef   = useRef<HTMLDivElement>(null);
   const carouselRef  = useRef<HTMLDivElement>(null);
+  const mobileScrollRef = useRef<HTMLDivElement>(null);
   const decorRefs    = useRef<(HTMLDivElement | null)[]>([]);
   const spinRefs     = useRef<(SVGGElement | null)[]>([]);
-  const infoScrollRef = useRef<HTMLDivElement>(null);
   const infoScrollableRef = useRef(false);
+  const touchYRef = useRef<number | null>(null);
+  const touchInSectionRef = useRef(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isInfoScrollable, setIsInfoScrollable] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -654,10 +656,20 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
             gsap.set(decorRefs.current,  { opacity: info * 0.24 });
 
             if (isMobile) {
-              const canScrollInfo = p >= 0.40 && p < 0.82;
+              const scroller = mobileScrollRef.current;
+              const maxScroll = scroller ? Math.max(0, scroller.scrollHeight - scroller.clientHeight) : 0;
+              const hasOverflow = maxScroll > 0;
+              /* Wait until info fade-in is fully established before allowing inner scroll. */
+              const canScrollInfo =
+                hasOverflow &&
+                p >= 0.46 &&
+                p < 0.97;
               if (infoScrollableRef.current !== canScrollInfo) {
                 infoScrollableRef.current = canScrollInfo;
                 setIsInfoScrollable(canScrollInfo);
+                if (!canScrollInfo && mobileScrollRef.current && p < 0.46) {
+                  mobileScrollRef.current.scrollTop = 0;
+                }
               }
             }
 
@@ -733,6 +745,97 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
       ctx.revert();
     };
   }, [isMobile, prefersReducedMotion, project.bgColor, project.iconType, project.id]);
+
+  useEffect(() => {
+    if (!isMobile) return;
+    const scroller = mobileScrollRef.current;
+    const section = sectionRef.current;
+    if (!scroller || !section) return;
+
+    const isTouchInsideSection = (touch: Touch) => {
+      const rect = section.getBoundingClientRect();
+      return (
+        touch.clientX >= rect.left &&
+        touch.clientX <= rect.right &&
+        touch.clientY >= rect.top &&
+        touch.clientY <= rect.bottom
+      );
+    };
+
+    const isTouchOnTopOfThisSection = (touch: Touch) => {
+      const topEl = document.elementFromPoint(touch.clientX, touch.clientY);
+      return !!topEl && section.contains(topEl);
+    };
+
+    const isInfoActuallyVisible = () => {
+      const content = contentRef.current;
+      const logo = logoRef.current;
+      if (!content || !logo) return false;
+      const contentOpacity = Number.parseFloat(window.getComputedStyle(content).opacity || "0");
+      const logoOpacity = Number.parseFloat(window.getComputedStyle(logo).opacity || "0");
+      return contentOpacity > 0.92 && logoOpacity > 0.92;
+    };
+
+    const onTouchStart = (e: TouchEvent) => {
+      const t = e.touches[0];
+      if (!t) return;
+      touchInSectionRef.current =
+        isTouchInsideSection(t) &&
+        isTouchOnTopOfThisSection(t) &&
+        isInfoActuallyVisible();
+      touchYRef.current = touchInSectionRef.current ? t.clientY : null;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      const t0 = e.touches[0];
+      if (!t0) return;
+      if (!touchInSectionRef.current && isTouchInsideSection(t0) && isTouchOnTopOfThisSection(t0) && isInfoActuallyVisible()) {
+        touchInSectionRef.current = true;
+        touchYRef.current = t0.clientY;
+      }
+      if (!touchInSectionRef.current) return;
+      if (!isTouchOnTopOfThisSection(t0)) return;
+      if (!isInfoActuallyVisible()) return;
+      if (!infoScrollableRef.current) return;
+      if (touchYRef.current === null) return;
+
+      const y = t0.clientY;
+      if (y == null) return;
+
+      const delta = touchYRef.current - y;
+      touchYRef.current = y;
+      if (!delta) return;
+
+      const maxScroll = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
+      if (maxScroll <= 0) return;
+
+      const atTop = scroller.scrollTop <= 0;
+      const atBottom = scroller.scrollTop >= maxScroll - 1;
+      const down = delta > 0;
+      const up = delta < 0;
+      const canConsume = (down && !atBottom) || (up && !atTop);
+      if (!canConsume) return;
+
+      e.preventDefault();
+      scroller.scrollTop = Math.max(0, Math.min(maxScroll, scroller.scrollTop + delta));
+    };
+
+    const onTouchEnd = () => {
+      touchYRef.current = null;
+      touchInSectionRef.current = false;
+    };
+
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+    window.addEventListener("touchcancel", onTouchEnd, { passive: true });
+    return () => {
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("touchcancel", onTouchEnd);
+    };
+  }, [isMobile]);
 
   const { isDark, accentColor, bgColor } = project;
   const textPrimary = isDark ? "rgba(255,255,255,0.92)" : "rgba(15,8,8,0.88)";
@@ -867,8 +970,15 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
           minHeight: "100vh",
           display: "flex",
           flexDirection: isMobile ? "column" : "row",
+          maxHeight: isMobile ? "100vh" : undefined,
+          overflowY: isMobile ? "auto" : "visible",
+          overscrollBehaviorY: isMobile ? "auto" : "auto",
+          WebkitOverflowScrolling: isMobile ? "touch" : "auto",
+          touchAction: isMobile ? "pan-y" : "auto",
           zIndex: 6,
-        }}>
+        }}
+        ref={mobileScrollRef}
+        >
 
           {/* Left column */}
           <div style={{
@@ -879,18 +989,9 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
             paddingLeft: isMobile ? "6vw" : "8vw",
             paddingRight: isMobile ? "6vw" : "3vw",
             paddingTop: isMobile ? "10vh" : "0",
-            paddingBottom: isMobile ? "14vh" : "0",
+            paddingBottom: isMobile ? "8vh" : "0",
           }}>
-            <div
-              ref={infoScrollRef}
-              style={{
-                maxHeight: isMobile ? "58vh" : "none",
-                overflowY: isMobile ? (isInfoScrollable ? "auto" : "hidden") : "visible",
-                overscrollBehavior: isMobile ? "contain" : "auto",
-                WebkitOverflowScrolling: "touch",
-                paddingRight: isMobile ? "0.25rem" : 0,
-              }}
-            >
+            <div style={{ paddingRight: isMobile ? "0.25rem" : 0 }}>
               {/* Small logo */}
               <div ref={logoRef} style={{ opacity: 0, marginBottom: "1.5rem", display: "inline-block" }}>
                 {project.titleSvg ? (
@@ -929,31 +1030,51 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
                     </span>
                   ))}
                 </div>
-                {project.link && (
+                {isMobile && project.screenshots && project.screenshots.length > 0 && (
+                  <div ref={carouselRef} style={{ opacity: 0, marginTop: "0.35rem" }}>
+                    <div style={{ width: "100%", maxWidth: "100%" }}>
+                      <Carousel images={project.screenshots} accentColor={accentColor} isDark={isDark}/>
+                    </div>
+                  </div>
+                )}
+                {!isMobile && project.link && (
                   <a href={project.link} target="_blank" rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest border-b pb-0.5 transition-opacity hover:opacity-70"
                     style={{ color: accentColor, borderColor: accentColor, fontFamily: "'Sora',sans-serif" }}>
                     {project.linkText ?? "Voir le projet"} →
                   </a>
                 )}
+                {isMobile && project.link && (
+                  <div style={{ marginTop: "0.9rem", marginBottom: "2.25rem" }}>
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest border-b pb-0.5 transition-opacity hover:opacity-70"
+                      style={{ color: accentColor, borderColor: accentColor, fontFamily: "'Sora',sans-serif" }}
+                    >
+                      {project.linkText ?? "Voir le projet"} →
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
           {/* Right column — carousel */}
+          {!isMobile && (
           <div ref={carouselRef}
             style={{
-              flex: isMobile ? "0 0 auto" : 1,
+              flex: 1,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              paddingRight: isMobile ? "6vw" : "6vw",
-              paddingLeft: isMobile ? "6vw" : "2vw",
-              paddingBottom: isMobile ? "6vh" : "0",
+              paddingRight: "6vw",
+              paddingLeft: "2vw",
               opacity: 0,
             }}>
             {project.screenshots && project.screenshots.length > 0 ? (
-              <div style={{ width: "100%", maxWidth: isMobile ? "100%" : 520 }}>
+              <div style={{ width: "100%", maxWidth: 520 }}>
                 <Carousel images={project.screenshots} accentColor={accentColor} isDark={isDark}/>
               </div>
             ) : (
@@ -968,6 +1089,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
               </div>
             )}
           </div>
+          )}
         </div>
       </div>
     </section>
