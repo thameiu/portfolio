@@ -3,18 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { FaEnvelope, FaLinkedin, FaGithub, FaFileDownload } from "react-icons/fa";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollSmoother } from "gsap/ScrollSmoother";
 import CVModal from "../v1/CVModal";
 
 const CONTACT_OVERLAP = 650;
-const CONTACT_PIN_DISTANCE = 1500;
-const CONTACT_INFO_SNAP_POINT = 0.44;
-const SNAP_OWNER_DATA_KEY = "v2SnapOwner";
-const SNAP_LOCK_UNTIL_DATA_KEY = "v2SnapLockUntil";
-
-function setContactTransitionActive(active: boolean) {
-  document.body.classList.toggle("v2-contact-transition-active", active);
-}
 
 /* ─── ASCII cat art ────────────────────────────── */
 const CAT_LINES = [
@@ -220,30 +211,29 @@ export default function ContactV2() {
   const titleRef   = useRef<HTMLHeadingElement>(null);
   const colLeft    = useRef<HTMLDivElement>(null);
   const colRight   = useRef<HTMLDivElement>(null);
-  const contactTransitionRef = useRef<ScrollTrigger | null>(null);
-  const autoSnapLockRef = useRef(0);
-  const autoTweenRef = useRef<gsap.core.Tween | null>(null);
-  const touchYRef = useRef<number | null>(null);
-  const didSnapDownRef = useRef(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [isCVOpen, setIsCVOpen] = useState(false);
   const [emailDisplay, setEmailDisplay] = useState("hernandez.mathieu19@gmail.com");
 
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 1023px)");
-    const sync = () => setIsMobile(mq.matches);
-    sync();
-    if (mq.addEventListener) {
-      mq.addEventListener("change", sync);
-      return () => mq.removeEventListener("change", sync);
-    }
-    mq.addListener(sync);
-    return () => mq.removeListener(sync);
-  }, []);
-
-  useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
+      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+
+      gsap.fromTo(
+        sectionRef.current,
+        { y: isMobile ? 90 : 140 },
+        {
+          y: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "top top",
+            scrub: true,
+          },
+        }
+      );
+
       gsap.fromTo(titleRef.current,
         { x: -80, opacity: 0 },
         { x: 0, opacity: 1, scrollTrigger: { trigger: sectionRef.current, start: "top 85%", end: "top 40%", scrub: 0.6 } }
@@ -258,150 +248,12 @@ export default function ContactV2() {
         { x: 0, opacity: 1, duration: 0.9, ease: "power2.out",
           scrollTrigger: { trigger: colRight.current, start: "top 80%", toggleActions: "play none none none" } }
       );
-
-      const pinDistance = isMobile
-        ? Math.round(window.innerHeight * 2.15)
-        : CONTACT_PIN_DISTANCE;
-
-      const transitionTrigger = ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top top",
-        end: `+=${pinDistance}`,
-        pin: sectionRef.current,
-        pinSpacing: true,
-        scrub: isMobile ? true : 1,
-        anticipatePin: 0,
-        onEnter: () => setContactTransitionActive(true),
-        onEnterBack: () => setContactTransitionActive(true),
-        onLeave: () => setContactTransitionActive(false),
-        onLeaveBack: () => setContactTransitionActive(false),
-        onUpdate: (self) => {
-          if (self.progress <= 0.02) didSnapDownRef.current = false;
-        },
-      });
-      contactTransitionRef.current = transitionTrigger;
     }, sectionRef);
 
-    const animateTo = (targetY: number) => {
-      const ownerKey = "contact";
-      const beginGlobalSnap = () => {
-        const body = document.body;
-        body.classList.add("v2-snap-active");
-        body.dataset[SNAP_OWNER_DATA_KEY] = ownerKey;
-        body.dataset[SNAP_LOCK_UNTIL_DATA_KEY] = String(performance.now() + 1050);
-      };
-      const endGlobalSnap = () => {
-        const body = document.body;
-        if (body.dataset[SNAP_OWNER_DATA_KEY] === ownerKey) {
-          delete body.dataset[SNAP_OWNER_DATA_KEY];
-          body.classList.remove("v2-snap-active");
-        }
-      };
-
-      const smoother = ScrollSmoother.get();
-      const startY = smoother ? smoother.scrollTop() : window.scrollY;
-      autoTweenRef.current?.kill();
-      const state = { y: startY };
-      autoTweenRef.current = gsap.to(state, {
-        y: targetY,
-        duration: 1.05,
-        ease: "power3.out",
-        overwrite: true,
-        onStart: beginGlobalSnap,
-        onUpdate: () => {
-          if (smoother) smoother.scrollTop(state.y);
-          else window.scrollTo(0, state.y);
-        },
-        onComplete: () => { autoTweenRef.current = null; endGlobalSnap(); },
-        onInterrupt: () => { autoTweenRef.current = null; endGlobalSnap(); },
-      });
-    };
-
-    const handleIntent = (deltaY: number, event?: Event) => {
-      const st = contactTransitionRef.current;
-      if (!st) return;
-      const currentOwner = document.body.dataset[SNAP_OWNER_DATA_KEY];
-      if (currentOwner && currentOwner !== "contact") return;
-
-      const smoother = ScrollSmoother.get();
-      const y = smoother ? smoother.scrollTop() : window.scrollY;
-      const preStartDistance = Math.max(window.innerHeight * (isMobile ? 1.15 : 0.95), isMobile ? 460 : 620);
-      const managedStart = st.start - preStartDistance;
-      const managedEnd = st.start + (st.end - st.start) * 0.26;
-      const inManagedZone = y >= managedStart && y <= managedEnd;
-      if (!inManagedZone && !autoTweenRef.current) return;
-
-      if (autoTweenRef.current) {
-        if (event?.cancelable) event.preventDefault();
-        return;
-      }
-      const canEarlyDownSnap = y >= managedStart && y < st.start;
-
-      if (Math.abs(deltaY) < 0.12) return;
-      const p = st.progress;
-      const down = deltaY > 0;
-      const up = deltaY < 0;
-      const postEndDistance = isMobile ? 340 : 420;
-      const canEarlyUpSnap = up && y > st.end && y <= st.end + postEndDistance;
-      const canDownSnap = down && !didSnapDownRef.current && (canEarlyDownSnap || (st.isActive && p >= 0.0 && p < 0.32));
-      const canUpToInfoSnap = canEarlyUpSnap;
-      const canUpToPrevSnap = up && didSnapDownRef.current && st.isActive && p > 0.0 && p < 0.52;
-      const canUpSnap = canUpToInfoSnap || canUpToPrevSnap;
-      if (!canDownSnap && !canUpSnap) return;
-
-      const now = performance.now();
-      const globalLockUntil = Number(document.body.dataset[SNAP_LOCK_UNTIL_DATA_KEY] || "0");
-      if (now < globalLockUntil) return;
-      if (now < autoSnapLockRef.current) return;
-
-      if (event?.cancelable) event.preventDefault();
-      autoSnapLockRef.current = now + 680;
-      if (canDownSnap) {
-        didSnapDownRef.current = true;
-        const targetY = st.start + (st.end - st.start) * CONTACT_INFO_SNAP_POINT;
-        animateTo(targetY);
-      } else if (canUpSnap) {
-        didSnapDownRef.current = canUpToInfoSnap;
-        const upTarget = canUpToInfoSnap
-          ? st.start + (st.end - st.start) * CONTACT_INFO_SNAP_POINT
-          : Math.max(0, st.start - Math.max(window.innerHeight * 0.18, 120));
-        animateTo(upTarget);
-      }
-    };
-
-    const onWheel = (e: WheelEvent) => handleIntent(e.deltaY, e);
-    const onTouchStart = (e: TouchEvent) => {
-      touchYRef.current = e.touches[0]?.clientY ?? null;
-    };
-    const onTouchMove = (e: TouchEvent) => {
-      const y = e.touches[0]?.clientY;
-      if (y == null || touchYRef.current == null) return;
-      const deltaY = touchYRef.current - y;
-      touchYRef.current = y;
-      handleIntent(deltaY, e);
-    };
-    const onTouchEnd = () => { touchYRef.current = null; };
-
-    window.addEventListener("wheel", onWheel, { passive: false, capture: true });
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: false, capture: true });
-    window.addEventListener("touchend", onTouchEnd, { passive: true });
-    window.addEventListener("touchcancel", onTouchEnd, { passive: true });
-
     return () => {
-      window.removeEventListener("wheel", onWheel, true);
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchmove", onTouchMove, true);
-      window.removeEventListener("touchend", onTouchEnd);
-      window.removeEventListener("touchcancel", onTouchEnd);
-      autoTweenRef.current?.kill();
-      autoTweenRef.current = null;
-      didSnapDownRef.current = false;
-      setContactTransitionActive(false);
-      contactTransitionRef.current = null;
       ctx.revert();
     };
-  }, [isMobile]);
+  }, []);
 
   const handleCopyEmail = () => {
     const email = "hernandez.mathieu19@gmail.com";
@@ -414,7 +266,7 @@ export default function ContactV2() {
     <section
       id="v2-contact"
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col justify-center overflow-visible py-24"
+      className="relative min-h-screen flex flex-col justify-center overflow-hidden py-24"
       style={{ background: "#120D0D", zIndex: 80, marginTop: -CONTACT_OVERLAP }}
     >
 

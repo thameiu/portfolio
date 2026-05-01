@@ -70,13 +70,13 @@ const XPItem = ({ e }: { e: XPEntry }) => (
       {e.badge}
     </div>
     <h3
-      className="text-3xl md:text-4xl font-bold mb-0.5 transition-colors duration-300 group-hover:text-[#881111]"
+      className="text-4xl md:text-5xl font-bold mb-0.5 transition-colors duration-300 group-hover:text-[#881111]"
       style={{ fontFamily: "'Mango Grotesque','archivo-black',sans-serif", color: "#2D1010", letterSpacing: "-0.02em" }}
     >
       {e.role}
     </h3>
-    <p className="mb-3 text-sm font-medium" style={{ color: "rgba(45,16,16,0.65)", fontFamily: "'Sora', sans-serif" }}>{e.org}</p>
-    <div className="text-sm leading-relaxed mb-4" style={{ color: "rgba(45,16,16,0.75)", fontFamily: "'Sora', sans-serif" }}>{e.desc}</div>
+    <p className="mb-3 text-sm font-medium" style={{ color: "rgba(45,16,16,0.78)", fontFamily: "'Sora', sans-serif" }}>{e.org}</p>
+    <div className="text-[0.95rem] leading-relaxed mb-4" style={{ color: "rgba(45,16,16,0.9)", fontFamily: "'Sora', sans-serif" }}>{e.desc}</div>
     {e.tags && <div className="flex flex-wrap gap-2">{e.tags}</div>}
   </div>
 );
@@ -339,7 +339,7 @@ export default function CareerV2() {
     <section
       id="v2-career"
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col justify-start lg:justify-center px-[8vw] py-20 md:py-24 lg:py-32 overflow-hidden"
+      className="relative min-h-screen flex flex-col justify-start lg:justify-center px-[8vw] pt-20 pb-36 md:pt-24 md:pb-24 lg:py-32 overflow-hidden"
       style={{ background: "#FFFAFB" }}
     >
       {/* Mega title */}

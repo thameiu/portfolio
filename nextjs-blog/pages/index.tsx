@@ -137,9 +137,7 @@ export default function PortfolioV2() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
-    const shouldUseNativeScroll = window.matchMedia(
-      "(max-width: 1023px), (pointer: coarse), (prefers-reduced-motion: reduce)"
-    ).matches;
+    const shouldUseNativeScroll = window.matchMedia("(max-width: 1023px)").matches;
     ScrollTrigger.config({
       limitCallbacks: true,
       ignoreMobileResize: shouldUseNativeScroll,
