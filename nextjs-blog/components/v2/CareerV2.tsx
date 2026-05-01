@@ -94,6 +94,12 @@ const SkillCard = ({
       borderRadius: 6,
     }}
   >
+    {(index > 0 && index < 3) && (
+      <div
+        className="absolute left-5 right-5 top-0 h-px md:hidden"
+        style={{ background: "rgba(136,17,17,0.34)" }}
+      />
+    )}
     {index > 2 && (
       <div
         className="absolute left-5 right-5 top-0 h-px"

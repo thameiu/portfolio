@@ -103,7 +103,7 @@ const CAT_LINES = [
 ];
 
 /* Cat art is 91 lines × ~122 chars.  At 5.5 px / char the block is ≈ 450×590 px — fits a right column comfortably. */
-function CatArt() {
+function CatArt({ compact = false }: { compact?: boolean }) {
   const [hoveredLine, setHoveredLine] = useState<number | null>(null);
 
   return (
@@ -133,8 +133,8 @@ function CatArt() {
       <pre
         className="cat-art"
         style={{
-          fontSize: "7.1px",
-          lineHeight: "1.06",
+          fontSize: compact ? "4.6px" : "7.1px",
+          lineHeight: compact ? "1.02" : "1.06",
           display: "block",
         }}
       >
@@ -351,6 +351,12 @@ export default function ContactV2() {
           className="flex-shrink-0 opacity-0 hidden lg:flex flex-col items-end lg:-mt-64"
         >
           <CatArt />
+        </div>
+      </div>
+
+      <div className="px-[8vw] mt-10 lg:hidden">
+        <div style={{ opacity: 0.8 }}>
+          <CatArt compact />
         </div>
       </div>
 

@@ -10,9 +10,9 @@ import {
 } from "react-icons/si";
 
 const PROJECT_PIN_DISTANCE = 1800;
-const PROJECT_PIN_DISTANCE_MOBILE_FACTOR = 2.2;
+const PROJECT_PIN_DISTANCE_MOBILE_FACTOR = 2.15;
 export const PROJECT_OVERLAP = 650;
-const PROJECT_OVERLAP_MOBILE = 460;
+const PROJECT_OVERLAP_MOBILE = 0;
 
 /* ═══════════════════════════════════════════════
    ICONS
@@ -615,8 +615,10 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
           end: `+=${pinDistance}`,
           pin: sectionRef.current,
           pinSpacing: true,
-          scrub: isMobile ? true : 1,
-          anticipatePin: 0,
+          scrub: isMobile ? 0.65 : 1,
+          anticipatePin: 1,
+          fastScrollEnd: false,
+          invalidateOnRefresh: true,
           onRefresh: () => {
             const spacer = sectionRef.current?.parentElement;
             if (spacer) {
