@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
 import {
   SiNextdotjs, SiExpress, SiTypescript, SiSupabase, SiDocker, SiJenkins, SiJest, SiVite,
   SiFastapi, SiSqlalchemy, SiGithubactions, SiNginx, SiLeaflet, SiLaravel, SiPhp, SiPostgresql,
@@ -13,6 +14,7 @@ const PROJECT_PIN_DISTANCE = 1800;
 const PROJECT_PIN_DISTANCE_MOBILE_FACTOR = 2.45;
 export const PROJECT_OVERLAP = 650;
 const PROJECT_OVERLAP_MOBILE = 460;
+const PROJECT_INFO_SNAP_POINT = 0.44;
 
 /* ═══════════════════════════════════════════════
    ICONS
@@ -491,6 +493,9 @@ const TECH_ICON: Record<string, React.ReactNode> = {
   "Socket.io": <SiSocketdotio />,
 };
 
+const SNAP_OWNER_DATA_KEY = "v2SnapOwner";
+const SNAP_LOCK_UNTIL_DATA_KEY = "v2SnapLockUntil";
+
 /* ═══════════════════════════════════════════════
    MAIN COMPONENT
    ═══════════════════════════════════════════════ */
@@ -503,6 +508,11 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
   const carouselRef  = useRef<HTMLDivElement>(null);
   const decorRefs    = useRef<(HTMLDivElement | null)[]>([]);
   const spinRefs     = useRef<(SVGGElement | null)[]>([]);
+  const mainTriggerRef = useRef<ScrollTrigger | null>(null);
+  const autoNavLockRef = useRef(0);
+  const autoTweenRef = useRef<gsap.core.Tween | null>(null);
+  const touchYRef = useRef<number | null>(null);
+  const didSnapToInfoRef = useRef(false);
   const [isMobile, setIsMobile] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
@@ -608,7 +618,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
           ? Math.round(window.innerHeight * PROJECT_PIN_DISTANCE_MOBILE_FACTOR)
           : PROJECT_PIN_DISTANCE;
 
-        ScrollTrigger.create({
+        const mainTrigger = ScrollTrigger.create({
           trigger: sectionRef.current,
           start: "top top",
           end: `+=${pinDistance}`,
@@ -629,11 +639,13 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
           onLeaveBack: () => setProjectActive(`${project.id}-pin`, false),
           onUpdate: (self) => {
             const p = self.progress;
+            if (p <= 0.02) didSnapToInfoRef.current = false;
 
-            /* Big logo appears early during cover, then fades out before info. */
-            const hugeIn  = gsap.utils.clamp(0, 1, (p - 0.03) / 0.09);
-            const hugeOut = gsap.utils.clamp(0, 1, (p - 0.24) / 0.10);
-            gsap.set(hugeTitleRef.current, { opacity: hugeIn * (1 - hugeOut) });
+            /* Big logo appears very early during cover, then fades out smoothly before info. */
+            const hugeIn  = gsap.utils.clamp(0, 1, p / 0.15);
+            const hugeOut = gsap.utils.clamp(0, 1, (p - 0.18) / 0.18);
+            const hugeOpacity = hugeIn * (1 - hugeOut);
+            gsap.set(hugeTitleRef.current, { opacity: hugeOpacity, overwrite: "auto" });
 
             /* Info appears after cover is established, then stays fixed while next covers. */
             const info = gsap.utils.clamp(0, 1, (p - 0.34) / 0.06);
@@ -692,6 +704,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
             }
           },
         });
+        mainTriggerRef.current = mainTrigger;
       }
 
       ScrollTrigger.create({
@@ -709,9 +722,136 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
     return () => {
       setProjectActive(`${project.id}-pin`, false);
       setProjectActive(`${project.id}-viewport`, false);
+      mainTriggerRef.current = null;
+      autoTweenRef.current?.kill();
+      autoTweenRef.current = null;
       ctx.revert();
     };
   }, [isMobile, prefersReducedMotion, project.bgColor, project.iconType, project.id]);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    const ownerKey = `project:${project.id}`;
+    const beginGlobalSnap = () => {
+      const body = document.body;
+      body.classList.add("v2-snap-active");
+      body.dataset[SNAP_OWNER_DATA_KEY] = ownerKey;
+      body.dataset[SNAP_LOCK_UNTIL_DATA_KEY] = String(performance.now() + 1050);
+    };
+    const endGlobalSnap = () => {
+      const body = document.body;
+      if (body.dataset[SNAP_OWNER_DATA_KEY] === ownerKey) {
+        delete body.dataset[SNAP_OWNER_DATA_KEY];
+        body.classList.remove("v2-snap-active");
+      }
+    };
+
+    const animateTo = (targetY: number) => {
+      const smoother = ScrollSmoother.get();
+      const startY = smoother ? smoother.scrollTop() : window.scrollY;
+      autoTweenRef.current?.kill();
+      const state = { y: startY };
+      autoTweenRef.current = gsap.to(state, {
+        y: targetY,
+        duration: 1.05,
+        ease: "power3.out",
+        overwrite: true,
+        onStart: beginGlobalSnap,
+        onUpdate: () => {
+          if (smoother) smoother.scrollTop(state.y);
+          else window.scrollTo(0, state.y);
+        },
+        onComplete: () => { autoTweenRef.current = null; endGlobalSnap(); },
+        onInterrupt: () => { autoTweenRef.current = null; endGlobalSnap(); },
+      });
+    };
+
+    const handleIntent = (deltaY: number, event?: Event) => {
+      const st = mainTriggerRef.current;
+      if (!st) return;
+      if (document.body.classList.contains("v2-contact-transition-active")) return;
+      const currentOwner = document.body.dataset[SNAP_OWNER_DATA_KEY];
+      if (currentOwner && currentOwner !== ownerKey) return;
+
+      const smoother = ScrollSmoother.get();
+      const y = smoother ? smoother.scrollTop() : window.scrollY;
+      const preStartDistance = Math.max(window.innerHeight * (isMobile ? 1.15 : 0.95), isMobile ? 460 : 620);
+      const managedZoneStart = st.start - preStartDistance;
+      const managedZoneEnd = st.start + (st.end - st.start) * 0.26;
+      const inManagedZone = y >= managedZoneStart && y <= managedZoneEnd;
+
+      // Keep native scroll canceled only while auto snap animation is running.
+      if (autoTweenRef.current) {
+        if (event?.cancelable) event.preventDefault();
+        return;
+      }
+      if (Math.abs(deltaY) < 0.12) return;
+
+      const p = st.progress;
+      const down = deltaY > 0;
+      const up = deltaY < 0;
+      const canEarlyDownSnap = down && y >= managedZoneStart && y < st.start;
+      const postEndDistance = isMobile ? 340 : 420;
+      const canEarlyUpSnap = up && y > st.end && y <= st.end + postEndDistance;
+      const canDownSnap = !didSnapToInfoRef.current && (canEarlyDownSnap || (st.isActive && p >= 0.0 && p < 0.32));
+      const canUpToInfoSnap = canEarlyUpSnap;
+      const canUpToPrevSnap = up && didSnapToInfoRef.current && st.isActive && p > 0.0 && p < 0.52;
+      const canUpSnap = canUpToInfoSnap || canUpToPrevSnap;
+      if (!canDownSnap && !canUpSnap) return;
+
+      const now = performance.now();
+      const globalLockUntil = Number(document.body.dataset[SNAP_LOCK_UNTIL_DATA_KEY] || "0");
+      if (now < globalLockUntil) return;
+      if (now < autoNavLockRef.current) return;
+
+      // Trigger only on intent, independent of wheel/touch amplitude.
+      if (event?.cancelable && (inManagedZone || st.isActive)) event.preventDefault();
+
+      autoNavLockRef.current = now + 620;
+      if (canDownSnap) {
+        const targetY = st.start + (st.end - st.start) * PROJECT_INFO_SNAP_POINT;
+        didSnapToInfoRef.current = true;
+        animateTo(targetY);
+      } else if (canUpSnap) {
+        const targetY = canUpToInfoSnap
+          ? st.start + (st.end - st.start) * PROJECT_INFO_SNAP_POINT
+          : Math.max(0, st.start - (st.end - st.start) * (index === 0 ? (isMobile ? 0.86 : 0.78) : 0.52));
+        didSnapToInfoRef.current = canUpToInfoSnap;
+        animateTo(targetY);
+      }
+    };
+
+    const onWheel = (e: WheelEvent) => handleIntent(e.deltaY, e);
+    const onTouchStart = (e: TouchEvent) => {
+      touchYRef.current = e.touches[0]?.clientY ?? null;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      const y = e.touches[0]?.clientY;
+      if (y == null || touchYRef.current == null) return;
+      const deltaY = touchYRef.current - y;
+      touchYRef.current = y;
+      handleIntent(deltaY, e);
+    };
+    const onTouchEnd = () => { touchYRef.current = null; };
+
+    window.addEventListener("wheel", onWheel, { passive: false, capture: true });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false, capture: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+    window.addEventListener("touchcancel", onTouchEnd, { passive: true });
+    return () => {
+      window.removeEventListener("wheel", onWheel, true);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove, true);
+      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("touchcancel", onTouchEnd);
+      autoTweenRef.current?.kill();
+      autoTweenRef.current = null;
+      endGlobalSnap();
+      didSnapToInfoRef.current = false;
+    };
+  }, [isMobile, prefersReducedMotion]);
 
   const { isDark, accentColor, bgColor } = project;
   const textPrimary = isDark ? "rgba(255,255,255,0.92)" : "rgba(15,8,8,0.88)";
@@ -821,6 +961,8 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
             position: "absolute", top: "50%", left: "50%",
             transform: "translate(-50%, -50%)",
             opacity: 0, zIndex: 3, pointerEvents: "none",
+            willChange: "opacity",
+            backfaceVisibility: "hidden",
             textAlign: "center", width: "100%", height: "100%",
             display: "flex", alignItems: "center", justifyContent: "center",
           }}>
