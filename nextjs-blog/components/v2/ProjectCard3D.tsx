@@ -8,6 +8,7 @@ import {
   SiFastapi, SiSqlalchemy, SiGithubactions, SiNginx, SiLeaflet, SiLaravel, SiPhp, SiPostgresql,
   SiNestjs, SiSocketdotio, SiVuedotjs,
 } from "react-icons/si";
+import { IoClose } from "react-icons/io5";
 
 const PROJECT_PIN_DISTANCE = 1800;
 const PROJECT_PIN_DISTANCE_MOBILE_FACTOR = 2.15;
@@ -343,10 +344,14 @@ function Carousel({ images, accentColor, isDark }: {
           <div style={{ position: "relative", width: "100vw", height: "100vh", padding: "6vh 5vw" }}
                onClick={e => e.stopPropagation()}>
             <button onClick={closeFocus} style={{
-              position: "absolute", top: 24, right: 28,
+              position: "absolute", top: 24, right: 12,
+              width: 56, height: 56,
+              display: "flex", alignItems: "center", justifyContent: "center",
               background: "none", border: "none", color: accentColor,
-              fontSize: 26, cursor: "pointer", zIndex: 10, fontFamily: "sans-serif",
-            }}>✕</button>
+              fontSize: 30, lineHeight: 1,
+              cursor: "pointer", zIndex: 10, fontFamily: "sans-serif",
+              padding: 0,
+            }}><IoClose /></button>
 
             <div style={{ width: "100%", height: "100%", overflow: "hidden", position: "relative" }}>
               {images.length > 1 && (
