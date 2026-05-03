@@ -101,56 +101,202 @@ const CAT_LINES = [
 "                                                ###*+*++++=*++                                      ",
 "                                                   #***++#+                                         "
 ];
+const CAT_LINE_BOUNDS = CAT_LINES.map((line) => {
+  const first = line.search(/\S/);
+  if (first === -1) return null;
+  const last = line.length - 1 - line.split("").reverse().join("").search(/\S/);
+  return { start: first, length: last - first + 1 };
+});
 
 /* Cat art is 91 lines × ~122 chars.  At 5.5 px / char the block is ≈ 450×590 px — fits a right column comfortably. */
 function CatArt({ compact = false }: { compact?: boolean }) {
+  const preRef = useRef<HTMLPreElement>(null);
+  const waveRafRef = useRef<number | null>(null);
+  const lastTouchTsRef = useRef(0);
   const [hoveredLine, setHoveredLine] = useState<number | null>(null);
+  const [wave, setWave] = useState<{
+    row: number;
+    col: number;
+    progress: number;
+  } | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (waveRafRef.current !== null) cancelAnimationFrame(waveRafRef.current);
+    };
+  }, []);
+
+  const triggerWave = (row: number, col: number) => {
+    const bounds = CAT_LINE_BOUNDS[row];
+    if (!bounds) return;
+
+    const start = bounds.start;
+    const end = bounds.start + bounds.length - 1;
+    const clampedCol = Math.max(start, Math.min(end, col));
+
+    if (waveRafRef.current !== null) cancelAnimationFrame(waveRafRef.current);
+
+    const duration = compact ? 520 : 640;
+    const t0 = performance.now();
+    const animate = (now: number) => {
+      const p = Math.min(1, (now - t0) / duration);
+      if (p < 1) {
+        setWave({ row, col: clampedCol, progress: p });
+        waveRafRef.current = requestAnimationFrame(animate);
+      } else {
+        setWave(null);
+        waveRafRef.current = null;
+      }
+    };
+    waveRafRef.current = requestAnimationFrame(animate);
+  };
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+    const rect = preRef.current?.getBoundingClientRect();
+    if (!rect || rect.width <= 0 || rect.height <= 0) return;
+
+    let clientX = 0;
+    let clientY = 0;
+    if ("touches" in e) {
+      const t = e.touches[0];
+      if (!t) return;
+      clientX = t.clientX;
+      clientY = t.clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+
+    const lineH = rect.height / CAT_LINES.length;
+    const chW = rect.width / CAT_LINES.reduce((m, l) => Math.max(m, l.length), 0);
+    const row = Math.max(0, Math.min(CAT_LINES.length - 1, Math.floor((clientY - rect.top) / lineH)));
+    const col = Math.max(0, Math.floor((clientX - rect.left) / chW));
+    const isTouch = "touches" in e;
+    if (isTouch) {
+      lastTouchTsRef.current = performance.now();
+      setHoveredLine(null);
+    } else {
+      setHoveredLine(row);
+    }
+    triggerWave(row, col);
+  };
 
   return (
     <div
       style={{ position: "relative", overflowX: "hidden", overflowY: "hidden", userSelect: "none" }}
       onMouseLeave={() => setHoveredLine(null)}
+      onMouseDown={handleClick}
+      onTouchStart={handleClick}
     >
-      {hoveredLine !== null && (
-        <span
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            left: -14,
-            top: hoveredLine * 11.8 + 6,
-            width: 14,
-            height: 14,
-            borderRadius: 2,
-            border: "1px solid rgba(221,58,58,0.95)",
-            background: "rgba(221,58,58,0.12)",
-            boxShadow: "0 0 0 3px rgba(221,58,58,0.05)",
-            pointerEvents: "none",
-            transition: "top 110ms ease, opacity 110ms ease",
-          }}
-        />
-      )}
-
       <pre
+        ref={preRef}
         className="cat-art"
         style={{
           fontSize: compact ? "4.6px" : "7.1px",
           lineHeight: compact ? "1.02" : "1.06",
           display: "block",
+          margin: 0,
         }}
       >
         {CAT_LINES.map((line, li) => (
           <div
             key={li}
-            onMouseEnter={() => setHoveredLine(li)}
+            onMouseEnter={() => {
+              if (performance.now() - lastTouchTsRef.current < 800) return;
+              setHoveredLine(li);
+            }}
             style={{
               height: "1.08em",
               whiteSpace: "pre",
               color: hoveredLine === li ? "#FF6A6A" : "rgba(255,255,255,0.55)",
-              background: hoveredLine === li ? "rgba(221,58,58,0.05)" : "transparent",
               borderRadius: 2,
+              position: "relative",
               transition: "color 120ms ease-out",
             }}
           >
+            {hoveredLine === li && CAT_LINE_BOUNDS[li] && (
+              <span
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  left: `${CAT_LINE_BOUNDS[li]!.start}ch`,
+                  width: `${CAT_LINE_BOUNDS[li]!.length}ch`,
+                  top: "12%",
+                  bottom: "12%",
+                  background: "rgba(221,58,58,0.08)",
+                  borderRadius: 2,
+                  pointerEvents: "none",
+                }}
+              />
+            )}
+            {wave && (() => {
+              const bounds = CAT_LINE_BOUNDS[li];
+              if (!bounds) return null;
+
+              const lineStart = bounds.start;
+              const lineEnd = bounds.start + bounds.length - 1;
+              const eased = wave.progress * wave.progress; // accelerating wave
+              const upMax = Math.max(0, wave.row);
+              const downMax = Math.max(0, CAT_LINES.length - 1 - wave.row);
+              const upRadius = upMax * eased;
+              const downRadius = downMax * eased;
+              const upThickness = compact ? 1.3 : 1.6;
+              const downThickness = compact ? 1.3 : 1.6;
+
+              const overlays: React.ReactNode[] = [];
+
+              // Up wave: horizontal band moving upward line by line.
+              const upDist = wave.row - li;
+              if (upDist >= 0) {
+                const upDelta = Math.abs(upDist - upRadius);
+                if (upDelta <= upThickness) {
+                  const upStrength = 1 - upDelta / upThickness;
+                  overlays.push(
+                    <span
+                      key={`up-${li}`}
+                      aria-hidden="true"
+                      style={{
+                        position: "absolute",
+                        left: `${lineStart}ch`,
+                        width: `${lineEnd - lineStart + 1}ch`,
+                        top: "12%",
+                        bottom: "12%",
+                        background: `rgba(255,70,70,${0.14 + upStrength * 0.24})`,
+                        borderRadius: 2,
+                        pointerEvents: "none",
+                      }}
+                    />
+                  );
+                }
+              }
+
+              // Down wave: horizontal band moving downward line by line.
+              const downDist = li - wave.row;
+              if (downDist >= 0) {
+                const downDelta = Math.abs(downDist - downRadius);
+                if (downDelta <= downThickness) {
+                  const downStrength = 1 - downDelta / downThickness;
+                  overlays.push(
+                    <span
+                      key={`down-${li}`}
+                      aria-hidden="true"
+                      style={{
+                        position: "absolute",
+                        left: `${lineStart}ch`,
+                        width: `${lineEnd - lineStart + 1}ch`,
+                        top: "12%",
+                        bottom: "12%",
+                        background: `rgba(255,70,70,${0.14 + downStrength * 0.24})`,
+                        borderRadius: 2,
+                        pointerEvents: "none",
+                      }}
+                    />
+                  );
+                }
+              }
+
+              return overlays;
+            })()}
             {line}
           </div>
         ))}
