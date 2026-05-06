@@ -162,7 +162,7 @@ export default function HeroSection() {
         className="relative z-10 font-black uppercase leading-[0.85]"
         style={{
           fontFamily: "'Mango Grotesque', 'archivo-black', sans-serif",
-          fontSize: "clamp(5.4rem, 18.5vw, 24rem)",
+          fontSize: "clamp(6.1rem, 20.5vw, 26rem)",
           color: "#881111",
           whiteSpace: "nowrap",
           width: "max-content",
@@ -176,7 +176,7 @@ export default function HeroSection() {
       {/* Subtitle */}
       <p
         ref={subRef}
-        className="relative z-10 mt-8 text-[clamp(1rem,0.35vw+0.94rem,1.45rem)] font-medium tracking-widest uppercase opacity-0"
+        className="relative z-10 mt-8 text-base md:text-xl font-medium tracking-widest uppercase opacity-0"
         style={{ color: "#881111", fontFamily: "'Sora', sans-serif", letterSpacing: "0.25em" }}
       >
         Développeur Full‑Stack

@@ -318,7 +318,7 @@ interface ContactCardProps {
 function ContactCard({ icon, label, value, onClick, href }: ContactCardProps) {
   const inner = (
     <div
-      className="v2-contact-card group flex flex-col items-start gap-3 p-[clamp(1rem,1.1vw,1.45rem)] cursor-pointer transition-colors duration-300 hover:bg-[#DD3A3A12]"
+      className="v2-contact-card group flex flex-col items-start gap-3 p-5 cursor-pointer transition-colors duration-300 hover:bg-[#DD3A3A12]"
       onClick={onClick}
       style={{
         background: "rgba(221,58,58,0)",
@@ -333,13 +333,13 @@ function ContactCard({ icon, label, value, onClick, href }: ContactCardProps) {
       <div>
         <div
           className="text-xs uppercase tracking-[0.25em] mb-1 transition-colors duration-300 group-hover:text-[#DD3A3A]"
-          style={{ color: "rgba(255,255,255,0.28)", fontFamily: "'Sora',sans-serif", fontSize: "clamp(0.76rem,0.1vw+0.74rem,0.9rem)" }}
+          style={{ color: "rgba(255,255,255,0.28)", fontFamily: "'Sora',sans-serif" }}
         >
           {label}
         </div>
         <div
-          className="font-semibold transition-colors duration-300 group-hover:text-[#FF5A5A]"
-          style={{ color: "rgba(255,255,255,0.82)", fontFamily: "'Sora',sans-serif", fontSize: "clamp(0.98rem,0.22vw+0.94rem,1.2rem)" }}
+          className="text-sm font-semibold transition-colors duration-300 group-hover:text-[#FF5A5A]"
+          style={{ color: "rgba(255,255,255,0.82)", fontFamily: "'Sora',sans-serif" }}
         >
           {value}
         </div>
@@ -365,6 +365,8 @@ export default function ContactV2() {
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+      const titleStart = isMobile ? "top 95%" : "top 85%";
+      const titleEnd = isMobile ? "top 55%" : "top 40%";
 
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -393,7 +395,7 @@ export default function ContactV2() {
 
       gsap.fromTo(titleRef.current,
         { x: -80, opacity: 0 },
-        { x: 0, opacity: 1, scrollTrigger: { trigger: sectionRef.current, start: "top 85%", end: "top 40%", scrub: 0.6 } }
+        { x: 0, opacity: 1, scrollTrigger: { trigger: sectionRef.current, start: titleStart, end: titleEnd, scrub: 0.6 } }
       );
       gsap.fromTo(colLeft.current,
         { x: -40, opacity: 0 },
@@ -446,8 +448,8 @@ export default function ContactV2() {
         {/* Left: intro + 2×2 grid */}
         <div ref={colLeft} className="flex-1 opacity-0">
           <p
-            className="leading-relaxed mb-10 max-w-[46ch]"
-            style={{ color: "rgba(255,255,255,0.42)", fontFamily: "'Sora',sans-serif", fontSize: "clamp(1rem,0.22vw+0.96rem,1.18rem)" }}
+            className="text-sm leading-relaxed mb-10 max-w-md"
+            style={{ color: "rgba(255,255,255,0.42)", fontFamily: "'Sora',sans-serif" }}
           >
             Disponible pour opportunités, collaborations ou simplement échanger.
           </p>

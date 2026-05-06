@@ -28,6 +28,12 @@ body.v2-page {
   --v2-text-sm: clamp(0.92rem, 0.22vw + 0.84rem, 1.06rem);
 }
 
+@media (max-width: 1023px) {
+  body.v2-page {
+    --v2-gutter: 8vw;
+  }
+}
+
 body.v2-page .v2-section-shell {
   width: 100%;
   padding-inline: var(--v2-gutter);
@@ -96,7 +102,7 @@ body.v2-page .side-decor-layer {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 5;
+  z-index: 2;
   overflow: hidden;
   transform: translate3d(0,0,0);
 }
@@ -118,7 +124,7 @@ body.v2-page .side-decor-canvas {
 
 body.v2-page #smooth-content > section > * {
   position: relative;
-  z-index: 10;
+  z-index: 20;
 }
 
 /* ── Career tabs indicator ── */
@@ -293,6 +299,17 @@ body.v2-page * {
 .v2-contact-cutelinks img {
   opacity: 1 !important;
   background: #120D0D;
+}
+
+body.v2-page #v2-about img {
+  position: relative;
+  z-index: 25;
+}
+
+body.v2-page .v2-contact-cutelinks,
+body.v2-page .v2-contact-cutelinks * {
+  position: relative;
+  z-index: 25;
 }
 
 .v2-contact-grid > * + * {

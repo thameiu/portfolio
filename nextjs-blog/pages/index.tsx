@@ -195,10 +195,10 @@ export default function PortfolioV2() {
 
       {/* Fixed elements outside smooth-content */}
       <HeaderV2 />
-      <SideDecor />
       <ScrollbarV2 />
 
       <div id="smooth-wrapper">
+        <SideDecor />
         <div id="smooth-content">
           <HeroSection />
           <AboutV2 />
