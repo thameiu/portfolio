@@ -12,8 +12,10 @@ import { IoClose } from "react-icons/io5";
 
 const PROJECT_PIN_DISTANCE = 1800;
 const PROJECT_PIN_DISTANCE_MOBILE_FACTOR = 1.7;
+const PROJECT_PIN_DISTANCE_DESKTOP_FACTOR = 1.95;
 export const PROJECT_OVERLAP = 650;
 const PROJECT_OVERLAP_MOBILE = 320;
+const PROJECT_OVERLAP_DESKTOP_FACTOR = 0.84;
 
 /* ═══════════════════════════════════════════════
    ICONS
@@ -511,6 +513,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
   const spinRefs     = useRef<(SVGGElement | null)[]>([]);
   const [isMobile, setIsMobile] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [viewportHeight, setViewportHeight] = useState(1080);
 
   const iconLayout = getIconLayout(project.iconType);
 
@@ -536,6 +539,13 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
     }
     mq.addListener(sync);
     return () => mq.removeListener(sync);
+  }, []);
+
+  useEffect(() => {
+    const update = () => setViewportHeight(window.innerHeight || 1080);
+    update();
+    window.addEventListener("resize", update, { passive: true });
+    return () => window.removeEventListener("resize", update);
   }, []);
 
   /* ScrollTrigger animation */
@@ -612,7 +622,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
         /* Main scrubbed trigger — pin the section itself */
         const pinDistance = isMobile
           ? Math.round(window.innerHeight * PROJECT_PIN_DISTANCE_MOBILE_FACTOR)
-          : PROJECT_PIN_DISTANCE;
+          : Math.max(PROJECT_PIN_DISTANCE, Math.round(window.innerHeight * PROJECT_PIN_DISTANCE_DESKTOP_FACTOR));
 
         const mainTrigger = ScrollTrigger.create({
           trigger: sectionRef.current,
@@ -621,9 +631,9 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
           pin: sectionRef.current,
           pinSpacing: true,
           pinType: undefined,
-          pinReparent: false,
+          pinReparent: !isMobile,
           scrub: isMobile ? true : 1,
-          anticipatePin: isMobile ? 1 : 1,
+          anticipatePin: isMobile ? 1 : 2,
           fastScrollEnd: false,
           invalidateOnRefresh: !isMobile,
           onEnter:     () => setProjectActive(`${project.id}-pin`, true),
@@ -694,7 +704,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
       setProjectActive(`${project.id}-viewport`, false);
       ctx.revert();
     };
-  }, [isMobile, prefersReducedMotion, project.bgColor, project.iconType, project.id]);
+  }, [isMobile, prefersReducedMotion, project.bgColor, project.iconType, project.id, viewportHeight]);
 
   const { isDark, accentColor, bgColor } = project;
   const textPrimary = isDark ? "rgba(255,255,255,0.92)" : "rgba(15,8,8,0.88)";
@@ -704,7 +714,9 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
   const isGgps = project.id === "ggps";
   const isPathfinder = project.id === "pathfinder";
   const useSimplifiedMotion = prefersReducedMotion;
-  const projectOverlap = isMobile ? PROJECT_OVERLAP_MOBILE : PROJECT_OVERLAP;
+  const projectOverlap = isMobile
+    ? PROJECT_OVERLAP_MOBILE
+    : Math.max(PROJECT_OVERLAP, Math.round(viewportHeight * PROJECT_OVERLAP_DESKTOP_FACTOR));
 
   return (
     <section
@@ -959,12 +971,12 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
               opacity: 0,
             }}>
             {project.screenshots && project.screenshots.length > 0 ? (
-              <div style={{ width: "100%", maxWidth: 520 }}>
+              <div style={{ width: "min(100%, clamp(34rem, 44vw, 58rem))" }}>
                 <Carousel images={project.screenshots} accentColor={accentColor} isDark={isDark}/>
               </div>
             ) : (
               <div style={{
-                width: "100%", maxWidth: 520, aspectRatio: "16/10",
+                width: "min(100%, clamp(34rem, 44vw, 58rem))", aspectRatio: "16/10",
                 border: `1px solid ${accentColor}25`,
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}>

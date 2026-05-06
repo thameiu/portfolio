@@ -28,6 +28,11 @@ body.v2-page {
   --v2-text-sm: clamp(0.92rem, 0.22vw + 0.84rem, 1.06rem);
 }
 
+/* Keep mobile exactly as-is; desktop gets fluid readability scaling. */
+html.v2-page {
+  font-size: 16px;
+}
+
 @media (max-width: 1023px) {
   body.v2-page {
     --v2-gutter: 8vw;
@@ -42,6 +47,26 @@ body.v2-page .v2-section-shell {
 @media (min-width: 1920px) {
   body.v2-page {
     --v2-gutter: clamp(1.8rem, 5.4vw, 10rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  html.v2-page {
+    font-size: clamp(16px, 0.62vw + 10.5px, 22px);
+  }
+
+  body.v2-page {
+    --v2-gutter: clamp(2rem, 6.2vw, 12rem);
+  }
+
+  body.v2-page .v2-section-shell {
+    padding-inline: var(--v2-gutter);
+  }
+}
+
+@media (min-width: 1440px) {
+  html.v2-page {
+    font-size: clamp(18px, 0.45vw + 12px, 24px);
   }
 }
 
