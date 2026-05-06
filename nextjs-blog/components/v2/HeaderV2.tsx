@@ -163,7 +163,9 @@ export default function HeaderV2() {
           ? Math.max(0, baseTop - 16)
           : Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
         : isProjectAnchor
-          ? baseTop + window.innerHeight * 0.42
+          ? isMobileViewport
+            ? Math.max(0, baseTop + 12)
+            : baseTop + window.innerHeight * 0.42
           : Math.max(0, baseTop - 80);
       const smoother = ScrollSmoother.get();
       if (smoother) {

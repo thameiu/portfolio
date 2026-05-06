@@ -729,6 +729,21 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
           overflow: useSimplifiedMotion ? "visible" : "hidden",
           background: bgColor,
         }}>
+        {isMobile && !useSimplifiedMotion && (
+          <div
+            aria-hidden="true"
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: 4,
+              background: bgColor,
+              zIndex: 80,
+              pointerEvents: "none",
+            }}
+          />
+        )}
 
         {/* Project-specific subtle backdrops */}
         {isRgbast && (
