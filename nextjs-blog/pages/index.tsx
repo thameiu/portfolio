@@ -83,7 +83,7 @@ const PROJECTS: ProjectData[] = [
   },
   {
     id: "pathfinder",
-    title: "Pathfinder",
+    title: "Pathfinder (Miratlas)",
     titleSvg: "/pathfinder/pathfinder.svg",
     description:
       "Application web de cartographie de perturbations atmosphériques pour communications FSOC en optique libre.",
@@ -106,7 +106,7 @@ const PROJECTS: ProjectData[] = [
   },
   {
     id: "ggps",
-    title: "GGPS",
+    title: "GGPS - Gamer's Global Positionning System",
     titleSvg: "/ggps/ggps.svg",
     description:
       "Application web de localisation d'événements du jeu vidéo avec chatrooms temps réel.",

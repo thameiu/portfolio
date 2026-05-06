@@ -860,12 +860,19 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
             justifyContent: isMobile ? "flex-end" : "center",
             paddingLeft: isMobile ? "clamp(1rem,6vw,2.2rem)" : "clamp(1.2rem,4.5vw,7rem)",
             paddingRight: isMobile ? "clamp(1rem,6vw,2.2rem)" : "clamp(1rem,2.8vw,3.6rem)",
-            paddingTop: isMobile ? "9vh" : "0",
+            paddingTop: isMobile ? "3.8vh" : "0",
             paddingBottom: isMobile ? "6vh" : "0",
           }}>
             <div style={{ paddingRight: isMobile ? "0.25rem" : 0 }}>
               {/* Small logo */}
-              <div ref={logoRef} style={{ opacity: 0, marginBottom: "1.5rem", display: "inline-block" }}>
+              <div
+                ref={logoRef}
+                style={{
+                  opacity: 0,
+                  marginBottom: isMobile ? "0.62rem" : "1.5rem",
+                  display: "inline-block",
+                }}
+              >
                 {project.titleSvg ? (
                   <Image src={project.titleSvg} alt={project.title}
                     width={760} height={210}
@@ -881,9 +888,15 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
 
               {/* Textual content */}
               <div ref={contentRef} style={{ opacity: 0 }}>
-                <span className="block text-xs font-bold uppercase tracking-[0.3em] mb-4"
-                  style={{ color: accentColor, fontFamily: "'Sora',sans-serif" }}>
-                  {String(index + 1).padStart(2, "0")} /
+                <span
+                  className="block text-xs font-bold uppercase tracking-[0.3em]"
+                  style={{
+                    color: accentColor,
+                    fontFamily: "'Sora',sans-serif",
+                    marginBottom: isMobile ? "0.45rem" : "1rem",
+                  }}
+                >
+                  {String(index + 1).padStart(2, "0")} / {project.title}
                 </span>
                 <p className="text-sm md:text-base leading-relaxed mb-3"
                   style={{ color: textPrimary, fontFamily: "'Sora',sans-serif" }}>

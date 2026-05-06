@@ -146,6 +146,8 @@ export default function HeaderV2() {
 
   const scrollToSection = (id: string) => {
     closeMobileMenu();
+    setVisible(false);
+    setHovering(false);
     isClickScrolling.current = true;
     setActive(id);
     setTimeout(() => { isClickScrolling.current = false; }, 1500);
@@ -158,10 +160,18 @@ export default function HeaderV2() {
       const isMobileViewport = window.innerWidth < 768;
       const isProjectAnchor = id.startsWith("v2-project-");
       const isContactAnchor = id === "v2-contact";
+      const cutelinks = isContactAnchor
+        ? (el.querySelector(".v2-contact-cutelinks") as HTMLElement | null)
+        : null;
+      const cutelinksOffset = cutelinks
+        ? cutelinks.getBoundingClientRect().top - el.getBoundingClientRect().top
+        : null;
       const targetTop = isContactAnchor
         ? isMobileViewport
           ? Math.max(0, baseTop - 16)
-          : Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
+          : cutelinksOffset !== null
+            ? Math.max(0, baseTop + cutelinksOffset - window.innerHeight * 0.86)
+            : Math.max(0, baseTop + window.innerHeight * 0.16)
         : isProjectAnchor
           ? isMobileViewport
             ? Math.max(0, baseTop + 12)
@@ -192,7 +202,7 @@ export default function HeaderV2() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: shouldShow ? 0 : -100, opacity: shouldShow ? 1 : 0 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="fixed top-4 left-0 w-full z-50 flex justify-start md:justify-center px-4 pointer-events-none"
+        className="fixed top-4 left-0 w-full z-[140] flex justify-start md:justify-center px-4 pointer-events-none"
       >
         <div className="pointer-events-auto flex"
           onMouseEnter={() => { setHovering(true); if (hideTimerRef.current) clearTimeout(hideTimerRef.current); }}

@@ -145,8 +145,15 @@ body.v2-contact-active .side-decor-canvas {
   opacity: 0.2 !important;
 }
 
+body.v2-project-active.v2-contact-active .side-decor-canvas {
+  opacity: 0.2 !important;
+}
+
 @media (max-width: 767px) {
   body.v2-contact-active .side-decor-canvas {
+    opacity: 0.12 !important;
+  }
+  body.v2-project-active.v2-contact-active .side-decor-canvas {
     opacity: 0.12 !important;
   }
 }
