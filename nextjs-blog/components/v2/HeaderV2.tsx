@@ -24,6 +24,9 @@ export default function HeaderV2() {
   const hideTimerRef     = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hoveringRef      = useRef(false);
   const lastScrollYRef    = useRef(0);
+  const mobileMenuPanelRef = useRef<HTMLDivElement | null>(null);
+  const mobileMenuOverlayRef = useRef<HTMLDivElement | null>(null);
+  const mobileMenuClosingRef = useRef(false);
 
   /* keep hoveringRef in sync */
   useEffect(() => { hoveringRef.current = hovering; }, [hovering]);
@@ -93,8 +96,56 @@ export default function HeaderV2() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (!menuVisible) return;
+    const panel = mobileMenuPanelRef.current;
+    const overlay = mobileMenuOverlayRef.current;
+    if (!panel) return;
+    gsap.set(panel, { xPercent: -100 });
+    if (overlay) gsap.set(overlay, { opacity: 0 });
+    const tl = gsap.timeline();
+    if (overlay) {
+      tl.to(overlay, { opacity: 1, duration: 0.2, ease: "power2.out" }, 0);
+    }
+    tl.to(panel, {
+      xPercent: 0,
+      duration: 0.36,
+      ease: "power3.out",
+      clearProps: "transform",
+    }, 0);
+    return () => {
+      tl.kill();
+    };
+  }, [menuVisible]);
+
+  const closeMobileMenu = () => {
+    if (!menuVisible) return;
+    if (mobileMenuClosingRef.current) return;
+    const panel = mobileMenuPanelRef.current;
+    const overlay = mobileMenuOverlayRef.current;
+    if (!panel) {
+      setMenu(false);
+      return;
+    }
+    mobileMenuClosingRef.current = true;
+    const tl = gsap.timeline({
+      onComplete: () => {
+        mobileMenuClosingRef.current = false;
+        setMenu(false);
+      },
+    });
+    if (overlay) {
+      tl.to(overlay, { opacity: 0, duration: 0.16, ease: "power2.inOut" }, 0);
+    }
+    tl.to(panel, {
+      xPercent: -100,
+      duration: 0.28,
+      ease: "power3.inOut",
+    }, 0);
+  };
+
   const scrollToSection = (id: string) => {
-    setMenu(false);
+    closeMobileMenu();
     isClickScrolling.current = true;
     setActive(id);
     setTimeout(() => { isClickScrolling.current = false; }, 1500);
@@ -151,7 +202,7 @@ export default function HeaderV2() {
           }}>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center justify-center h-[50px] p-1 rounded-full backdrop-blur-lg border border-white/10 shadow-lg w-max relative"
+          <nav className="hidden md:flex items-center justify-center h-[48px] p-1 rounded-2xl backdrop-blur-lg border border-white/10 shadow-lg w-max relative"
             style={{ background: `${PRIMARY}33` }}>
             <ul className="flex items-center justify-between h-full relative">
               {navItems.map(item => {
@@ -166,10 +217,10 @@ export default function HeaderV2() {
                     </span>
                     {isActive && (
                       <motion.div
-                        className="absolute inset-0 -z-0 rounded-full"
+                        className="absolute inset-0 -z-0 rounded-xl"
                         layoutId="v2-active-pill"
                         transition={{ type: "spring", stiffness: 800, damping: 40, mass: 0.5 }}
-                        style={{ borderRadius: 9999, background: "rgba(255,255,255,0.1)" }}
+                        style={{ borderRadius: 12, background: "rgba(255,255,255,0.1)" }}
                       />
                     )}
                   </li>
@@ -181,14 +232,12 @@ export default function HeaderV2() {
           {/* Mobile button */}
           <div className="md:hidden">
             {!menuVisible && (
-              <motion.button
-                layoutId="v2-mobile-menu"
+              <button
                 onClick={() => setMenu(true)}
                 className="flex items-center justify-center w-[50px] h-[50px] backdrop-blur-xl border border-white/10 shadow-lg text-white/80 hover:text-white transition-colors"
-                style={{ borderRadius: 25, background: `${PRIMARY}33` }}
-                transition={{ type: "tween", ease: "circInOut", duration: 0.25 }}>
+                style={{ borderRadius: 14, background: `${PRIMARY}33` }}>
                 <FaBars size={22}/>
-              </motion.button>
+              </button>
             )}
           </div>
         </div>
@@ -197,25 +246,25 @@ export default function HeaderV2() {
       {/* Mobile menu */}
       <AnimatePresence>
         {menuVisible && (
-          <motion.div
-            layoutId="v2-mobile-menu"
-            className="fixed inset-0 z-[1000] backdrop-blur-3xl md:hidden overflow-hidden flex flex-col items-center justify-center"
-            onClick={() => setMenu(false)}
-            style={{ borderRadius: 0, background: `${PRIMARY}AA` }}
-            transition={{ type: "tween", ease: "circInOut", duration: 0.25 }}>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.15 }}
-              className="relative w-full px-8"
-              onClick={e => e.stopPropagation()}>
-              <ul className="flex flex-col items-center justify-center gap-4 w-full">
+          <div className="fixed inset-0 z-[1000] md:hidden">
+            <div
+              ref={mobileMenuOverlayRef}
+              className="absolute inset-0 backdrop-blur-[2px]"
+              onClick={closeMobileMenu}
+              style={{ background: "rgba(18,13,13,0.22)" }}
+            />
+            <div
+              ref={mobileMenuPanelRef}
+              className="absolute top-0 left-0 h-full w-full border-r border-[#120D0D]/10 shadow-2xl px-6 pt-20 pb-8"
+              style={{ background: "rgba(255,250,251,0.96)" }}
+              onClick={e => e.stopPropagation()}
+            >
+              <ul className="flex flex-col items-start justify-start gap-3 w-full">
                 {navItems.map(item => {
                   const isActive = activeSection === item.id;
                   return (
                     <li key={item.id}
-                      className="relative cursor-pointer flex items-center justify-center h-full transition-colors duration-300 text-white/80 hover:text-white font-['Sora'] font-semibold whitespace-nowrap px-8 py-3 text-2xl sm:text-3xl w-full"
+                      className="relative cursor-pointer flex items-center justify-start h-full transition-colors duration-300 text-[#120D0D]/76 hover:text-[#120D0D] font-['Sora'] font-semibold whitespace-nowrap px-4 py-3 text-2xl w-full"
                       onClick={() => scrollToSection(item.id)}>
                       <span className="relative z-10 transition-colors"
                         style={{ color: isActive ? ACCENT : undefined }}>
@@ -223,27 +272,25 @@ export default function HeaderV2() {
                       </span>
                       {isActive && (
                         <motion.div
-                          className="absolute inset-0 -z-0 rounded-full"
+                          className="absolute inset-0 -z-0 rounded-xl"
                           layoutId="v2-active-pill-mobile"
                           transition={{ type: "spring", stiffness: 800, damping: 40, mass: 0.5 }}
-                          style={{ borderRadius: 9999, background: "rgba(255,255,255,0.1)" }}
+                          style={{ borderRadius: 12, background: "rgba(136,17,17,0.1)" }}
                         />
                       )}
                     </li>
                   );
                 })}
               </ul>
-            </motion.div>
-            <div className="absolute top-4 left-4">
-              <motion.button
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                transition={{ duration: 0.15 }}
-                onClick={() => setMenu(false)}
-                className="flex items-center justify-center w-[50px] h-[50px] text-white/80 hover:text-white transition-colors">
-                <FaTimes size={28}/>
-              </motion.button>
             </div>
-          </motion.div>
+            <div className="absolute top-4 left-4">
+              <button
+                onClick={closeMobileMenu}
+                className="flex items-center justify-center w-[50px] h-[50px] text-[#120D0D]/72 hover:text-[#120D0D] transition-colors">
+                <FaTimes size={28}/>
+              </button>
+            </div>
+          </div>
         )}
       </AnimatePresence>
     </>

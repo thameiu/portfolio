@@ -11,7 +11,7 @@ import {
 import { IoClose } from "react-icons/io5";
 
 const PROJECT_PIN_DISTANCE = 1800;
-const PROJECT_PIN_DISTANCE_MOBILE_FACTOR = 1.85;
+const PROJECT_PIN_DISTANCE_MOBILE_FACTOR = 1.7;
 export const PROJECT_OVERLAP = 650;
 const PROJECT_OVERLAP_MOBILE = 320;
 
@@ -651,25 +651,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
 
             /* Scroll-reactive background motion */
             if (isMobile) {
-              if (project.iconType === "clock") {
-                spinRefs.current.forEach(el => {
-                  if (el) el.setAttribute("transform", `rotate(${p * 90} 60 60)`);
-                });
-              } else if (project.iconType === "circles") {
-                spinRefs.current.forEach(el => {
-                  if (el) el.style.transform = `rotate(${p * 45}deg)`;
-                });
-              } else if (project.iconType === "satellite") {
-                const speed = [26, -34, 20, -28, 16, -22, 30];
-                spinRefs.current.forEach(el => {
-                  if (!el) return;
-                  const rings = el.querySelectorAll("[data-path-ring]");
-                  rings.forEach((ring, i) => {
-                    const angle = p * speed[i % speed.length];
-                    (ring as SVGGElement).setAttribute("transform", `rotate(${angle} 350 220)`);
-                  });
-                });
-              }
+              return;
             } else {
               if (project.iconType === "clock") {
                 spinRefs.current.forEach(el => {
