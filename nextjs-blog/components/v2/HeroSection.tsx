@@ -179,7 +179,7 @@ export default function HeroSection() {
         className="relative z-10 mt-8 text-base md:text-xl font-medium tracking-widest uppercase opacity-0"
         style={{ color: "#881111", fontFamily: "'Sora', sans-serif", letterSpacing: "0.25em" }}
       >
-        Développeur Full‑Stack
+        Développeur Polyvalent
       </p>
 
       {/* Scroll hint

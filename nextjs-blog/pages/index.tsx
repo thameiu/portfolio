@@ -152,6 +152,10 @@ export default function PortfolioV2() {
       ignoreMobileResize: shouldUseNativeScroll,
     });
 
+    if (shouldUseNativeScroll) {
+      ScrollTrigger.normalizeScroll(true);
+    }
+
     document.body.classList.toggle("v2-smooth", !shouldUseNativeScroll);
     const smoother = shouldUseNativeScroll
       ? null
@@ -166,6 +170,9 @@ export default function PortfolioV2() {
     else window.scrollTo(0, 0);
 
     return () => {
+      if (shouldUseNativeScroll) {
+        ScrollTrigger.normalizeScroll(false);
+      }
       document.body.classList.remove("v2-smooth");
       smoother?.kill();
       ScrollTrigger.getAll().forEach(t => t.kill());
@@ -188,17 +195,17 @@ export default function PortfolioV2() {
     <>
       <Loader isLoading={isLoading} />
       <Head>
-        <title>Mathieu Hernandez — Portfolio</title>
-        <meta name="description" content="Portfolio v2 — Mathieu Hernandez, Développeur Full-Stack" />
+        <title>Mathieu Hernandez - Portfolio</title>
+        <meta name="description" content="Mathieu Hernandez, Développeur Polyvalent - Portfolio" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       {/* Fixed elements outside smooth-content */}
       <HeaderV2 />
+      <SideDecor />
       <ScrollbarV2 />
 
       <div id="smooth-wrapper">
-        <SideDecor />
         <div id="smooth-content">
           <HeroSection />
           <AboutV2 />

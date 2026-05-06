@@ -11,9 +11,9 @@ import {
 import { IoClose } from "react-icons/io5";
 
 const PROJECT_PIN_DISTANCE = 1800;
-const PROJECT_PIN_DISTANCE_MOBILE_FACTOR = 1.95;
+const PROJECT_PIN_DISTANCE_MOBILE_FACTOR = 1.85;
 export const PROJECT_OVERLAP = 650;
-const PROJECT_OVERLAP_MOBILE = 140;
+const PROJECT_OVERLAP_MOBILE = 320;
 
 /* ═══════════════════════════════════════════════
    ICONS
@@ -616,21 +616,16 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
 
         const mainTrigger = ScrollTrigger.create({
           trigger: sectionRef.current,
-          start: isMobile ? "top top+=1" : "top top",
+          start: "top top",
           end: `+=${pinDistance}`,
           pin: sectionRef.current,
           pinSpacing: true,
-          scrub: isMobile ? 0.65 : 1,
-          anticipatePin: isMobile ? 0.5 : 1,
+          pinType: undefined,
+          pinReparent: false,
+          scrub: isMobile ? true : 1,
+          anticipatePin: isMobile ? 1 : 1,
           fastScrollEnd: false,
-          invalidateOnRefresh: true,
-          onRefresh: () => {
-            const spacer = sectionRef.current?.parentElement;
-            if (spacer) {
-              spacer.style.background = project.bgColor;
-              spacer.style.marginBottom = "0px";
-            }
-          },
+          invalidateOnRefresh: !isMobile,
           onEnter:     () => setProjectActive(`${project.id}-pin`, true),
           onEnterBack: () => setProjectActive(`${project.id}-pin`, true),
           onLeave:     () => setProjectActive(`${project.id}-pin`, false),
@@ -638,11 +633,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
           onUpdate: (self) => {
             const p = self.progress;
             if (isMobile) {
-              gsap.set(hugeTitleRef.current, { opacity: 0, overwrite: "auto" });
-              gsap.set(logoRef.current, { opacity: 1, overwrite: "auto" });
-              gsap.set(contentRef.current, { opacity: 1, overwrite: "auto" });
-              gsap.set(carouselRef.current, { opacity: 1, overwrite: "auto" });
-              gsap.set(decorRefs.current, { opacity: 0.2, overwrite: "auto" });
+              // Keep mobile info fixed and visible without per-frame style writes.
             } else {
               /* Big logo appears very early during cover, then fades out smoothly before info. */
               const hugeIn  = gsap.utils.clamp(0, 1, p / 0.15);
@@ -660,12 +651,6 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
 
             /* Scroll-reactive background motion */
             if (isMobile) {
-              // Keep mobile background stable to prevent visual jitter.
-              decorRefs.current.forEach(el => {
-                if (!el) return;
-                gsap.set(el, { x: 0, y: 0, overwrite: "auto" });
-              });
-
               if (project.iconType === "clock") {
                 spinRefs.current.forEach(el => {
                   if (el) el.setAttribute("transform", `rotate(${p * 90} 60 60)`);
