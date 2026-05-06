@@ -17,7 +17,7 @@ type Tab = typeof TABS[number];
 /* ── small reusable badge ── */
 const Badge = ({ children }: { children: React.ReactNode }) => (
   <span
-    className="v2-career-pill inline-flex items-center gap-1.5 px-3 py-1 text-xs border"
+    className="v2-career-pill inline-flex items-center gap-1.5 px-3 py-1 text-[clamp(0.84rem,0.16vw+0.8rem,0.98rem)] border"
     style={{
       fontFamily: "'Sora', sans-serif",
       borderColor: "rgba(136,17,17,0.32)",
@@ -32,7 +32,7 @@ const Badge = ({ children }: { children: React.ReactNode }) => (
 
 const JobTag = ({ children }: { children: React.ReactNode }) => (
   <span
-    className="inline-block px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider"
+    className="inline-block px-2.5 py-0.5 text-[clamp(0.78rem,0.1vw+0.76rem,0.9rem)] font-semibold uppercase tracking-wider"
     style={{
       fontFamily: "'Sora', sans-serif",
       color: "#881111",
@@ -64,19 +64,19 @@ const XPItem = ({ e }: { e: XPEntry }) => (
       style={{ background: "rgba(136,17,17,0.18)" }}
     />
     <div className="flex flex-wrap items-start justify-between gap-2 mb-1">
-      <span className="text-xs font-medium tracking-wide" style={{ color: "rgba(45,16,16,0.5)", fontFamily: "'Sora', sans-serif" }}>
+      <span className="text-[clamp(0.86rem,0.18vw+0.82rem,1.02rem)] font-medium tracking-[0.04em]" style={{ color: "rgba(45,16,16,0.5)", fontFamily: "'Sora', sans-serif" }}>
         {e.period}
       </span>
       {e.badge}
     </div>
     <h3
-      className="text-4xl md:text-5xl font-bold mb-0.5 transition-colors duration-300 group-hover:text-[#881111]"
-      style={{ fontFamily: "'Mango Grotesque','archivo-black',sans-serif", color: "#2D1010", letterSpacing: "-0.02em" }}
+      className="v2-role-title text-4xl md:text-5xl font-bold mb-0.5 transition-colors duration-300 group-hover:text-[#881111]"
+      style={{ fontFamily: "'Mango Grotesque','archivo-black',sans-serif", color: "#2D1010" }}
     >
       {e.role}
     </h3>
-    <p className="mb-3 text-sm font-medium" style={{ color: "rgba(45,16,16,0.78)", fontFamily: "'Sora', sans-serif" }}>{e.org}</p>
-    <div className="text-[0.95rem] leading-relaxed mb-4" style={{ color: "rgba(45,16,16,0.9)", fontFamily: "'Sora', sans-serif" }}>{e.desc}</div>
+    <p className="mb-3 text-[clamp(0.94rem,0.2vw+0.88rem,1.12rem)] font-medium" style={{ color: "rgba(45,16,16,0.78)", fontFamily: "'Sora', sans-serif" }}>{e.org}</p>
+    <div className="text-[clamp(1rem,0.28vw+0.94rem,1.22rem)] leading-[1.7] mb-4" style={{ color: "rgba(45,16,16,0.9)", fontFamily: "'Sora', sans-serif" }}>{e.desc}</div>
     {e.tags && <div className="flex flex-wrap gap-2">{e.tags}</div>}
   </div>
 );
@@ -109,7 +109,7 @@ const SkillCard = ({
     <div className="flex items-center gap-4 mb-5 pl-2">
       <span className="text-3xl transition-colors" style={{ color: "#881111" }}>{icon}</span>
       <h4
-        className="font-bold text-4xl md:text-5xl leading-none"
+        className="v2-skill-title font-bold text-4xl md:text-5xl leading-none"
         style={{ fontFamily: "'Mango Grotesque','archivo-black',sans-serif", color: "#2D1010" }}
       >
         {title}
@@ -345,7 +345,7 @@ export default function CareerV2() {
     <section
       id="v2-career"
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col justify-start lg:justify-center px-[8vw] pt-20 pb-36 md:pt-24 md:pb-24 lg:py-32 overflow-hidden"
+      className="v2-section-shell relative min-h-screen flex flex-col justify-start lg:justify-center pt-20 pb-36 md:pt-24 md:pb-24 lg:py-32 overflow-hidden"
       style={{ background: "#FFFAFB" }}
     >
       {/* Mega title */}
@@ -368,13 +368,13 @@ export default function CareerV2() {
             key={tab}
             ref={el => { tabBtnRefs.current[i] = el; }}
             onClick={() => changeTab(tab)}
-            className="px-4 sm:px-6 py-3 text-sm md:text-base font-semibold transition-colors duration-300 cursor-pointer whitespace-nowrap text-center"
+            className="px-4 sm:px-6 py-3 text-[clamp(0.98rem,0.2vw+0.92rem,1.18rem)] font-semibold transition-colors duration-300 cursor-pointer whitespace-nowrap text-center"
             style={{
               fontFamily: "'Sora', sans-serif",
               color: activeTab === tab ? "#881111" : "rgba(45,16,16,0.45)",
               background: "transparent",
               border: "none",
-              letterSpacing: "0.01em",
+              letterSpacing: "0.035em",
             }}
           >
             {tab}

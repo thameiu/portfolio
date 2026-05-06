@@ -4,6 +4,7 @@ import { FaEnvelope, FaLinkedin, FaGithub, FaFileDownload } from "react-icons/fa
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CVModal from "../v1/CVModal";
+import CuteLinks from "../v1/CuteLinks";
 
 const CONTACT_OVERLAP = 650;
 
@@ -317,7 +318,7 @@ interface ContactCardProps {
 function ContactCard({ icon, label, value, onClick, href }: ContactCardProps) {
   const inner = (
     <div
-      className="v2-contact-card group flex flex-col items-start gap-3 p-5 cursor-pointer transition-colors duration-300 hover:bg-[#DD3A3A12]"
+      className="v2-contact-card group flex flex-col items-start gap-3 p-[clamp(1rem,1.1vw,1.45rem)] cursor-pointer transition-colors duration-300 hover:bg-[#DD3A3A12]"
       onClick={onClick}
       style={{
         background: "rgba(221,58,58,0)",
@@ -332,13 +333,13 @@ function ContactCard({ icon, label, value, onClick, href }: ContactCardProps) {
       <div>
         <div
           className="text-xs uppercase tracking-[0.25em] mb-1 transition-colors duration-300 group-hover:text-[#DD3A3A]"
-          style={{ color: "rgba(255,255,255,0.28)", fontFamily: "'Sora',sans-serif" }}
+          style={{ color: "rgba(255,255,255,0.28)", fontFamily: "'Sora',sans-serif", fontSize: "clamp(0.76rem,0.1vw+0.74rem,0.9rem)" }}
         >
           {label}
         </div>
         <div
-          className="text-sm font-semibold transition-colors duration-300 group-hover:text-[#FF5A5A]"
-          style={{ color: "rgba(255,255,255,0.82)", fontFamily: "'Sora',sans-serif" }}
+          className="font-semibold transition-colors duration-300 group-hover:text-[#FF5A5A]"
+          style={{ color: "rgba(255,255,255,0.82)", fontFamily: "'Sora',sans-serif", fontSize: "clamp(0.98rem,0.22vw+0.94rem,1.2rem)" }}
         >
           {value}
         </div>
@@ -364,6 +365,16 @@ export default function ContactV2() {
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        onEnter: () => document.body.classList.add("v2-contact-active"),
+        onEnterBack: () => document.body.classList.add("v2-contact-active"),
+        onLeave: () => document.body.classList.remove("v2-contact-active"),
+        onLeaveBack: () => document.body.classList.remove("v2-contact-active"),
+      });
 
       gsap.fromTo(
         sectionRef.current,
@@ -398,6 +409,7 @@ export default function ContactV2() {
 
     return () => {
       ctx.revert();
+      document.body.classList.remove("v2-contact-active");
     };
   }, []);
 
@@ -412,13 +424,13 @@ export default function ContactV2() {
     <section
       id="v2-contact"
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden py-24"
+      className="v2-section-shell relative min-h-screen flex flex-col justify-center overflow-hidden py-20 md:py-24"
       style={{ background: "#120D0D", zIndex: 80, marginTop: -CONTACT_OVERLAP }}
     >
 
 
       {/* Mega title */}
-      <div className="px-[8vw] mb-16">
+      <div className="mb-16">
         <h2
           ref={titleRef}
           className="v2-mega-title opacity-0"
@@ -429,13 +441,13 @@ export default function ContactV2() {
       </div>
 
       {/* Two-column layout */}
-      <div className="px-[8vw] flex flex-col lg:flex-row gap-16 lg:gap-20 items-start">
+      <div className="flex flex-col lg:flex-row gap-16 lg:gap-20 items-start">
 
         {/* Left: intro + 2×2 grid */}
         <div ref={colLeft} className="flex-1 opacity-0">
           <p
-            className="text-sm leading-relaxed mb-10 max-w-md"
-            style={{ color: "rgba(255,255,255,0.42)", fontFamily: "'Sora',sans-serif" }}
+            className="leading-relaxed mb-10 max-w-[46ch]"
+            style={{ color: "rgba(255,255,255,0.42)", fontFamily: "'Sora',sans-serif", fontSize: "clamp(1rem,0.22vw+0.96rem,1.18rem)" }}
           >
             Disponible pour opportunités, collaborations ou simplement échanger.
           </p>
@@ -500,10 +512,14 @@ export default function ContactV2() {
         </div>
       </div>
 
-      <div className="px-[8vw] mt-10 lg:hidden">
+      <div className="mt-10 lg:hidden">
         <div style={{ opacity: 0.8 }}>
           <CatArt compact />
         </div>
+      </div>
+
+      <div className="v2-contact-cutelinks mt-6">
+        <CuteLinks longer />
       </div>
 
       {isCVOpen && <CVModal onClose={() => setIsCVOpen(false)} />}

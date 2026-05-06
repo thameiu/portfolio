@@ -176,10 +176,12 @@ export default function SideDecor() {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="side-decor-canvas"
-      style={{ width: "100%", height: "100%" }}
-    />
+    <div className="side-decor-layer" aria-hidden="true">
+      <canvas
+        ref={canvasRef}
+        className="side-decor-canvas"
+        style={{ width: "100%", height: "100%" }}
+      />
+    </div>
   );
 }

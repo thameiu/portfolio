@@ -872,11 +872,12 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
           {/* Left column */}
           <div style={{
             flex: isMobile ? "0 0 auto" : "0 0 42%",
+            maxWidth: isMobile ? "100%" : "min(46vw, 760px)",
             display: "flex",
             flexDirection: "column",
             justifyContent: isMobile ? "flex-end" : "center",
-            paddingLeft: isMobile ? "6vw" : "8vw",
-            paddingRight: isMobile ? "6vw" : "3vw",
+            paddingLeft: isMobile ? "clamp(1rem,6vw,2.2rem)" : "clamp(1.2rem,4.5vw,7rem)",
+            paddingRight: isMobile ? "clamp(1rem,6vw,2.2rem)" : "clamp(1rem,2.8vw,3.6rem)",
             paddingTop: isMobile ? "9vh" : "0",
             paddingBottom: isMobile ? "6vh" : "0",
           }}>
@@ -886,11 +887,11 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
                 {project.titleSvg ? (
                   <Image src={project.titleSvg} alt={project.title}
                     width={760} height={210}
-                    style={{ width: "min(32vw,22rem)", minWidth: "10rem", height: "auto", objectFit: "contain" }}/>
+                    style={{ width: "min(36vw,25rem)", minWidth: "12rem", height: "auto", objectFit: "contain" }}/>
                 ) : (
                   <span style={{
                     fontFamily: "'Mango Grotesque','archivo-black',sans-serif",
-                    fontSize: "clamp(2.2rem,5vw,6rem)", color: accentColor,
+                    fontSize: "clamp(2.5rem,5.5vw,6.5rem)", color: accentColor,
                     fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.01em",
                   }}>{project.title}</span>
                 )}
@@ -902,17 +903,17 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
                   style={{ color: accentColor, fontFamily: "'Sora',sans-serif" }}>
                   {String(index + 1).padStart(2, "0")} /
                 </span>
-                <p className="text-sm md:text-base leading-relaxed mb-3"
+                <p className="text-[clamp(1rem,0.25vw+0.94rem,1.22rem)] leading-[1.7] mb-3"
                   style={{ color: textPrimary, fontFamily: "'Sora',sans-serif" }}>
                   {project.description}
                 </p>
-                <p className="text-xs leading-relaxed mb-5"
+                <p className="text-[clamp(0.92rem,0.16vw+0.88rem,1.06rem)] leading-[1.65] mb-5"
                   style={{ color: textMuted, fontFamily: "'Sora',sans-serif" }}>
                   {project.details}
                 </p>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {project.techStack.map(t => (
-                    <span key={t} className="v2-tech-pill inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium tracking-wide border"
+                    <span key={t} className="v2-tech-pill inline-flex items-center gap-1.5 px-2.5 py-1 text-[clamp(0.82rem,0.12vw+0.8rem,0.94rem)] font-medium tracking-wide border"
                       style={{ color: accentColor, borderColor: borderCol, background: `${accentColor}10`, fontFamily: "'Sora',sans-serif", borderRadius: 6, ["--pill-accent" as string]: accentColor }}>
                       {TECH_ICON[t] && <span className="text-[0.9em]">{TECH_ICON[t]}</span>}
                       {t}
@@ -928,7 +929,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
                 )}
                 {!isMobile && project.link && (
                   <a href={project.link} target="_blank" rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest border-b pb-0.5 transition-opacity hover:opacity-70"
+                    className="inline-flex items-center gap-2 text-[clamp(0.86rem,0.1vw+0.84rem,0.98rem)] font-semibold uppercase tracking-widest border-b pb-0.5 transition-opacity hover:opacity-70"
                     style={{ color: accentColor, borderColor: accentColor, fontFamily: "'Sora',sans-serif" }}>
                     {project.linkText ?? "Voir le projet"} →
                   </a>
@@ -939,7 +940,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
                       href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest border-b pb-0.5 transition-opacity hover:opacity-70"
+                      className="inline-flex items-center gap-2 text-[clamp(0.86rem,0.1vw+0.84rem,0.98rem)] font-semibold uppercase tracking-widest border-b pb-0.5 transition-opacity hover:opacity-70"
                       style={{ color: accentColor, borderColor: accentColor, fontFamily: "'Sora',sans-serif" }}
                     >
                       {project.linkText ?? "Voir le projet"} →
@@ -958,17 +959,17 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              paddingRight: "6vw",
-              paddingLeft: "2vw",
+              paddingRight: "clamp(1rem,4vw,6rem)",
+              paddingLeft: "clamp(0.8rem,2vw,2.8rem)",
               opacity: 0,
             }}>
             {project.screenshots && project.screenshots.length > 0 ? (
-              <div style={{ width: "100%", maxWidth: 520 }}>
+              <div style={{ width: "min(100%, 820px)", maxWidth: "min(44vw, 820px)" }}>
                 <Carousel images={project.screenshots} accentColor={accentColor} isDark={isDark}/>
               </div>
             ) : (
               <div style={{
-                width: "100%", maxWidth: 520, aspectRatio: "16/10",
+                width: "min(100%, 820px)", maxWidth: "min(44vw, 820px)", aspectRatio: "16/10",
                 border: `1px solid ${accentColor}25`,
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}>

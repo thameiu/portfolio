@@ -76,7 +76,7 @@ export default function AboutV2() {
     <section
       id="v2-about"
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col justify-center px-[8vw] py-32 overflow-hidden"
+      className="v2-section-shell relative min-h-screen flex flex-col justify-center py-24 md:py-28 lg:py-32 overflow-hidden"
       style={{
         background: "#FFFAFB",
       }}
@@ -95,8 +95,10 @@ export default function AboutV2() {
         {/* Photo */}
         <div
           ref={imgRef}
-          className="relative flex-shrink-0 w-52 h-64 md:w-64 md:h-80 overflow-hidden"
+          className="relative flex-shrink-0 overflow-hidden"
           style={{
+            width: "clamp(15rem, 26vw, 25rem)",
+            height: "clamp(18.5rem, 33vw, 31rem)",
             borderRadius: "10px",
             boxShadow: "0 24px 60px rgba(136,17,17,0.12)",
             border: "1px solid rgba(136,17,17,0.14)",
@@ -112,8 +114,8 @@ export default function AboutV2() {
         </div>
 
         {/* Text */}
-        <div className="max-w-2xl space-y-6" style={{ fontFamily: "'Sora', sans-serif" }}>
-          <p className="text-lg md:text-xl leading-relaxed" style={{ color: "#2D1010" }}>
+        <div className="max-w-[62ch] space-y-6" style={{ fontFamily: "'Sora', sans-serif" }}>
+          <p className="text-[clamp(1.06rem,0.42vw+0.96rem,1.34rem)] leading-[1.72]" style={{ color: "#2D1010" }}>
             Je m'appelle{" "}
             <strong className="font-bold" style={{ color: "#881111" }}>Mathieu HERNANDEZ</strong>,
             j'ai 21 ans et je suis actuellement étudiant à{" "}
@@ -123,7 +125,7 @@ export default function AboutV2() {
             <strong style={{ color: "#881111" }}>Cybersécurité + Cloud</strong>, après avoir réalisé
             un <strong style={{ color: "#881111" }}>BUT Informatique</strong> à l'IUT d'Arles.
           </p>
-          <p className="text-lg md:text-xl leading-relaxed" style={{ color: "#2D1010" }}>
+          <p className="text-[clamp(1.06rem,0.42vw+0.96rem,1.34rem)] leading-[1.72]" style={{ color: "#2D1010" }}>
             Grâce à ma formation et mes expériences professionnelles, j'ai développé de solides
             compétences en{" "}
             <strong style={{ color: "#881111" }}>développement web</strong>, en conception

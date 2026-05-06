@@ -22,6 +22,23 @@ html.v2-page, body.v2-page {
   background: #FFFAFB;
 }
 
+body.v2-page {
+  --v2-gutter: clamp(1.2rem, 4.6vw, 8rem);
+  --v2-text-md: clamp(1.02rem, 0.38vw + 0.94rem, 1.3rem);
+  --v2-text-sm: clamp(0.92rem, 0.22vw + 0.84rem, 1.06rem);
+}
+
+body.v2-page .v2-section-shell {
+  width: 100%;
+  padding-inline: var(--v2-gutter);
+}
+
+@media (min-width: 1920px) {
+  body.v2-page {
+    --v2-gutter: clamp(1.8rem, 5.4vw, 10rem);
+  }
+}
+
 /* ── Hero glitch characters ── */
 .v2-char {
   display: inline-block;
@@ -72,14 +89,24 @@ html.v2-page, body.v2-page {
 }
 
 /* ── Side decor canvas ── */
-body.v2-page .side-decor-canvas {
+body.v2-page .side-decor-layer {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 1;
+  z-index: 5;
+  overflow: hidden;
+  transform: translate3d(0,0,0);
+}
+
+body.v2-page .side-decor-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
   opacity: 0.2;
   transition: opacity 0.24s ease;
 }
@@ -91,7 +118,7 @@ body.v2-page .side-decor-canvas {
 
 body.v2-page #smooth-content > section > * {
   position: relative;
-  z-index: 2;
+  z-index: 10;
 }
 
 /* ── Career tabs indicator ── */
@@ -106,6 +133,16 @@ body.v2-page #smooth-content > section > * {
 
 body.v2-project-active .side-decor-canvas {
   opacity: 0 !important;
+}
+
+body.v2-contact-active .side-decor-canvas {
+  opacity: 0.2 !important;
+}
+
+@media (max-width: 767px) {
+  body.v2-contact-active .side-decor-canvas {
+    opacity: 0.12 !important;
+  }
 }
 
 /* Loader pulsing */
@@ -223,6 +260,39 @@ body.v2-page * {
 
 .v2-contact-grid {
   position: relative;
+}
+
+.v2-role-title {
+  letter-spacing: 0.035em !important;
+}
+
+.v2-skill-title {
+  letter-spacing: 0.03em !important;
+}
+
+.v2-contact-cutelinks {
+  position: relative;
+  z-index: 12;
+  isolation: isolate;
+  background: rgba(18, 13, 13, 0.98);
+  border-radius: 8px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.v2-contact-cutelinks::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 13, 13, 0.98);
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 8px;
+}
+
+.v2-contact-cutelinks img {
+  opacity: 1 !important;
+  background: #120D0D;
 }
 
 .v2-contact-grid > * + * {
