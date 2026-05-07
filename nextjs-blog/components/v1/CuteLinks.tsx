@@ -31,7 +31,7 @@ export default function CuteLinks({longer=false}) {
 
     return (
         <div className={`w-full ${longer?'bg-red':'max-w-[95vw] md:max-w-4xl'} mx-auto flex flex-wrap justify-center md:justify-start items-center gap-2 pt-4 px-4 md:px-0`}>
-          <CuteLink href="/chat" src="/thameiu.webp" alt="chat" borderColor="var(--color-accent)" />
+          <CuteLink href="/chat" src="/thameiu.webp" alt="chat" borderColor="#881111" />
           <CuteLink href="https://16ur.vercel.app" src="/16ur.gif" alt="Axel Manguian" borderColor="#066767" />
           <CuteLink href="https://soundcloud.com/mydriax" src="/mydriax.gif" alt="Stream Mydriax" borderColor="#24004C" />
           <CuteLink href="https://ergosix-rc.vercel.app/" src="/ergosix.webp" alt="Ergosix Recrutement" borderColor="#3D6D2D" />

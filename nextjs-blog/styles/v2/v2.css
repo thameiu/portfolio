@@ -132,6 +132,19 @@ body.v2-page .side-decor-layer {
   transform: translate3d(0,0,0);
 }
 
+body.v2-page::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--v2-project-top-mask, #FFFAFB);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 130;
+}
+
 body.v2-page .side-decor-canvas {
   position: absolute;
   inset: 0;
@@ -164,6 +177,10 @@ body.v2-page #smooth-content > section > * {
 
 body.v2-project-active .side-decor-canvas {
   opacity: 0 !important;
+}
+
+body.v2-project-top-mask-visible::before {
+  opacity: 1;
 }
 
 body.v2-contact-active .side-decor-canvas {

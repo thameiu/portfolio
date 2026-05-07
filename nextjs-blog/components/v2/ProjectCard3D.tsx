@@ -14,8 +14,9 @@ const PROJECT_PIN_DISTANCE = 1800;
 const PROJECT_PIN_DISTANCE_MOBILE_FACTOR = 1.7;
 const PROJECT_PIN_DISTANCE_DESKTOP_FACTOR = 1.95;
 export const PROJECT_OVERLAP = 650;
-const PROJECT_OVERLAP_MOBILE = 320;
+const PROJECT_OVERLAP_MOBILE = 380;
 const PROJECT_OVERLAP_DESKTOP_FACTOR = 0.84;
+const PROJECT_INFO_TOP_BLEED_PX = 2;
 
 /* ═══════════════════════════════════════════════
    ICONS
@@ -469,11 +470,25 @@ export interface ProjectData {
 }
 
 const activeProjectStates = new Set<string>();
+let lastProjectTopMaskColor = "";
+let isProjectTopMaskVisible = false;
 
 function setProjectActive(key: string, active: boolean) {
   if (active) activeProjectStates.add(key);
   else activeProjectStates.delete(key);
   document.body.classList.toggle("v2-project-active", activeProjectStates.size > 0);
+}
+
+function setProjectTopMaskColor(color: string) {
+  if (color === lastProjectTopMaskColor) return;
+  lastProjectTopMaskColor = color;
+  document.body.style.setProperty("--v2-project-top-mask", color);
+}
+
+function setProjectTopMaskVisible(visible: boolean) {
+  if (isProjectTopMaskVisible === visible) return;
+  isProjectTopMaskVisible = visible;
+  document.body.classList.toggle("v2-project-top-mask-visible", visible);
 }
 
 const TECH_ICON: Record<string, React.ReactNode> = {
@@ -589,10 +604,10 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
           trigger: sectionRef.current,
           start: "top 78%",
           end: "bottom 18%",
-          onEnter:     () => { setProjectActive(`${project.id}-pin`, true); reveal.play(); },
-          onEnterBack: () => { setProjectActive(`${project.id}-pin`, true); reveal.play(); },
-          onLeave:     () => setProjectActive(`${project.id}-pin`, false),
-          onLeaveBack: () => setProjectActive(`${project.id}-pin`, false),
+          onEnter:     () => { setProjectActive(`${project.id}-pin`, true); setProjectTopMaskColor(project.bgColor); setProjectTopMaskVisible(false); reveal.play(); },
+          onEnterBack: () => { setProjectActive(`${project.id}-pin`, true); setProjectTopMaskColor(project.bgColor); setProjectTopMaskVisible(false); reveal.play(); },
+          onLeave:     () => { setProjectActive(`${project.id}-pin`, false); setProjectTopMaskVisible(false); },
+          onLeaveBack: () => { setProjectActive(`${project.id}-pin`, false); setProjectTopMaskVisible(false); },
         });
       } else {
         gsap.set(logoRef.current,      { opacity: isMobile ? 1 : 0 });
@@ -636,12 +651,15 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
           anticipatePin: isMobile ? 1 : 2,
           fastScrollEnd: false,
           invalidateOnRefresh: !isMobile,
-          onEnter:     () => setProjectActive(`${project.id}-pin`, true),
-          onEnterBack: () => setProjectActive(`${project.id}-pin`, true),
-          onLeave:     () => setProjectActive(`${project.id}-pin`, false),
-          onLeaveBack: () => setProjectActive(`${project.id}-pin`, false),
+          onEnter:     () => { setProjectActive(`${project.id}-pin`, true); setProjectTopMaskColor(project.bgColor); },
+          onEnterBack: () => { setProjectActive(`${project.id}-pin`, true); setProjectTopMaskColor(project.bgColor); },
+          onLeave:     () => { setProjectActive(`${project.id}-pin`, false); setProjectTopMaskVisible(false); },
+          onLeaveBack: () => { setProjectActive(`${project.id}-pin`, false); setProjectTopMaskVisible(false); },
           onUpdate: (self) => {
             const p = self.progress;
+            setProjectTopMaskColor(project.bgColor);
+            const topMaskStart = isMobile ? 0.16 : 0.12;
+            setProjectTopMaskVisible(p >= topMaskStart);
             if (isMobile) {
               // Keep mobile info fixed and visible without per-frame style writes.
             } else {
@@ -702,6 +720,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
     return () => {
       setProjectActive(`${project.id}-pin`, false);
       setProjectActive(`${project.id}-viewport`, false);
+      setProjectTopMaskVisible(false);
       ctx.revert();
     };
   }, [isMobile, prefersReducedMotion, project.bgColor, project.iconType, project.id, viewportHeight]);
@@ -714,6 +733,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
   const isGgps = project.id === "ggps";
   const isPathfinder = project.id === "pathfinder";
   const useSimplifiedMotion = prefersReducedMotion;
+  const fullViewportHeight = isMobile ? "100svh" : "100vh";
   const projectOverlap = isMobile
     ? PROJECT_OVERLAP_MOBILE
     : Math.max(PROJECT_OVERLAP, Math.round(viewportHeight * PROJECT_OVERLAP_DESKTOP_FACTOR));
@@ -724,8 +744,8 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
       id={`v2-project-${project.id}`}
       className="min-h-screen"
       style={{
-        height: useSimplifiedMotion ? "auto" : "100vh",
-        minHeight: "100vh",
+        height: useSimplifiedMotion ? "auto" : fullViewportHeight,
+        minHeight: fullViewportHeight,
         position: "relative",
         overflow: useSimplifiedMotion ? "visible" : "hidden",
         zIndex: 10 + index,
@@ -736,20 +756,26 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
       <div ref={panelRef}
         style={{
           position: "relative",
-          height: useSimplifiedMotion ? "auto" : "100%",
-          minHeight: "100vh",
+          top: useSimplifiedMotion ? 0 : -PROJECT_INFO_TOP_BLEED_PX,
+          height: useSimplifiedMotion ? "auto" : fullViewportHeight,
+          minHeight: useSimplifiedMotion
+            ? fullViewportHeight
+            : `calc(${fullViewportHeight} + ${PROJECT_INFO_TOP_BLEED_PX}px)`,
+          ...(useSimplifiedMotion
+            ? {}
+            : { height: `calc(${fullViewportHeight} + ${PROJECT_INFO_TOP_BLEED_PX}px)` }),
           overflow: useSimplifiedMotion ? "visible" : "hidden",
           background: bgColor,
         }}>
-        {isMobile && !useSimplifiedMotion && (
+        {!useSimplifiedMotion && (
           <div
             aria-hidden="true"
             style={{
-              position: "fixed",
-              top: 0,
+              position: "absolute",
+              top: -10,
               left: 0,
               right: 0,
-              height: 4,
+              height: 20,
               background: bgColor,
               zIndex: 80,
               pointerEvents: "none",
@@ -854,8 +880,11 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
         {/* Layout */}
         <div style={{
           position: useSimplifiedMotion ? "relative" : "absolute",
-          inset: useSimplifiedMotion ? undefined : 0,
-          minHeight: "100vh",
+          top: useSimplifiedMotion ? undefined : 0,
+          left: useSimplifiedMotion ? undefined : 0,
+          right: useSimplifiedMotion ? undefined : 0,
+          bottom: useSimplifiedMotion ? undefined : 0,
+          minHeight: fullViewportHeight,
           display: "flex",
           flexDirection: isMobile ? "column" : "row",
           overflowY: "visible",
