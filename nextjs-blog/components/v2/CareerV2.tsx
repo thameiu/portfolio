@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { SiNextdotjs, SiReact, SiTailwindcss, SiLeaflet, SiLaravel, SiDocker,
   SiTypescript, SiPhp, SiPostgresql, SiMysql, SiMongodb, SiGit, SiGitlab,
   SiCplusplus, SiPython, SiJavascript, SiOpengl, SiCmake, SiNestjs, SiDotnet,
@@ -10,6 +10,7 @@ import { PiFileCSharp } from "react-icons/pi";
 import { WindevIcon } from "../v1/Utils";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import GlitchTitle from "./GlitchTitle";
 
 const TABS = ["Expériences", "Formation", "Compétences"] as const;
 type Tab = typeof TABS[number];
@@ -166,7 +167,6 @@ export default function CareerV2() {
   const [activeTab, setActiveTab] = useState<Tab>("Expériences");
   const [panelMinHeight, setPanelMinHeight] = useState<number>(0);
   const sectionRef   = useRef<HTMLElement>(null);
-  const titleRef     = useRef<HTMLHeadingElement>(null);
   const tabNavRef    = useRef<HTMLDivElement>(null);
   const tabBtnRefs   = useRef<(HTMLButtonElement | null)[]>([]);
   const indicatorRef = useRef<HTMLDivElement>(null);
@@ -179,33 +179,8 @@ export default function CareerV2() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
-      const title   = titleRef.current;
       const section = sectionRef.current;
-      if (!title || !section) return;
-      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
-      const titleStart = isMobile ? "top 99%" : "top 85%";
-      const titleEnd = isMobile ? "bottom 34%" : "bottom 20%";
-
-      title.style.opacity   = "0";
-      title.style.transform = "translateX(-80px)";
-      title.style.willChange = "transform, opacity";
-
-      ScrollTrigger.create({
-        trigger: section,
-        start: titleStart,
-        end: titleEnd,
-        scrub: 0.6,
-        onUpdate: (self) => {
-          const progress    = self.progress;
-          const inProgress  = Math.min(1, progress / 0.42);
-          const outProgress = Math.min(1, Math.max(0, (progress - 0.58) / 0.28));
-          const opacity     = Math.max(0, inProgress * (1 - outProgress));
-          const x = -80 * (1 - inProgress);
-          const y = -60 * outProgress;
-          title.style.opacity   = String(opacity);
-          title.style.transform = `translate(${x}px, ${y}px)`;
-        },
-      });
+      if (!section) return;
 
       /* Keep Parcours fixed, then let the first project cover it. */
       ScrollTrigger.create({
@@ -233,7 +208,7 @@ export default function CareerV2() {
     ind.style.width = `${btnRect.width}px`;
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const idx = TABS.indexOf(activeTab);
     moveIndicator(idx);
   }, [activeTab]);
@@ -349,13 +324,15 @@ export default function CareerV2() {
       style={{ background: "#FFFAFB" }}
     >
       {/* Mega title */}
-      <h2
-        ref={titleRef}
-        className="v2-mega-title mb-16 opacity-0"
+      <GlitchTitle
+        text="Parcours"
+        color="#881111"
+        triggerRef={sectionRef}
+        className="v2-mega-title mb-16"
         style={{ color: "#881111" }}
-      >
-        Parcours
-      </h2>
+        startDesktop="top 84%"
+        startMobile="top 95%"
+      />
 
       {/* Tab nav */}
       <div

@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CVModal from "../v1/CVModal";
 import CuteLinks from "../v1/CuteLinks";
+import GlitchTitle from "./GlitchTitle";
 
 const CONTACT_OVERLAP = 650;
 
@@ -355,7 +356,6 @@ function ContactCard({ icon, label, value, onClick, href }: ContactCardProps) {
 /* ─── main ─────────────────────────────────────── */
 export default function ContactV2() {
   const sectionRef = useRef<HTMLElement>(null);
-  const titleRef   = useRef<HTMLHeadingElement>(null);
   const colLeft    = useRef<HTMLDivElement>(null);
   const colRight   = useRef<HTMLDivElement>(null);
   const [isCVOpen, setIsCVOpen] = useState(false);
@@ -365,8 +365,6 @@ export default function ContactV2() {
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       const isMobile = window.matchMedia("(max-width: 1023px)").matches;
-      const titleStart = isMobile ? "top 95%" : "top 85%";
-      const titleEnd = isMobile ? "top 55%" : "top 40%";
 
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -393,10 +391,6 @@ export default function ContactV2() {
         }
       );
 
-      gsap.fromTo(titleRef.current,
-        { x: -80, opacity: 0 },
-        { x: 0, opacity: 1, scrollTrigger: { trigger: sectionRef.current, start: titleStart, end: titleEnd, scrub: 0.6 } }
-      );
       gsap.fromTo(colLeft.current,
         { x: -40, opacity: 0 },
         { x: 0, opacity: 1, duration: 0.9, ease: "power2.out",
@@ -433,13 +427,15 @@ export default function ContactV2() {
 
       {/* Mega title */}
       <div className="mb-16">
-        <h2
-          ref={titleRef}
-          className="v2-mega-title opacity-0"
+        <GlitchTitle
+          text="Contact"
+          color="#DD3A3A"
+          triggerRef={sectionRef}
+          className="v2-mega-title"
           style={{ color: "#DD3A3A" }}
-        >
-          Contact
-        </h2>
+          startDesktop="top 84%"
+          startMobile="top 95%"
+        />
       </div>
 
       {/* Two-column layout */}

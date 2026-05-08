@@ -3,10 +3,10 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import GlitchTitle from "./GlitchTitle";
 
 export default function AboutV2() {
   const sectionRef  = useRef<HTMLElement>(null);
-  const titleRef    = useRef<HTMLHeadingElement>(null);
   const contentRef  = useRef<HTMLDivElement>(null);
   const imgRef      = useRef<HTMLDivElement>(null);
 
@@ -14,34 +14,9 @@ export default function AboutV2() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      const title = titleRef.current;
       const section = sectionRef.current;
-      if (!title || !section) return;
+      if (!section) return;
       const isMobile = window.matchMedia("(max-width: 1023px)").matches;
-      const titleStart = isMobile ? "top 99%" : "top 85%";
-      const titleEnd = isMobile ? "bottom 34%" : "bottom 20%";
-
-      // Match the same progressive title behavior as "Parcours"
-      title.style.opacity = "0";
-      title.style.transform = "translateX(-80px)";
-      title.style.willChange = "transform, opacity";
-
-      ScrollTrigger.create({
-        trigger: section,
-        start: titleStart,
-        end: titleEnd,
-        scrub: 0.6,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const inProgress = Math.min(1, progress / 0.42);
-          const outProgress = Math.min(1, Math.max(0, (progress - 0.58) / 0.28));
-          const opacity = Math.max(0, inProgress * (1 - outProgress));
-          const x = -80 * (1 - inProgress);
-          const y = -60 * outProgress;
-          title.style.opacity = String(opacity);
-          title.style.transform = `translate(${x}px, ${y}px)`;
-        },
-      });
 
       // ── Content fades in ──
       gsap.fromTo(contentRef.current,
@@ -82,13 +57,15 @@ export default function AboutV2() {
       }}
     >
       {/* Mega title */}
-      <h2
-        ref={titleRef}
-        className="v2-mega-title mb-16 opacity-0"
+      <GlitchTitle
+        text="À Propos"
+        color="#881111"
+        triggerRef={sectionRef}
+        className="v2-mega-title mb-16"
         style={{ color: "#881111" }}
-      >
-        À Propos
-      </h2>
+        startDesktop="top 84%"
+        startMobile="top 95%"
+      />
 
       {/* Content row */}
       <div ref={contentRef} className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center opacity-0">
