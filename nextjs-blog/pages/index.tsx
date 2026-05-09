@@ -197,6 +197,19 @@ export default function PortfolioV2() {
       <Head>
         <title>Mathieu Hernandez - Portfolio</title>
         <meta name="description" content="Mathieu Hernandez, Développeur Polyvalent - Portfolio" />
+        <meta
+          name="keywords"
+          content="Mathieu Hernandez, portfolio, développeur web, développeur full-stack, développeur frontend, développeur backend, Next.js, React, TypeScript, NestJS, FastAPI, Laravel, Docker, Leaflet, PostgreSQL, cybersécurité, cloud, alternance, Marseille, Aix-en-Provence, Windev, rgbast, RGBast, GGPS, Pathfinder, 2Clock, Three, Three.js, Web Design, Web Designer, webdev, web dev, dev web"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Mathieu Hernandez - Portfolio" />
+        <meta property="og:description" content="Portfolio de Mathieu Hernandez, développeur polyvalent (Frontend, Backend, Cloud, Cybersécurité)." />
+        <meta property="og:image" content="/preview.png" />
+        <meta property="og:image:alt" content="Aperçu du portfolio de Mathieu Hernandez" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Mathieu Hernandez - Portfolio" />
+        <meta name="twitter:description" content="Portfolio de Mathieu Hernandez, développeur full-stack." />
+        <meta name="twitter:image" content="/preview.png" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
