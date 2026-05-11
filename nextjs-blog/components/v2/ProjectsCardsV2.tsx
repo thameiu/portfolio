@@ -434,6 +434,7 @@ function Carousel({ images, accentColor, isDark }: {
 
 export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] }) {
   const sectionRef = useRef<HTMLElement>(null);
+  const infoScrollRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -457,6 +458,9 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
     requestAnimationFrame(() => setPanelVisible(true));
     timersRef.current.push(setTimeout(() => setLogoVisible(true), 180));
     timersRef.current.push(setTimeout(() => setInfoVisible(true), 680));
+    requestAnimationFrame(() => {
+      if (infoScrollRef.current) infoScrollRef.current.scrollTop = 0;
+    });
   };
 
   const closeProject = useCallback(() => {
@@ -510,18 +514,66 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
     if (activeIndex === null) return;
     const html = document.documentElement;
     const body = document.body;
-    const savedHtmlOverflow = html.style.overflow;
-    const savedBodyOverflow = body.style.overflow;
+    const saved = {
+      htmlOverflow: html.style.overflow,
+      bodyOverflow: body.style.overflow,
+      htmlOverscrollBehavior: html.style.overscrollBehavior,
+      bodyOverscrollBehavior: body.style.overscrollBehavior,
+    };
+    let lastTouchY = 0;
+
     html.style.overflow = "hidden";
     body.style.overflow = "hidden";
+    html.style.overscrollBehavior = "none";
+    body.style.overscrollBehavior = "none";
+
+    const onTouchStart = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      if (!touch) return;
+      lastTouchY = touch.clientY;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      const scroller = infoScrollRef.current;
+      const target = e.target as Node | null;
+      if (!scroller || !target || !scroller.contains(target)) {
+        if (e.cancelable) e.preventDefault();
+        return;
+      }
+
+      const touch = e.touches[0];
+      if (!touch) return;
+      const currentY = touch.clientY;
+      const deltaY = currentY - lastTouchY;
+      lastTouchY = currentY;
+
+      const canScroll = scroller.scrollHeight > scroller.clientHeight + 1;
+      if (!canScroll) {
+        if (e.cancelable) e.preventDefault();
+        return;
+      }
+
+      const atTop = scroller.scrollTop <= 0;
+      const atBottom = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 1;
+      if ((atTop && deltaY > 0) || (atBottom && deltaY < 0)) {
+        if (e.cancelable) e.preventDefault();
+      }
+    };
+
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeProject();
     };
+    document.addEventListener("touchstart", onTouchStart, { passive: true });
+    document.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("keydown", onKey);
     return () => {
+      document.removeEventListener("touchstart", onTouchStart);
+      document.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("keydown", onKey);
-      html.style.overflow = savedHtmlOverflow;
-      body.style.overflow = savedBodyOverflow;
+      html.style.overflow = saved.htmlOverflow;
+      body.style.overflow = saved.bodyOverflow;
+      html.style.overscrollBehavior = saved.htmlOverscrollBehavior;
+      body.style.overscrollBehavior = saved.bodyOverscrollBehavior;
     };
   }, [activeIndex, closeProject]);
 
@@ -824,6 +876,53 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
               <IoArrowBack />
             </button>
 
+            {isMobile && infoVisible && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: 19,
+                  left: 64,
+                  right: 14,
+                  height: 44,
+                  display: "flex",
+                  alignItems: "center",
+                  zIndex: 30,
+                  pointerEvents: "none",
+                }}
+              >
+                {activeProject.titleSvg ? (
+                  <Image
+                    src={activeProject.titleSvg}
+                    alt={activeProject.title}
+                    width={440}
+                    height={120}
+                    style={{
+                      width: "min(44vw, 12.5rem)",
+                      height: "auto",
+                      maxHeight: "2.1rem",
+                      objectFit: "contain",
+                      objectPosition: "left center",
+                    }}
+                  />
+                ) : (
+                  <span
+                    style={{
+                      fontFamily: "'Mango Grotesque','archivo-black',sans-serif",
+                      fontSize: "clamp(1.25rem, 5.3vw, 1.85rem)",
+                      color: activeProject.accentColor,
+                      fontWeight: 800,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.02em",
+                      lineHeight: 1,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {activeProject.title}
+                  </span>
+                )}
+              </div>
+            )}
+
             <div
               aria-hidden="true"
               style={{
@@ -867,6 +966,8 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
             </div>
 
             <div
+              ref={infoScrollRef}
+              className="v2-project-info-scroller"
               style={{
                 position: "relative",
                 zIndex: 12,
@@ -874,16 +975,16 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
                 overflowY: "auto",
                 WebkitOverflowScrolling: "touch",
                 overscrollBehavior: "contain",
-                touchAction: "pan-y",
                 opacity: infoVisible ? 1 : 0,
                 transform: infoVisible ? "translateY(0)" : "translateY(24px)",
                 transition: "opacity 0.42s ease, transform 0.42s ease",
               }}
             >
-              <div className="h-full flex flex-col md:flex-row">
-                <div className="w-full md:w-[44%] px-5 pt-16 pb-8 md:px-8 md:pt-10 md:pb-10 lg:px-10 flex flex-col justify-start md:justify-center">
+              <div className="min-h-full md:h-full flex flex-col md:flex-row">
+                <div className="w-full md:w-[44%] px-5 pt-16 pb-8 md:px-8 md:pt-10 md:pb-10 lg:px-10 flex flex-col justify-start md:justify-center shrink-0">
                   <div style={{ marginBottom: "1rem" }}>
-                    {activeProject.titleSvg ? (
+                    <div className="hidden md:block">
+                      {activeProject.titleSvg ? (
                       <Image
                         src={activeProject.titleSvg}
                         alt={activeProject.fullTitle ?? activeProject.title}
@@ -909,6 +1010,7 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
                         {activeProject.fullTitle ?? activeProject.title}
                       </h3>
                     )}
+                    </div>
                   </div>
                   <p
                     className="text-sm md:text-base leading-relaxed mb-3"
@@ -918,7 +1020,7 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
                     }}
                   >
                     <span
-                      className="block text-xs font-bold uppercase tracking-[0.3em] mb-3"
+                      className="hidden md:block text-xs font-bold uppercase tracking-[0.3em] mb-3"
                       style={{ color: activeProject.accentColor, fontFamily: "'Sora',sans-serif" }}
                     >
                       {activeProject.fullTitle ?? activeProject.title}
@@ -971,7 +1073,7 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
                     </a>
                   )}
                 </div>
-                <div className="w-full md:w-[56%] px-4 pb-8 md:px-8 md:pt-10 md:pb-10 flex flex-col items-start md:items-center md:justify-center">
+                <div className="w-full md:w-[56%] px-4 pb-8 md:px-8 md:pt-10 md:pb-10 flex flex-col items-start md:items-center md:justify-center shrink-0">
                   <div style={{ width: "100%" }}>
                     {activeProject.screenshots && activeProject.screenshots.length > 0 ? (
                       <Carousel
