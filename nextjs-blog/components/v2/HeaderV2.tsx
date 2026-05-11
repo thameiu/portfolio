@@ -27,6 +27,7 @@ export default function HeaderV2() {
   const mobileMenuPanelRef = useRef<HTMLDivElement | null>(null);
   const mobileMenuOverlayRef = useRef<HTMLDivElement | null>(null);
   const mobileMenuClosingRef = useRef(false);
+  const headerHoverRef = useRef<HTMLDivElement | null>(null);
 
   /* keep hoveringRef in sync */
   useEffect(() => { hoveringRef.current = hovering; }, [hovering]);
@@ -36,15 +37,18 @@ export default function HeaderV2() {
     const scheduleHide = () => {
       if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
       hideTimerRef.current = setTimeout(() => {
-        if (!hoveringRef.current) setVisible(false);
+        const hoveringNow = hoveringRef.current || Boolean(headerHoverRef.current?.matches(":hover"));
+        if (!hoveringNow) setVisible(false);
       }, 1500);
     };
 
     const onScroll = () => {
       const y = window.scrollY;
       const lastY = lastScrollYRef.current;
+      const hoveringNow = hoveringRef.current || Boolean(headerHoverRef.current?.matches(":hover"));
 
-      if (hoveringRef.current) {
+      if (hoveringNow) {
+        if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
         setVisible(true);
       } else if (y > lastY + 2) {
         if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
@@ -204,7 +208,7 @@ export default function HeaderV2() {
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className="fixed top-4 left-0 w-full z-[140] flex justify-start md:justify-center px-4 pointer-events-none"
       >
-        <div className="pointer-events-auto flex"
+        <div ref={headerHoverRef} className="pointer-events-auto flex"
           onMouseEnter={() => { setHovering(true); if (hideTimerRef.current) clearTimeout(hideTimerRef.current); }}
           onMouseLeave={() => {
             setHovering(false);
@@ -214,11 +218,13 @@ export default function HeaderV2() {
           }}>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center justify-center h-[48px] p-1 rounded-2xl backdrop-blur-lg border border-white/10 shadow-lg w-max relative"
-            style={{ background: `${PRIMARY}33` }}>
+          <nav className="hidden md:flex items-center justify-center h-[46px] p-0 rounded-xl overflow-hidden backdrop-blur-lg shadow-lg w-max relative"
+            style={{ background: `${PRIMARY}55` }}>
             <ul className="flex items-center justify-between h-full relative">
-              {navItems.map(item => {
+              {navItems.map((item, idx) => {
                 const isActive = activeSection === item.id;
+                const isFirst = idx === 0;
+                const isLast = idx === navItems.length - 1;
                 return (
                   <li key={item.id}
                     className="relative cursor-pointer flex items-center justify-center h-full transition-colors duration-300 text-white/80 hover:text-white font-['Sora'] font-semibold whitespace-nowrap px-5 lg:px-7"
@@ -229,10 +235,14 @@ export default function HeaderV2() {
                     </span>
                     {isActive && (
                       <motion.div
-                        className="absolute inset-0 -z-0 rounded-xl"
+                        className={`absolute inset-0 -z-0 ${isFirst ? "rounded-l-xl" : ""} ${isLast ? "rounded-r-xl" : ""}`}
                         layoutId="v2-active-pill"
                         transition={{ type: "spring", stiffness: 800, damping: 40, mass: 0.5 }}
-                        style={{ borderRadius: 12, background: "rgba(255,255,255,0.1)" }}
+                        style={{
+                          background: "rgba(255,255,255,0.14)",
+                          border: "none",
+                          boxShadow: "none",
+                        }}
                       />
                     )}
                   </li>
@@ -247,7 +257,7 @@ export default function HeaderV2() {
               <button
                 onClick={() => setMenu(true)}
                 className="flex items-center justify-center w-[50px] h-[50px] backdrop-blur-xl border border-white/10 shadow-lg text-white/80 hover:text-white transition-colors"
-                style={{ borderRadius: 14, background: `${PRIMARY}33` }}>
+                style={{ borderRadius: 14, background: `${PRIMARY}55` }}>
                 <FaBars size={22}/>
               </button>
             )}

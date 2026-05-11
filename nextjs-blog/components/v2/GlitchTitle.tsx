@@ -87,6 +87,20 @@ export default function GlitchTitle({
             ease: "back.out(1.7)",
             overwrite: "auto",
           });
+
+          // Occasional micro-glitch after settling (same spirit as main name)
+          const microGlitch = setInterval(() => {
+            if (Math.random() > 0.93) {
+              const orig = span.textContent;
+              span.textContent = GLITCH[Math.floor(Math.random() * GLITCH.length)];
+              gsap.to(span, { y: -2, color: "rgba(120,80,80,0.9)", duration: 0.07, ease: "power1.out" });
+              setTimeout(() => {
+                span.textContent = orig;
+                gsap.to(span, { y: 0, color, duration: 0.16, ease: "power1.out" });
+              }, 60);
+            }
+          }, 2000);
+          intervals.push(microGlitch);
         });
         delayedCalls.push(settleCall);
       });
