@@ -4,6 +4,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import GlitchTitle from "./GlitchTitle";
+import MainSectionV2 from "./MainSectionV2";
 
 export default function AboutV2() {
   const sectionRef  = useRef<HTMLElement>(null);
@@ -48,12 +49,12 @@ export default function AboutV2() {
   }, []);
 
   return (
-    <section
+    <MainSectionV2
       id="v2-about"
       ref={sectionRef}
-      className="v2-section-shell relative min-h-screen flex flex-col justify-center py-32 overflow-hidden"
+      className="relative min-h-screen flex flex-col justify-center py-32 overflow-hidden"
       style={{
-        background: "#FFFAFB",
+        background: "transparent",
       }}
     >
       {/* Mega title */}
@@ -124,6 +125,6 @@ export default function AboutV2() {
           </div>
         </div>
       </div>
-    </section>
+    </MainSectionV2>
   );
 }

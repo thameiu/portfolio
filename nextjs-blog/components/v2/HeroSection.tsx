@@ -2,6 +2,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import MainSectionV2 from "./MainSectionV2";
 
 const LINE1 = "MATHIEU";
 const LINE2 = "HERNANDEZ";
@@ -35,7 +36,8 @@ function GlitchLine({ text, lineRef }: { text: string; lineRef: React.RefObject<
 export default function HeroSection() {
   const line1Refs = useRef<(HTMLSpanElement | null)[]>([]);
   const line2Refs = useRef<(HTMLSpanElement | null)[]>([]);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
   const scrollHintRef = useRef<HTMLDivElement>(null);
@@ -126,7 +128,7 @@ export default function HeroSection() {
 
     // Scroll-based fade out + next section fade in
     const ctx = gsap.context(() => {
-      gsap.fromTo(containerRef.current,
+      gsap.fromTo(contentRef.current,
         { opacity: 1, y: 0 },
         {
           opacity: 0, y: -40,
@@ -147,53 +149,56 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section
+    <MainSectionV2
       ref={containerRef}
-      className="v2-section-shell relative flex flex-col items-start justify-center min-h-screen w-full overflow-hidden select-none"
+      className="relative flex flex-col items-start justify-center min-h-screen w-full overflow-hidden select-none"
       style={{
-        background: "#FFFAFB",
+        background: "transparent",
         paddingTop: "clamp(1.5rem, 4vh, 3rem)",
         overflowX: "visible",
       }}
     >
-      {/* Name */}
-      <h1
-        ref={nameRef}
-        className="relative z-10 font-black uppercase leading-[0.85]"
-        style={{
-          fontFamily: "'Mango Grotesque', 'archivo-black', sans-serif",
-          fontSize: "clamp(6.1rem, 20.5vw, 26rem)",
-          color: "#881111",
-          whiteSpace: "nowrap",
-          width: "max-content",
-        }}
-        aria-label={`${LINE1} ${LINE2}`}
-      >
-        <GlitchLine text={LINE1} lineRef={line1Refs as React.RefObject<(HTMLSpanElement | null)[]>} />
-        <GlitchLine text={LINE2} lineRef={line2Refs as React.RefObject<(HTMLSpanElement | null)[]>} />
-      </h1>
+      <div ref={contentRef} className="relative z-20 flex flex-col items-start">
+        {/* Name */}
+        <h1
+          ref={nameRef}
+          className="relative z-10 font-black uppercase leading-[0.85]"
+          style={{
+            fontFamily: "'Mango Grotesque', 'archivo-black', sans-serif",
+            fontSize: "clamp(6.1rem, 20.5vw, 26rem)",
+            color: "#881111",
+            whiteSpace: "nowrap",
+            width: "max-content",
+          }}
+          aria-label={`${LINE1} ${LINE2}`}
+        >
+          <GlitchLine text={LINE1} lineRef={line1Refs as React.RefObject<(HTMLSpanElement | null)[]>} />
+          <GlitchLine text={LINE2} lineRef={line2Refs as React.RefObject<(HTMLSpanElement | null)[]>} />
+        </h1>
 
-      {/* Subtitle */}
-      <p
-        ref={subRef}
-        className="relative z-10 mt-8 text-base md:text-xl font-medium tracking-widest uppercase opacity-0"
-        style={{ color: "#881111", fontFamily: "'Sora', sans-serif", letterSpacing: "0.25em" }}
-      >
-        Développeur Polyvalent
-      </p>
+        {/* Subtitle */}
+        <p
+          ref={subRef}
+          className="relative z-10 mt-8 text-base md:text-xl font-medium tracking-widest uppercase opacity-0"
+          style={{ color: "#881111", fontFamily: "'Sora', sans-serif", letterSpacing: "0.25em" }}
+        >
+          Développeur Polyvalent
+        </p>
 
-      {/* Scroll hint
-      <div
-        ref={scrollHintRef}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-0 z-10"
-      >
-        <div className="w-px h-12 relative overflow-hidden" style={{ background: "rgba(136,17,17,0.2)" }}>
-          <div
-            className="absolute w-full"
-            style={{ background: "#881111", height: "40%", top: "30%" }}
-          />
+        {/* Scroll hint
+        <div
+          ref={scrollHintRef}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-0 z-10"
+        >
+          <div className="w-px h-12 relative overflow-hidden" style={{ background: "rgba(136,17,17,0.2)" }}>
+            <div
+              className="absolute w-full"
+              style={{ background: "#881111", height: "40%", top: "30%" }}
+            />
+          </div>
         </div>
-      </div> */}
-    </section>
+        */}
+      </div>
+    </MainSectionV2>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
 
 type V3 = [number, number, number];
 type Edge = [number, number];
@@ -106,7 +107,8 @@ const SHAPES: Shape[] = [
 ];
 
 /* ── component ───────────────────────────────── */
-export default function SideDecor() {
+export default function SideDecor({ embedded = false }: { embedded?: boolean }) {
+  const layerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -117,7 +119,19 @@ export default function SideDecor() {
 
     let W = window.innerWidth;
     let H = window.innerHeight;
-    canvas.width = W; canvas.height = H;
+    const syncCanvasSize = () => {
+      const layer = layerRef.current;
+      if (embedded && layer) {
+        W = Math.max(1, Math.round(layer.clientWidth));
+        H = Math.max(1, Math.round(layer.clientHeight));
+      } else {
+        W = window.innerWidth;
+        H = window.innerHeight;
+      }
+      canvas.width = W;
+      canvas.height = H;
+    };
+    syncCanvasSize();
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
     const activeShapes = isMobile
       ? SHAPES.filter((_, i) => i % 3 === 0 || i === 10 || i === 14)
@@ -125,18 +139,35 @@ export default function SideDecor() {
 
     let scrollY = window.scrollY;
     let smoothScrollY = scrollY;
+    let lastLayerOffset = Number.NaN;
     let rafId: number;
 
     const onScroll = () => { scrollY = window.scrollY; };
     const onResize = () => {
-      W = window.innerWidth; H = window.innerHeight;
-      canvas.width = W; canvas.height = H;
+      syncCanvasSize();
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
+    const ro = (embedded && layerRef.current && typeof ResizeObserver !== "undefined")
+      ? new ResizeObserver(() => syncCanvasSize())
+      : null;
+    if (ro && layerRef.current) ro.observe(layerRef.current);
 
     function draw() {
+      const smoother = embedded ? null : ScrollSmoother.get();
+      scrollY = smoother ? smoother.scrollTop() : scrollY;
       smoothScrollY += (scrollY - smoothScrollY) * 0.08;
+
+      // When inside ScrollSmoother's transformed content, cancel parent translation
+      // so the decor stays visually fixed to the viewport.
+      if (layerRef.current && !embedded) {
+        const layerOffset = smoother ? smoother.scrollTop() : 0;
+        if (Math.abs(layerOffset - lastLayerOffset) > 0.1 || Number.isNaN(lastLayerOffset)) {
+          layerRef.current.style.transform = `translate3d(0, ${layerOffset}px, 0)`;
+          lastLayerOffset = layerOffset;
+        }
+      }
+
       ctx.clearRect(0, 0, W, H);
 
       activeShapes.forEach((shape, i) => {
@@ -172,11 +203,13 @@ export default function SideDecor() {
       cancelAnimationFrame(rafId);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
+      ro?.disconnect();
+      if (layerRef.current && !embedded) layerRef.current.style.transform = "translate3d(0, 0, 0)";
     };
-  }, []);
+  }, [embedded]);
 
   return (
-    <div className="side-decor-layer" aria-hidden="true">
+    <div ref={layerRef} className={`side-decor-layer${embedded ? " embedded" : ""}`} aria-hidden="true">
       <canvas
         ref={canvasRef}
         className="side-decor-canvas"

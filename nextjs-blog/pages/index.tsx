@@ -10,7 +10,7 @@ import { ScrollSmoother } from "gsap/ScrollSmoother";
 import HeroSection   from "../components/v2/HeroSection";
 import AboutV2       from "../components/v2/AboutV2";
 import CareerV2      from "../components/v2/CareerV2";
-import ProjectCard3D from "../components/v2/ProjectCard3D";
+import ProjectsCardsV2 from "../components/v2/ProjectsCardsV2";
 import ContactV2     from "../components/v2/ContactV2";
 import Loader        from "../components/v2/Loader";
 import SideDecor     from "../components/v2/SideDecor";
@@ -31,6 +31,7 @@ const PROJECTS: ProjectData[] = [
   {
     id: "rgbast",
     title: "RGBast",
+    fullTitle: "RGBast",
     titleSvg: "/rgbast/rgbast.svg",
     description:
       "Application web de versionning pour palettes de couleurs : snapshots, branches, merge, revert, dossiers, générateur de palettes, bast score et sélecteur de couleur interactif.",
@@ -59,6 +60,7 @@ const PROJECTS: ProjectData[] = [
   {
     id: "2clock",
     title: "2Clock",
+    fullTitle: "2Clock",
     titleSvg: "/2clock/2Clock.svg",
     description:
       "Application web de pointage horodaté et d'analyse de KPI en entreprise avec sécurité avancée.",
@@ -91,7 +93,8 @@ const PROJECTS: ProjectData[] = [
   },
   {
     id: "pathfinder",
-    title: "Pathfinder (Miratlas)",
+    title: "Pathfinder",
+    fullTitle: "Pathfinder (Miratlas)",
     titleSvg: "/pathfinder/pathfinder.svg",
     description:
       "Application web de cartographie de perturbations atmosphériques pour communications FSOC en optique libre.",
@@ -114,7 +117,8 @@ const PROJECTS: ProjectData[] = [
   },
   {
     id: "ggps",
-    title: "GGPS - Gamer's Global Positionning System",
+    title: "GGPS",
+    fullTitle: "GGPS - Gamer's Global Positionning System",
     titleSvg: "/ggps/ggps.svg",
     description:
       "Application web de localisation d'événements du jeu vidéo avec chatrooms temps réel.",
@@ -231,18 +235,15 @@ export default function PortfolioV2() {
 
       {/* Fixed elements outside smooth-content */}
       <HeaderV2 />
-      <SideDecor />
       <ScrollbarV2 />
 
       <div id="smooth-wrapper">
         <div id="smooth-content">
+          <SideDecor />
           <HeroSection />
           <AboutV2 />
           <CareerV2 />
-
-          {PROJECTS.map((p, i) => (
-            <ProjectCard3D key={p.id} project={p} index={i} />
-          ))}
+          <ProjectsCardsV2 projects={PROJECTS} />
 
           <ContactV2 />
         </div>

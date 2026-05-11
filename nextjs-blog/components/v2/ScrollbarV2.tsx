@@ -6,10 +6,7 @@ import { ScrollSmoother } from "gsap/ScrollSmoother";
 const COLOR_BY_SECTION: Record<string, string> = {
   "v2-about": "#881111",
   "v2-career": "#881111",
-  "v2-project-rgbast": "#B410CC",
-  "v2-project-2clock": "#FF4422",
-  "v2-project-pathfinder": "#2A7A1A",
-  "v2-project-ggps": "#980000",
+  "v2-projects": "#881111",
   "v2-contact": "#DD3A3A",
 };
 
@@ -99,7 +96,13 @@ export default function ScrollbarV2() {
           break;
         }
       }
-      setBg(COLOR_BY_SECTION[active] ?? DEFAULT_COLOR);
+      const openProjectColor = document.body.style.getPropertyValue("--v2-project-open-color").trim();
+      const isProjectOpen = document.body.classList.contains("v2-project-open-card");
+      if (isProjectOpen && openProjectColor) {
+        setBg(openProjectColor);
+      } else {
+        setBg(COLOR_BY_SECTION[active] ?? DEFAULT_COLOR);
+      }
     };
 
     const onThumbPointerDown = (e: PointerEvent) => {

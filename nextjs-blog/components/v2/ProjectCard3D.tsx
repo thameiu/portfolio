@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useId } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -173,6 +173,7 @@ function getIconLayout(iconType: IconType): IconPos[] {
 function Carousel({ images, accentColor, isDark }: {
   images: string[]; accentColor: string; isDark: boolean;
 }) {
+  const focusKey = useId();
   const [idx,           setIdx]   = useState(0);
   const [translate,     setTrans] = useState(0);
   const [prevTrans,     setPrev]  = useState(0);
@@ -244,6 +245,11 @@ function Carousel({ images, accentColor, isDark }: {
     setFocusVisible(false);
     setTimeout(() => setFocus(false), 300);
   };
+
+  useEffect(() => {
+    setCarouselFocusActive(focusKey, focused);
+    return () => setCarouselFocusActive(focusKey, false);
+  }, [focusKey, focused]);
 
   useEffect(() => {
     if (!focused) return;
@@ -336,7 +342,7 @@ function Carousel({ images, accentColor, isDark }: {
           ref={focusOverlayRef}
           style={{
             position: "fixed", inset: 0, zIndex: 2000,
-            background: "rgba(0,0,0,0.94)", backdropFilter: "blur(12px)",
+            background: "rgba(0,0,0,0.985)", backdropFilter: "blur(12px)",
             display: "flex", alignItems: "center", justifyContent: "center",
             opacity: focusVisible ? 1 : 0,
             transform: focusVisible ? "scale(1)" : "scale(1.025)",
@@ -462,7 +468,7 @@ function Carousel({ images, accentColor, isDark }: {
    PROJECT DATA TYPE
    ═══════════════════════════════════════════════ */
 export interface ProjectData {
-  id: string; title: string; titleSvg?: string;
+  id: string; title: string; fullTitle?: string; titleSvg?: string;
   description: string; details: string; techStack: string[];
   bgColor: string; accentColor: string; isDark: boolean;
   iconType: IconType; screenshots?: string[];
@@ -470,6 +476,7 @@ export interface ProjectData {
 }
 
 const activeProjectStates = new Set<string>();
+const activeFocusedCarousels = new Set<string>();
 let lastProjectTopMaskColor = "";
 let isProjectTopMaskVisible = false;
 
@@ -489,6 +496,12 @@ function setProjectTopMaskVisible(visible: boolean) {
   if (isProjectTopMaskVisible === visible) return;
   isProjectTopMaskVisible = visible;
   document.body.classList.toggle("v2-project-top-mask-visible", visible);
+}
+
+function setCarouselFocusActive(key: string, active: boolean) {
+  if (active) activeFocusedCarousels.add(key);
+  else activeFocusedCarousels.delete(key);
+  document.body.classList.toggle("v2-carousel-focus-active", activeFocusedCarousels.size > 0);
 }
 
 const TECH_ICON: Record<string, React.ReactNode> = {
@@ -737,6 +750,12 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
   const projectOverlap = isMobile
     ? PROJECT_OVERLAP_MOBILE
     : Math.max(PROJECT_OVERLAP, Math.round(viewportHeight * PROJECT_OVERLAP_DESKTOP_FACTOR));
+  const firstProjectMarginTop = isMobile
+    ? "calc(-1 * var(--v2-first-project-overlap-mobile, 236px))"
+    : "calc(-1 * var(--v2-first-project-overlap-desktop, 650px))";
+  const sectionMarginTop = useSimplifiedMotion
+    ? 0
+    : (index === 0 ? firstProjectMarginTop : -projectOverlap);
 
   return (
     <section
@@ -750,7 +769,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
         overflow: useSimplifiedMotion ? "visible" : "hidden",
         zIndex: 10 + index,
         background: bgColor,
-        marginTop: useSimplifiedMotion ? 0 : -projectOverlap,
+        marginTop: sectionMarginTop,
       }}
     >
       <div ref={panelRef}
@@ -769,6 +788,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
         }}>
         {!useSimplifiedMotion && (
           <div
+            className="v2-project-local-top-mask"
             aria-hidden="true"
             style={{
               position: "absolute",

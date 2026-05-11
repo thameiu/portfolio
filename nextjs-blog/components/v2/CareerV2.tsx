@@ -8,9 +8,8 @@ import { FaNodeJs, FaJava, FaDesktop, FaServer, FaDatabase, FaTools, FaCode, FaL
 import { VscAzureDevops } from "react-icons/vsc";
 import { PiFileCSharp } from "react-icons/pi";
 import { WindevIcon } from "../v1/Utils";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import GlitchTitle from "./GlitchTitle";
+import MainSectionV2 from "./MainSectionV2";
 
 const TABS = ["Expériences", "Formation", "Compétences"] as const;
 type Tab = typeof TABS[number];
@@ -175,27 +174,6 @@ export default function CareerV2() {
   const measureFormRef = useRef<HTMLDivElement>(null);
   const measureSkillsRef = useRef<HTMLDivElement>(null);
 
-  /* ── scroll-trigger title animation ── */
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    const ctx = gsap.context(() => {
-      const section = sectionRef.current;
-      if (!section) return;
-
-      /* Keep Parcours fixed, then let the first project cover it. */
-      ScrollTrigger.create({
-        trigger: section,
-        start: "bottom bottom",
-        end: () => "+=" + (window.innerHeight * 1.1),
-        pin: section,
-        pinSpacing: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-      });
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
-
   /* ── tab indicator ── */
   const moveIndicator = (idx: number) => {
     const btn = tabBtnRefs.current[idx];
@@ -219,18 +197,39 @@ export default function CareerV2() {
   }, []);
 
   useEffect(() => {
-    const measure = () => {
-      const h1 = measureExpRef.current?.getBoundingClientRect().height ?? 0;
-      const h2 = measureFormRef.current?.getBoundingClientRect().height ?? 0;
-      const h3 = measureSkillsRef.current?.getBoundingClientRect().height ?? 0;
-      const next = Math.ceil(Math.max(h1, h2, h3));
-      if (next > 0) setPanelMinHeight(next);
+    const getActiveTabMeasureRef = () => {
+      if (activeTab === "Expériences") return measureExpRef.current;
+      if (activeTab === "Formation") return measureFormRef.current;
+      return measureSkillsRef.current;
     };
+
+    const measure = () => {
+      const activeMeasure = getActiveTabMeasureRef();
+      const activeTabHeight = Math.ceil(
+        activeMeasure?.getBoundingClientRect().height ??
+        tabPanelRef.current?.getBoundingClientRect().height ??
+        0
+      );
+      if (activeTabHeight > 0) setPanelMinHeight(activeTabHeight);
+    };
+
     const run = () => requestAnimationFrame(() => requestAnimationFrame(measure));
     run();
+
+    const ro = typeof ResizeObserver !== "undefined"
+      ? new ResizeObserver(() => run())
+      : null;
+    if (ro) {
+      if (sectionRef.current) ro.observe(sectionRef.current);
+      if (tabPanelRef.current) ro.observe(tabPanelRef.current);
+    }
+
     window.addEventListener("resize", run);
-    return () => window.removeEventListener("resize", run);
-  }, []);
+    return () => {
+      window.removeEventListener("resize", run);
+      ro?.disconnect();
+    };
+  }, [activeTab]);
 
   /* ── animated tab change ── */
   const changeTab = (tab: Tab) => {
@@ -317,11 +316,11 @@ export default function CareerV2() {
   };
 
   return (
-    <section
+    <MainSectionV2
       id="v2-career"
       ref={sectionRef}
-      className="v2-section-shell relative min-h-screen flex flex-col justify-start lg:justify-center pt-20 pb-36 md:pt-24 md:pb-24 lg:py-32 overflow-hidden"
-      style={{ background: "#FFFAFB" }}
+      className="relative min-h-screen flex flex-col justify-start lg:justify-center pt-20 pb-36 md:pt-24 md:pb-24 lg:py-32 overflow-hidden"
+      style={{ background: "transparent" }}
     >
       {/* Mega title */}
       <GlitchTitle
@@ -364,7 +363,7 @@ export default function CareerV2() {
       {/* ── Tab panels ── */}
       <div
         ref={tabPanelRef}
-        className="min-h-[640px] md:min-h-[420px]"
+        className="min-h-[320px] md:min-h-[280px]"
         style={{
           transition: "opacity 0.22s ease, transform 0.22s ease",
           minHeight: panelMinHeight > 0 ? `${panelMinHeight}px` : undefined,
@@ -390,6 +389,6 @@ export default function CareerV2() {
         <div ref={measureFormRef}>{renderTabContent("Formation")}</div>
         <div ref={measureSkillsRef}>{renderTabContent("Compétences")}</div>
       </div>
-    </section>
+    </MainSectionV2>
   );
 }

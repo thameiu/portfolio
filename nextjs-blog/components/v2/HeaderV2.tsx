@@ -11,7 +11,7 @@ const ACCENT  = "#DD3A3A";
 const navItems = [
   { id: "v2-about",          label: "À propos" },
   { id: "v2-career",         label: "Parcours" },
-  { id: "v2-project-rgbast", label: "Projets"  },
+  { id: "v2-projects",       label: "Projets"  },
   { id: "v2-contact",        label: "Contact"  },
 ];
 
@@ -160,26 +160,29 @@ export default function HeaderV2() {
       gsap.registerPlugin(ScrollSmoother);
       const el = document.getElementById(id);
       if (!el) return;
-      const baseTop = window.scrollY + el.getBoundingClientRect().top;
       const isMobileViewport = window.innerWidth < 768;
-      const isProjectAnchor = id.startsWith("v2-project-");
+      const isProjectAnchor = id.startsWith("v2-project-") || id === "v2-projects";
       const isContactAnchor = id === "v2-contact";
-      const cutelinks = isContactAnchor
-        ? (el.querySelector(".v2-contact-cutelinks") as HTMLElement | null)
+      const titleEl = (isProjectAnchor || isContactAnchor)
+        ? (el.querySelector(".v2-mega-title") as HTMLElement | null)
         : null;
-      const cutelinksOffset = cutelinks
-        ? cutelinks.getBoundingClientRect().top - el.getBoundingClientRect().top
-        : null;
+      const getDocumentTop = (node: HTMLElement) => {
+        let top = 0;
+        let current: HTMLElement | null = node;
+        while (current) {
+          top += current.offsetTop;
+          current = current.offsetParent as HTMLElement | null;
+        }
+        return top;
+      };
+      const baseTop = getDocumentTop(el);
+      const titleTop = titleEl ? getDocumentTop(titleEl) : baseTop;
+      const headerOffset = isMobileViewport ? 82 : 96;
+      const contactNudge = isMobileViewport ? 12 : 16;
       const targetTop = isContactAnchor
-        ? isMobileViewport
-          ? Math.max(0, baseTop - 16)
-          : cutelinksOffset !== null
-            ? Math.max(0, baseTop + cutelinksOffset - window.innerHeight * 0.86)
-            : Math.max(0, baseTop + window.innerHeight * 0.16)
+        ? Math.max(0, titleTop - headerOffset + contactNudge)
         : isProjectAnchor
-          ? isMobileViewport
-            ? Math.max(0, baseTop + 12)
-            : baseTop + window.innerHeight * 0.42
+          ? Math.max(0, titleTop - headerOffset)
           : Math.max(0, baseTop - 80);
       const smoother = ScrollSmoother.get();
       if (smoother) {
