@@ -42,19 +42,6 @@ const DODEC_E: Edge[] = (() => {
   return edges;
 })();
 
-/* ── math helpers ─────────────────────────────── */
-function rotate([x,y,z]: V3, rx: number, ry: number): V3 {
-  const x1 = x*Math.cos(ry) - z*Math.sin(ry);
-  const z1 = x*Math.sin(ry) + z*Math.cos(ry);
-  const y2 = y*Math.cos(rx) - z1*Math.sin(rx);
-  const z2 = y*Math.sin(rx) + z1*Math.cos(rx);
-  return [x1, y2, z2];
-}
-function project([x,y,z]: V3, fov = 4): [number,number] {
-  const s = fov / (fov + z + 3);
-  return [x*s, y*s];
-}
-
 /* ── shape definitions ────────────────────────── */
 interface Shape {
   verts: V3[]; edges: Edge[];
@@ -67,13 +54,29 @@ interface Shape {
   color: string;
 }
 
+const TMP_X = new Float32Array(24);
+const TMP_Y = new Float32Array(24);
+const PROJ_FOV = 4;
+
 function drawOne(ctx: CanvasRenderingContext2D, shape: Shape, cx: number, cy: number, rx: number, ry: number) {
-  const proj = shape.verts.map(v => project(rotate(v, rx, ry)));
+  const cosY = Math.cos(ry);
+  const sinY = Math.sin(ry);
+  const cosX = Math.cos(rx);
+  const sinX = Math.sin(rx);
+  for (let i = 0; i < shape.verts.length; i++) {
+    const [x, y, z] = shape.verts[i];
+    const x1 = x * cosY - z * sinY;
+    const z1 = x * sinY + z * cosY;
+    const y2 = y * cosX - z1 * sinX;
+    const z2 = y * sinX + z1 * cosX;
+    const s = PROJ_FOV / (PROJ_FOV + z2 + 3);
+    TMP_X[i] = x1 * s;
+    TMP_Y[i] = y2 * s;
+  }
   ctx.beginPath();
   for (const [a, b] of shape.edges) {
-    const [ax, ay] = proj[a]; const [bx, by] = proj[b];
-    ctx.moveTo(cx + ax * shape.size, cy + ay * shape.size);
-    ctx.lineTo(cx + bx * shape.size, cy + by * shape.size);
+    ctx.moveTo(cx + TMP_X[a] * shape.size, cy + TMP_Y[a] * shape.size);
+    ctx.lineTo(cx + TMP_X[b] * shape.size, cy + TMP_Y[b] * shape.size);
   }
   ctx.stroke();
 }
@@ -133,35 +136,127 @@ export default function SideDecor({ embedded = false }: { embedded?: boolean }) 
     };
     syncCanvasSize();
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
-    const activeShapes = isMobile
-      ? SHAPES.filter((_, i) => i % 3 === 0 || i === 10 || i === 14)
-      : SHAPES;
+    const renderScale = embedded ? (isMobile ? 0.46 : 0.62) : 1;
+    const embeddedFrameBudgetMs = embedded ? 1000 / 30 : 0;
+    const activeShapes = embedded
+      ? (
+          isMobile
+            ? SHAPES.filter((_, i) => i % 4 === 0 || i === 10 || i === 14)
+            : SHAPES.filter((_, i) => i % 2 === 0 || i === 15 || i === 16)
+        )
+      : (
+          isMobile
+            ? SHAPES.filter((_, i) => i % 3 === 0 || i === 10 || i === 14)
+            : SHAPES
+        );
 
     let scrollY = window.scrollY;
     let smoothScrollY = scrollY;
     let lastLayerOffset = Number.NaN;
-    let rafId: number;
+    let rafId: number | null = null;
+    let isRunning = false;
+    let lastDrawTs = 0;
+    let embeddedPhase = 0;
+    let pageVisible = !document.hidden;
+    let embeddedInView = !embedded;
+    let embeddedClassVisible = !embedded;
 
-    const onScroll = () => { scrollY = window.scrollY; };
+    const canRenderNow = () => pageVisible && (!embedded || (embeddedInView && embeddedClassVisible));
+    const syncEmbeddedClassVisible = () => {
+      embeddedClassVisible = embedded ? document.body.classList.contains("v2-contact-shapes-visible") : true;
+    };
+    syncEmbeddedClassVisible();
+
+    const startLoop = () => {
+      if (isRunning || !canRenderNow()) return;
+      isRunning = true;
+      rafId = requestAnimationFrame(draw);
+    };
+    const stopLoop = () => {
+      isRunning = false;
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      rafId = null;
+    };
+
+    const onScroll = () => {
+      const nextY = window.scrollY;
+      scrollY = nextY;
+    };
     const onResize = () => {
       syncCanvasSize();
+      if (embedded) {
+        const pixelW = Math.max(1, Math.round(W * renderScale));
+        const pixelH = Math.max(1, Math.round(H * renderScale));
+        canvas.width = pixelW;
+        canvas.height = pixelH;
+        ctx.setTransform(renderScale, 0, 0, renderScale, 0, 0);
+      } else {
+        canvas.width = W;
+        canvas.height = H;
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+      }
+      startLoop();
     };
+    const onVisibility = () => {
+      pageVisible = !document.hidden;
+      if (pageVisible) startLoop();
+      else stopLoop();
+    };
+
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
+    document.addEventListener('visibilitychange', onVisibility);
     const ro = (embedded && layerRef.current && typeof ResizeObserver !== "undefined")
       ? new ResizeObserver(() => syncCanvasSize())
       : null;
     if (ro && layerRef.current) ro.observe(layerRef.current);
+    const io = (embedded && layerRef.current && typeof IntersectionObserver !== "undefined")
+      ? new IntersectionObserver(
+          (entries) => {
+            const e = entries[0];
+            if (!e) return;
+            embeddedInView = e.isIntersecting;
+            if (embeddedInView) startLoop();
+            else if (!canRenderNow()) stopLoop();
+          },
+          { threshold: 0.01 }
+        )
+      : null;
+    if (io && layerRef.current) io.observe(layerRef.current);
+    const mo = (embedded && typeof MutationObserver !== "undefined")
+      ? new MutationObserver(() => {
+          const before = embeddedClassVisible;
+          syncEmbeddedClassVisible();
+          if (embeddedClassVisible && !before) startLoop();
+          if (!canRenderNow()) stopLoop();
+        })
+      : null;
+    if (mo) mo.observe(document.body, { attributes: true, attributeFilter: ["class"] });
 
-    function draw() {
+    onResize();
+
+    function draw(ts: number) {
+      if (!canRenderNow()) {
+        stopLoop();
+        return;
+      }
+      if (embedded && ts - lastDrawTs < embeddedFrameBudgetMs) {
+        rafId = requestAnimationFrame(draw);
+        return;
+      }
+      const dt = Math.min(40, Math.max(0, ts - lastDrawTs || 16.7));
+      lastDrawTs = ts;
+
       const smoother = embedded ? null : ScrollSmoother.get();
-      scrollY = smoother ? smoother.scrollTop() : scrollY;
-      smoothScrollY += (scrollY - smoothScrollY) * 0.08;
+      const targetScrollY = smoother ? smoother.scrollTop() : scrollY;
+      const delta = targetScrollY - smoothScrollY;
+      smoothScrollY += delta * 0.08;
+      if (embedded) embeddedPhase += dt * 0.06;
 
       // When inside ScrollSmoother's transformed content, cancel parent translation
       // so the decor stays visually fixed to the viewport.
       if (layerRef.current && !embedded) {
-        const layerOffset = smoother ? smoother.scrollTop() : 0;
+        const layerOffset = smoother ? targetScrollY : 0;
         if (Math.abs(layerOffset - lastLayerOffset) > 0.1 || Number.isNaN(lastLayerOffset)) {
           layerRef.current.style.transform = `translate3d(0, ${layerOffset}px, 0)`;
           lastLayerOffset = layerOffset;
@@ -172,7 +267,8 @@ export default function SideDecor({ embedded = false }: { embedded?: boolean }) 
 
       activeShapes.forEach((shape, i) => {
         const baseYpx = shape.baseY * H;
-        const offset  = -(smoothScrollY * shape.parallax) % H;
+        const motionSource = embedded ? embeddedPhase : smoothScrollY;
+        const offset  = -(motionSource * shape.parallax) % H;
         let cy = ((baseYpx + offset) % H + H) % H;
         const cx = shape.baseX * W;
 
@@ -182,11 +278,13 @@ export default function SideDecor({ embedded = false }: { embedded?: boolean }) 
         const ry = normalizedX * 0.48 + Math.sin(shape.baseX * 11 + i * 0.8) * 0.28;
 
         ctx.save();
-        if (shape.blur > 0) ctx.filter = `blur(${shape.blur}px)`;
+        if (shape.blur > 0 && !embedded) ctx.filter = `blur(${shape.blur}px)`;
         ctx.globalAlpha = shape.alpha;
         ctx.strokeStyle = shape.color;
         const desktopLine = shape.blur > 2 ? 2.0 : (shape.blur > 0 ? 2.6 : 3.2);
-        ctx.lineWidth = isMobile ? desktopLine * 0.8 : desktopLine;
+        ctx.lineWidth = embedded
+          ? (isMobile ? desktopLine * 0.62 : desktopLine * 0.72)
+          : (isMobile ? desktopLine * 0.8 : desktopLine);
 
         drawOne(ctx, shape, cx, cy, rx, ry);
         if (cy < shape.size + 30) drawOne(ctx, shape, cx, cy + H, rx, ry);
@@ -197,13 +295,16 @@ export default function SideDecor({ embedded = false }: { embedded?: boolean }) 
 
       rafId = requestAnimationFrame(draw);
     }
-    draw();
+    startLoop();
 
     return () => {
-      cancelAnimationFrame(rafId);
+      stopLoop();
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
+      document.removeEventListener('visibilitychange', onVisibility);
       ro?.disconnect();
+      io?.disconnect();
+      mo?.disconnect();
       if (layerRef.current && !embedded) layerRef.current.style.transform = "translate3d(0, 0, 0)";
     };
   }, [embedded]);

@@ -44,6 +44,9 @@ export default function HeroSection() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+    const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+    const startLift = isMobile ? 0 : -20;
+    const settleGlitchLift = isMobile ? 0 : -2;
 
     const allSpans = [...(line1Refs.current), ...(line2Refs.current)];
     const allChars = Array.from(LINE1 + LINE2);
@@ -53,7 +56,7 @@ export default function HeroSection() {
     allSpans.forEach(span => {
       if (!span) return;
       span.textContent = GLITCH[Math.floor(Math.random() * GLITCH.length)];
-      gsap.set(span, { y: -20, opacity: 0.45, color: "rgba(136,17,17,0.62)" });
+      gsap.set(span, { y: startLift, opacity: 0.45, color: "rgba(136,17,17,0.62)" });
     });
 
     // Slot-machine-like settle: each char glitches, then drops into place
@@ -67,7 +70,7 @@ export default function HeroSection() {
       const iv = setInterval(() => {
         span.textContent = GLITCH[Math.floor(Math.random() * GLITCH.length)];
         gsap.to(span, {
-          y: -20 + Math.random() * 10,
+          y: isMobile ? 0 : (-20 + Math.random() * 10),
           duration: 0.06,
           overwrite: "auto",
           ease: "power1.out",
@@ -100,7 +103,7 @@ export default function HeroSection() {
             if (Math.random() > 0.93) {
               const orig = span.textContent;
               span.textContent = GLITCH[Math.floor(Math.random() * GLITCH.length)];
-              gsap.to(span, { y: -2, color: "#664d4d", duration: 0.07, ease: "power1.out" });
+              gsap.to(span, { y: settleGlitchLift, color: "#664d4d", duration: 0.07, ease: "power1.out" });
               setTimeout(() => {
                 span.textContent = orig;
                 gsap.to(span, { y: 0, color: "#881111", duration: 0.16, ease: "power1.out" });

@@ -6,7 +6,7 @@ import { IoArrowBack, IoClose } from "react-icons/io5";
 import {
   SiNextdotjs, SiExpress, SiTypescript, SiSupabase, SiDocker, SiJenkins, SiJest, SiVite,
   SiFastapi, SiSqlalchemy, SiGithubactions, SiNginx, SiLeaflet, SiLaravel, SiPhp, SiPostgresql,
-  SiNestjs, SiSocketdotio, SiVuedotjs,
+  SiNestjs, SiSocketdotio, SiVuedotjs, SiCplusplus, SiCmake, SiOpengl,
 } from "react-icons/si";
 import type { ProjectData } from "./ProjectCard3D";
 import GlitchTitle from "./GlitchTitle";
@@ -32,9 +32,12 @@ const TECH_ICON: Record<string, React.ReactNode> = {
   PostgreSQL: <SiPostgresql />,
   NestJS: <SiNestjs />,
   "Socket.io": <SiSocketdotio />,
+  "C++": <SiCplusplus />,
+  OpenGL: <SiOpengl />,
+  CMake: <SiCmake />,
 };
 
-type IconType = "circles" | "clock" | "satellite" | "controller";
+type IconType = "circles" | "clock" | "satellite" | "controller" | "cubegrid";
 interface IconPos { x: string; y: string; size: string; rotation?: number }
 
 const CARD_PREVIEW_INDEX_BY_PROJECT: Record<string, number> = {
@@ -42,7 +45,29 @@ const CARD_PREVIEW_INDEX_BY_PROJECT: Record<string, number> = {
   "2clock": 3,
   pathfinder: 1,
   ggps: 2,
+  glproject: 0,
 };
+
+const OTHER_PROJECTS: ProjectData[] = [
+  {
+    id: "glproject",
+    title: "GLProject",
+    fullTitle: "GLProject",
+    titleSvg: "/glproject/glproject.svg",
+    description: "Moteur de visualisation 3D pédagogique (OpenGL).",
+    details:
+      "Programmation bas-niveau C++ et GPU, shaders GLSL (Phong, Blinn-Phong, flou Gaussien), projections planaires/sphériques/cylindriques/cubiques, chargement .obj, caméra et lumières dynamiques.",
+    techStack: ["C++", "OpenGL", "CMake"],
+    bgColor: "#191919",
+    accentColor: "#2889A9",
+    isDark: true,
+    iconType: "cubegrid",
+    screenshots: [
+      "/glproject/glproject-1.png",
+      "/glproject/glproject-2.png",
+    ],
+  },
+];
 
 const CirclesIcon = ({ color }: { color: string }) => (
   <svg viewBox="0 0 280 280" fill="none" style={{ overflow: "visible" }}>
@@ -131,10 +156,19 @@ const ControllerIcon = () => (
   </div>
 );
 
+const GLCubeGridIcon = ({ color }: { color: string }) => (
+  <svg viewBox="0 0 360 300" fill="none" style={{ overflow: "visible" }}>
+    <polygon points="180,24 44,92 180,160 316,92" stroke={color} strokeWidth="2.4" fill="none" />
+    <polygon points="44,92 44,228 180,296 180,160" stroke={color} strokeWidth="2.4" fill="none" />
+    <polygon points="316,92 316,228 180,296 180,160" stroke={color} strokeWidth="2.4" fill="none" />
+  </svg>
+);
+
 function ProjectIcon({ type, color }: { type: IconType; color: string }) {
   if (type === "circles") return <CirclesIcon color={color} />;
   if (type === "clock") return <ClockIcon color={color} />;
   if (type === "satellite") return <PathfinderIcon color={color} />;
+  if (type === "cubegrid") return <GLCubeGridIcon color={color} />;
   return <ControllerIcon />;
 }
 
@@ -157,6 +191,12 @@ function getIconLayout(iconType: IconType): IconPos[] {
   }
   if (iconType === "satellite") {
     return [{ x: "70%", y: "62%", size: "min(62vw,760px)" }];
+  }
+  if (iconType === "cubegrid") {
+    return [
+      { x: "8%", y: "10%", size: "min(30vw,360px)", rotation: -14 },
+      { x: "72%", y: "56%", size: "min(34vw,420px)", rotation: 15 },
+    ];
   }
   return [
     { x: "8%", y: "6%", size: "min(44vw,540px)" },
@@ -360,7 +400,23 @@ function Carousel({ images, accentColor, isDark }: {
         {images.length > 1 && (
           <>
             <button
-              onClick={(e) => { e.stopPropagation(); prev(); }}
+              type="button"
+              onPointerDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              onTouchStart={(e) => {
+                e.stopPropagation();
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                prev();
+              }}
               className="v2-carousel-side-nav v2-carousel-side-nav-left"
               style={{ color: accentColor }}
               aria-label="Image précédente"
@@ -368,7 +424,23 @@ function Carousel({ images, accentColor, isDark }: {
               ‹
             </button>
             <button
-              onClick={(e) => { e.stopPropagation(); next(); }}
+              type="button"
+              onPointerDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              onTouchStart={(e) => {
+                e.stopPropagation();
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                next();
+              }}
               className="v2-carousel-side-nav v2-carousel-side-nav-right"
               style={{ color: accentColor }}
               aria-label="Image suivante"
@@ -435,23 +507,61 @@ function Carousel({ images, accentColor, isDark }: {
 export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] }) {
   const sectionRef = useRef<HTMLElement>(null);
   const infoScrollRef = useRef<HTMLDivElement>(null);
+  const tabNavRef = useRef<HTMLDivElement>(null);
+  const tabPanelRef = useRef<HTMLDivElement>(null);
+  const indicatorRef = useRef<HTMLDivElement>(null);
+  const tabBtnRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const tabTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState<"web" | "others">("web");
+  const [activeProject, setActiveProject] = useState<ProjectData | null>(null);
   const [panelVisible, setPanelVisible] = useState(false);
   const [logoVisible, setLogoVisible] = useState(false);
   const [infoVisible, setInfoVisible] = useState(false);
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const activeProject = activeIndex !== null ? projects[activeIndex] : null;
+  const visibleProjects = activeTab === "web" ? projects : OTHER_PROJECTS;
 
   const clearTimers = () => {
     timersRef.current.forEach(clearTimeout);
     timersRef.current = [];
   };
 
-  const openProject = (index: number) => {
+  const moveIndicator = useCallback((idx: number) => {
+    const btn = tabBtnRefs.current[idx];
+    const nav = tabNavRef.current;
+    const ind = indicatorRef.current;
+    if (!btn || !nav || !ind) return;
+    const navRect = nav.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+    ind.style.left = `${btnRect.left - navRect.left}px`;
+    ind.style.width = `${btnRect.width}px`;
+  }, []);
+
+  const changeTab = useCallback((nextTab: "web" | "others") => {
+    if (nextTab === activeTab) return;
+    const panel = tabPanelRef.current;
+    if (!panel) {
+      setActiveTab(nextTab);
+      return;
+    }
+    panel.style.transition = "opacity 0.18s ease, transform 0.18s ease";
+    panel.style.opacity = "0";
+    panel.style.transform = "translateY(12px)";
+    if (tabTimerRef.current) clearTimeout(tabTimerRef.current);
+    tabTimerRef.current = setTimeout(() => {
+      setActiveTab(nextTab);
+      requestAnimationFrame(() => {
+        panel.style.transition = "opacity 0.22s ease, transform 0.22s ease";
+        panel.style.opacity = "1";
+        panel.style.transform = "translateY(0)";
+      });
+    }, 165);
+  }, [activeTab]);
+
+  const openProject = (project: ProjectData) => {
     clearTimers();
-    setActiveIndex(index);
+    setActiveProject(project);
     setPanelVisible(false);
     setLogoVisible(false);
     setInfoVisible(false);
@@ -468,7 +578,7 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
     setInfoVisible(false);
     setLogoVisible(false);
     setPanelVisible(false);
-    timersRef.current.push(setTimeout(() => setActiveIndex(null), 360));
+    timersRef.current.push(setTimeout(() => setActiveProject(null), 360));
   }, []);
 
   useEffect(() => {
@@ -492,6 +602,20 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
   }, []);
 
   useEffect(() => {
+    const idx = activeTab === "web" ? 0 : 1;
+    moveIndicator(idx);
+    return () => {
+      if (tabTimerRef.current) clearTimeout(tabTimerRef.current);
+    };
+  }, [activeTab, moveIndicator]);
+
+  useEffect(() => {
+    const onResize = () => moveIndicator(activeTab === "web" ? 0 : 1);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [activeTab, moveIndicator]);
+
+  useEffect(() => {
     const body = document.body;
     if (!activeProject) {
       body.classList.remove("v2-project-open-card");
@@ -511,7 +635,7 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
   }, []);
 
   useEffect(() => {
-    if (activeIndex === null) return;
+    if (!activeProject) return;
     const html = document.documentElement;
     const body = document.body;
     const saved = {
@@ -575,7 +699,7 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
       html.style.overscrollBehavior = saved.htmlOverscrollBehavior;
       body.style.overscrollBehavior = saved.bodyOverscrollBehavior;
     };
-  }, [activeIndex, closeProject]);
+  }, [activeProject, closeProject]);
 
   return (
     <MainSectionV2
@@ -594,8 +718,50 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
         startMobile="top 95%"
       />
 
-      <div className="flex flex-col gap-6 md:gap-8">
-        {projects.map((project, index) => {
+      <div
+        ref={tabNavRef}
+        className="relative flex justify-center md:justify-start gap-1 md:gap-0 mb-10 border-b"
+        style={{ borderColor: "rgba(136,17,17,0.18)" }}
+      >
+        <button
+          type="button"
+          ref={(el) => { tabBtnRefs.current[0] = el; }}
+          onClick={() => changeTab("web")}
+          className="px-3 sm:px-5 py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-semibold transition-colors duration-300 cursor-pointer whitespace-nowrap text-center"
+          style={{
+            fontFamily: "'Sora',sans-serif",
+            color: activeTab === "web" ? "#881111" : "rgba(45,16,16,0.45)",
+            background: "transparent",
+            border: "none",
+            letterSpacing: "0.035em",
+          }}
+        >
+          Web
+        </button>
+        <button
+          type="button"
+          ref={(el) => { tabBtnRefs.current[1] = el; }}
+          onClick={() => changeTab("others")}
+          className="px-3 sm:px-5 py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-semibold transition-colors duration-300 cursor-pointer whitespace-nowrap text-center"
+          style={{
+            fontFamily: "'Sora',sans-serif",
+            color: activeTab === "others" ? "#881111" : "rgba(45,16,16,0.45)",
+            background: "transparent",
+            border: "none",
+            letterSpacing: "0.035em",
+          }}
+        >
+          Autres
+        </button>
+        <div ref={indicatorRef} className="v2-tab-indicator" style={{ bottom: -1 }} />
+      </div>
+
+      <div
+        ref={tabPanelRef}
+        className="flex flex-col gap-6 md:gap-8 min-h-[12rem]"
+        style={{ transition: "opacity 0.22s ease, transform 0.22s ease" }}
+      >
+        {visibleProjects.map((project) => {
           const cardId = `v2-project-${project.id}`;
           const projectFullTitle = project.fullTitle ?? project.title;
           const cardBg = project.bgColor;
@@ -610,12 +776,13 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
           const isRgbast = project.id === "rgbast";
           const isGgps = project.id === "ggps";
           const isPathfinder = project.id === "pathfinder";
+          const isGlproject = project.id === "glproject";
 
           return (
             <button
               key={project.id}
               id={cardId}
-              onClick={() => openProject(index)}
+              onClick={() => openProject(project)}
               className="v2-project-card group w-full text-left overflow-hidden border transition-transform duration-300 hover:-translate-y-1 relative"
               style={{
                 background: cardBg,
@@ -671,6 +838,13 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
                     backgroundSize: "cover",
                     opacity: 0.2,
                   }}
+                />
+              )}
+              {isGlproject && (
+                <div
+                  aria-hidden="true"
+                  className="v2-glproject-perspective-grid"
+                  style={{ zIndex: 0, opacity: 0.44 }}
                 />
               )}
 
@@ -821,6 +995,13 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
                   backgroundSize: "cover",
                   opacity: 0.24,
                 }}
+              />
+            )}
+            {activeProject.id === "glproject" && (
+              <div
+                aria-hidden="true"
+                className="v2-glproject-perspective-grid"
+                style={{ zIndex: 0, opacity: 0.3 }}
               />
             )}
             {getIconLayout(activeProject.iconType as IconType).map((icon, i) => (

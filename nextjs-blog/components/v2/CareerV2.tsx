@@ -63,11 +63,11 @@ const XPItem = ({ e }: { e: XPEntry }) => (
       className="absolute left-[5px] top-4 bottom-0 w-px group-last:hidden"
       style={{ background: "rgba(136,17,17,0.18)" }}
     />
-    <div className="flex flex-wrap items-start justify-between gap-2 mb-1">
+    <div className="flex flex-col items-start gap-1 mb-1 md:flex-row md:items-start md:justify-between md:gap-2">
       <span className="text-xs font-medium tracking-wide" style={{ color: "rgba(45,16,16,0.5)", fontFamily: "'Sora', sans-serif" }}>
         {e.period}
       </span>
-      {e.badge}
+      {e.badge && <div className="self-start md:self-auto">{e.badge}</div>}
     </div>
     <h3
       className="v2-role-title text-4xl md:text-5xl font-bold mb-0.5 transition-colors duration-300 group-hover:text-[#881111]"

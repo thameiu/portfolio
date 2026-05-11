@@ -116,7 +116,7 @@ const ControllerSvgIcon = () => (
   </div>
 );
 
-type IconType = "circles" | "clock" | "satellite" | "controller";
+type IconType = "circles" | "clock" | "satellite" | "controller" | "cubegrid";
 
 function ProjectIcon({
   type,

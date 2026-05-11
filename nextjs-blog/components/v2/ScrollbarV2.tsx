@@ -44,10 +44,24 @@ export default function ScrollbarV2() {
     const sections = sectionIds
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => Boolean(el));
+    let activeSectionId = "v2-about";
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            activeSectionId = (entry.target as HTMLElement).id;
+          }
+        }
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: 0.01 }
+    );
+    sections.forEach((el) => sectionObserver.observe(el));
 
     let thumbH = 70;
     const setY = gsap.quickSetter(thumb, "y", "px");
     const setBg = gsap.quickSetter(thumb, "backgroundColor");
+    let lastProgress = -1;
+    let lastColor = "";
 
     const getMaxScroll = () =>
       Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
@@ -77,6 +91,7 @@ export default function ScrollbarV2() {
     };
 
     const update = () => {
+      if (document.hidden) return;
       const doc = document.documentElement;
       const smoother = ScrollSmoother.get();
       const scrollY = smoother ? smoother.scrollTop() : window.scrollY;
@@ -85,23 +100,19 @@ export default function ScrollbarV2() {
 
       const railH = getRailHeight();
       const travel = Math.max(0, railH - thumbH);
-      setY(RAIL_TOP + travel * progress);
-
-      const probeY = window.innerHeight * 0.5;
-      let active = "v2-about";
-      for (const el of sections) {
-        const r = el.getBoundingClientRect();
-        if (r.top <= probeY && r.bottom >= probeY) {
-          active = el.id;
-          break;
-        }
+      if (Math.abs(progress - lastProgress) > 0.0004 || draggingRef.current) {
+        setY(RAIL_TOP + travel * progress);
+        lastProgress = progress;
       }
+
       const openProjectColor = document.body.style.getPropertyValue("--v2-project-open-color").trim();
       const isProjectOpen = document.body.classList.contains("v2-project-open-card");
-      if (isProjectOpen && openProjectColor) {
-        setBg(openProjectColor);
-      } else {
-        setBg(COLOR_BY_SECTION[active] ?? DEFAULT_COLOR);
+      const nextColor = isProjectOpen && openProjectColor
+        ? openProjectColor
+        : (COLOR_BY_SECTION[activeSectionId] ?? DEFAULT_COLOR);
+      if (nextColor !== lastColor) {
+        setBg(nextColor);
+        lastColor = nextColor;
       }
     };
 
@@ -150,6 +161,7 @@ export default function ScrollbarV2() {
       window.removeEventListener("pointercancel", stopDrag);
       window.removeEventListener("resize", updateGeometry);
       window.removeEventListener("resize", update);
+      sectionObserver.disconnect();
     };
   }, [hideOnMobile, sectionIds]);
 
