@@ -435,6 +435,7 @@ function Carousel({ images, accentColor, isDark }: {
 export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] }) {
   const sectionRef = useRef<HTMLElement>(null);
   const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [panelVisible, setPanelVisible] = useState(false);
   const [logoVisible, setLogoVisible] = useState(false);
@@ -468,6 +469,18 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px), (pointer: coarse)");
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    if (mq.addEventListener) {
+      mq.addEventListener("change", sync);
+      return () => mq.removeEventListener("change", sync);
+    }
+    mq.addListener(sync);
+    return () => mq.removeListener(sync);
   }, []);
 
   useEffect(() => {
@@ -802,6 +815,9 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
                 cursor: "pointer",
                 zIndex: 30,
                 padding: 0,
+                opacity: isMobile ? (infoVisible ? 1 : 0) : 1,
+                pointerEvents: isMobile ? (infoVisible ? "auto" : "none") : "auto",
+                transition: "opacity 0.22s ease",
               }}
               aria-label="Retour"
             >
@@ -845,7 +861,7 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
                   textTransform: "uppercase",
                   letterSpacing: "0.01em",
                   }}>
-                  {activeProject.fullTitle ?? activeProject.title}
+                  {isMobile ? activeProject.title : (activeProject.fullTitle ?? activeProject.title)}
                 </span>
               )}
             </div>
@@ -856,6 +872,9 @@ export default function ProjectsCardsV2({ projects }: { projects: ProjectData[] 
                 zIndex: 12,
                 height: "100%",
                 overflowY: "auto",
+                WebkitOverflowScrolling: "touch",
+                overscrollBehavior: "contain",
+                touchAction: "pan-y",
                 opacity: infoVisible ? 1 : 0,
                 transform: infoVisible ? "translateY(0)" : "translateY(24px)",
                 transition: "opacity 0.42s ease, transform 0.42s ease",
