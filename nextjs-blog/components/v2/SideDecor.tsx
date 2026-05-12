@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import gsap from "gsap";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 
 type V3 = [number, number, number];
@@ -49,7 +50,6 @@ interface Shape {
   baseY: number;  // 0-1 fraction of viewport height
   baseX: number;  // 0-1 fraction of viewport width
   parallax: number;
-  blur: number;
   alpha: number;
   color: string;
 }
@@ -83,30 +83,30 @@ function drawOne(ctx: CanvasRenderingContext2D, shape: Shape, cx: number, cy: nu
 
 const SHAPES: Shape[] = [
   /* far left */
-  { verts:CUBE_V,  edges:CUBE_E,  size:78, baseY:0.07, baseX:0.04, parallax:0.28, blur:0.0, alpha:0.88, color:'#881111' },
-  { verts:TETRA_V, edges:TETRA_E, size:62, baseY:0.28, baseX:0.08, parallax:0.44, blur:0.8, alpha:0.62, color:'#AA2222' },
-  { verts:DODEC_V, edges:DODEC_E, size:50, baseY:0.62, baseX:0.05, parallax:0.18, blur:2.0, alpha:0.48, color:'#661111' },
-  { verts:TETRA_V, edges:TETRA_E, size:70, baseY:0.85, baseX:0.11, parallax:0.36, blur:0.0, alpha:0.72, color:'#CC3333' },
+  { verts:CUBE_V,  edges:CUBE_E,  size:78, baseY:0.07, baseX:0.04, parallax:0.28, alpha:0.88, color:'#881111' },
+  { verts:TETRA_V, edges:TETRA_E, size:62, baseY:0.28, baseX:0.08, parallax:0.44, alpha:0.62, color:'#AA2222' },
+  { verts:DODEC_V, edges:DODEC_E, size:50, baseY:0.62, baseX:0.05, parallax:0.18, alpha:0.48, color:'#661111' },
+  { verts:TETRA_V, edges:TETRA_E, size:70, baseY:0.85, baseX:0.11, parallax:0.36, alpha:0.72, color:'#CC3333' },
   /* left */
-  { verts:CUBE_V,  edges:CUBE_E,  size:54, baseY:0.45, baseX:0.19, parallax:0.55, blur:1.0, alpha:0.54, color:'#881111' },
-  { verts:DODEC_V, edges:DODEC_E, size:68, baseY:0.14, baseX:0.22, parallax:0.32, blur:0.0, alpha:0.76, color:'#AA1111' },
+  { verts:CUBE_V,  edges:CUBE_E,  size:54, baseY:0.45, baseX:0.19, parallax:0.55, alpha:0.54, color:'#881111' },
+  { verts:DODEC_V, edges:DODEC_E, size:68, baseY:0.14, baseX:0.22, parallax:0.32, alpha:0.76, color:'#AA1111' },
   /* center-left */
-  { verts:TETRA_V, edges:TETRA_E, size:58, baseY:0.70, baseX:0.30, parallax:0.48, blur:0.4, alpha:0.62, color:'#CC3333' },
-  { verts:CUBE_V,  edges:CUBE_E,  size:42, baseY:0.35, baseX:0.27, parallax:0.20, blur:2.3, alpha:0.44, color:'#661111' },
+  { verts:TETRA_V, edges:TETRA_E, size:58, baseY:0.70, baseX:0.30, parallax:0.48, alpha:0.62, color:'#CC3333' },
+  { verts:CUBE_V,  edges:CUBE_E,  size:42, baseY:0.35, baseX:0.27, parallax:0.20, alpha:0.44, color:'#661111' },
   /* center */
-  { verts:DODEC_V, edges:DODEC_E, size:86, baseY:0.20, baseX:0.48, parallax:0.38, blur:0.0, alpha:0.82, color:'#881111' },
-  { verts:TETRA_V, edges:TETRA_E, size:52, baseY:0.55, baseX:0.52, parallax:0.50, blur:1.3, alpha:0.50, color:'#AA2222' },
-  { verts:CUBE_V,  edges:CUBE_E,  size:66, baseY:0.90, baseX:0.44, parallax:0.26, blur:0.0, alpha:0.70, color:'#CC3333' },
+  { verts:DODEC_V, edges:DODEC_E, size:86, baseY:0.20, baseX:0.48, parallax:0.38, alpha:0.82, color:'#881111' },
+  { verts:TETRA_V, edges:TETRA_E, size:52, baseY:0.55, baseX:0.52, parallax:0.50, alpha:0.50, color:'#AA2222' },
+  { verts:CUBE_V,  edges:CUBE_E,  size:66, baseY:0.90, baseX:0.44, parallax:0.26, alpha:0.70, color:'#CC3333' },
   /* center-right */
-  { verts:CUBE_V,  edges:CUBE_E,  size:48, baseY:0.40, baseX:0.72, parallax:0.54, blur:0.9, alpha:0.54, color:'#661111' },
-  { verts:DODEC_V, edges:DODEC_E, size:72, baseY:0.12, baseX:0.66, parallax:0.22, blur:0.0, alpha:0.78, color:'#881111' },
-  { verts:TETRA_V, edges:TETRA_E, size:62, baseY:0.78, baseX:0.70, parallax:0.42, blur:0.4, alpha:0.66, color:'#AA2222' },
+  { verts:CUBE_V,  edges:CUBE_E,  size:48, baseY:0.40, baseX:0.72, parallax:0.54, alpha:0.54, color:'#661111' },
+  { verts:DODEC_V, edges:DODEC_E, size:72, baseY:0.12, baseX:0.66, parallax:0.22, alpha:0.78, color:'#881111' },
+  { verts:TETRA_V, edges:TETRA_E, size:62, baseY:0.78, baseX:0.70, parallax:0.42, alpha:0.66, color:'#AA2222' },
   /* right */
-  { verts:CUBE_V,  edges:CUBE_E,  size:82, baseY:0.30, baseX:0.82, parallax:0.60, blur:0.0, alpha:0.76, color:'#881111' },
-  { verts:TETRA_V, edges:TETRA_E, size:56, baseY:0.60, baseX:0.87, parallax:0.35, blur:1.7, alpha:0.47, color:'#CC3333' },
+  { verts:CUBE_V,  edges:CUBE_E,  size:82, baseY:0.30, baseX:0.82, parallax:0.60, alpha:0.76, color:'#881111' },
+  { verts:TETRA_V, edges:TETRA_E, size:56, baseY:0.60, baseX:0.87, parallax:0.35, alpha:0.47, color:'#CC3333' },
   /* far right */
-  { verts:DODEC_V, edges:DODEC_E, size:72, baseY:0.15, baseX:0.94, parallax:0.46, blur:0.0, alpha:0.82, color:'#AA2222' },
-  { verts:TETRA_V, edges:TETRA_E, size:62, baseY:0.75, baseX:0.91, parallax:0.30, blur:0.8, alpha:0.61, color:'#661111' },
+  { verts:DODEC_V, edges:DODEC_E, size:72, baseY:0.15, baseX:0.94, parallax:0.46, alpha:0.82, color:'#AA2222' },
+  { verts:TETRA_V, edges:TETRA_E, size:62, baseY:0.75, baseX:0.91, parallax:0.30, alpha:0.61, color:'#661111' },
 ];
 
 /* ── component ───────────────────────────────── */
@@ -137,7 +137,7 @@ export default function SideDecor({ embedded = false }: { embedded?: boolean }) 
     syncCanvasSize();
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
     const renderScale = embedded ? (isMobile ? 0.46 : 0.62) : 1;
-    const embeddedFrameBudgetMs = embedded ? 1000 / 30 : 0;
+    const frameBudgetMs = embedded ? 1000 / 30 : 0;
     const activeShapes = embedded
       ? (
           isMobile
@@ -149,17 +149,19 @@ export default function SideDecor({ embedded = false }: { embedded?: boolean }) 
             ? SHAPES.filter((_, i) => i % 3 === 0 || i === 10 || i === 14)
             : SHAPES
         );
+    const minShapeSize = activeShapes.reduce((min, shape) => Math.min(min, shape.size), Number.POSITIVE_INFINITY);
+    const maxShapeSize = activeShapes.reduce((max, shape) => Math.max(max, shape.size), 0);
+    const shapeSizeRange = Math.max(1, maxShapeSize - minShapeSize);
 
-    let scrollY = window.scrollY;
-    let smoothScrollY = scrollY;
     let lastLayerOffset = Number.NaN;
-    let rafId: number | null = null;
-    let isRunning = false;
     let lastDrawTs = 0;
-    let embeddedPhase = 0;
+    let lastMotionY = Number.NaN;
+    let idleFrames = 0;
+    let forceFrames = 3;
     let pageVisible = !document.hidden;
     let embeddedInView = !embedded;
     let embeddedClassVisible = !embedded;
+    const getSmoother = () => (embedded ? null : ScrollSmoother.get());
 
     const canRenderNow = () => pageVisible && (!embedded || (embeddedInView && embeddedClassVisible));
     const syncEmbeddedClassVisible = () => {
@@ -167,20 +169,14 @@ export default function SideDecor({ embedded = false }: { embedded?: boolean }) 
     };
     syncEmbeddedClassVisible();
 
-    const startLoop = () => {
-      if (isRunning || !canRenderNow()) return;
-      isRunning = true;
-      rafId = requestAnimationFrame(draw);
-    };
-    const stopLoop = () => {
-      isRunning = false;
-      if (rafId !== null) cancelAnimationFrame(rafId);
-      rafId = null;
-    };
-
-    const onScroll = () => {
-      const nextY = window.scrollY;
-      scrollY = nextY;
+    const syncLayerOffset = (scrollPos: number) => {
+      if (!layerRef.current || embedded) return;
+      const layerOffset = getSmoother() ? scrollPos : 0;
+      const snappedOffset = Math.round(layerOffset * 1000) / 1000;
+      if (Math.abs(snappedOffset - lastLayerOffset) > 0.1 || Number.isNaN(lastLayerOffset)) {
+        layerRef.current.style.transform = `translate3d(0, ${snappedOffset}px, 0)`;
+        lastLayerOffset = snappedOffset;
+      }
     };
     const onResize = () => {
       syncCanvasSize();
@@ -195,15 +191,17 @@ export default function SideDecor({ embedded = false }: { embedded?: boolean }) 
         canvas.height = H;
         ctx.setTransform(1, 0, 0, 1, 0, 0);
       }
-      startLoop();
+      forceFrames = 4;
+      idleFrames = 0;
     };
     const onVisibility = () => {
       pageVisible = !document.hidden;
-      if (pageVisible) startLoop();
-      else stopLoop();
+      if (pageVisible) {
+        forceFrames = 4;
+        idleFrames = 0;
+      }
     };
 
-    window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
     document.addEventListener('visibilitychange', onVisibility);
     const ro = (embedded && layerRef.current && typeof ResizeObserver !== "undefined")
@@ -216,8 +214,10 @@ export default function SideDecor({ embedded = false }: { embedded?: boolean }) 
             const e = entries[0];
             if (!e) return;
             embeddedInView = e.isIntersecting;
-            if (embeddedInView) startLoop();
-            else if (!canRenderNow()) stopLoop();
+            if (embeddedInView) {
+              forceFrames = 4;
+              idleFrames = 0;
+            }
           },
           { threshold: 0.01 }
         )
@@ -227,47 +227,26 @@ export default function SideDecor({ embedded = false }: { embedded?: boolean }) 
       ? new MutationObserver(() => {
           const before = embeddedClassVisible;
           syncEmbeddedClassVisible();
-          if (embeddedClassVisible && !before) startLoop();
-          if (!canRenderNow()) stopLoop();
+          if (embeddedClassVisible && !before) {
+            forceFrames = 4;
+            idleFrames = 0;
+          }
         })
       : null;
     if (mo) mo.observe(document.body, { attributes: true, attributeFilter: ["class"] });
 
     onResize();
 
-    function draw(ts: number) {
-      if (!canRenderNow()) {
-        stopLoop();
-        return;
+    const drawFrame = (scrollPos: number, now: number) => {
+      if (frameBudgetMs > 0 && lastDrawTs > 0 && now - lastDrawTs < frameBudgetMs) {
+        return false;
       }
-      if (embedded && ts - lastDrawTs < embeddedFrameBudgetMs) {
-        rafId = requestAnimationFrame(draw);
-        return;
-      }
-      const dt = Math.min(40, Math.max(0, ts - lastDrawTs || 16.7));
-      lastDrawTs = ts;
-
-      const smoother = embedded ? null : ScrollSmoother.get();
-      const targetScrollY = smoother ? smoother.scrollTop() : scrollY;
-      const delta = targetScrollY - smoothScrollY;
-      smoothScrollY += delta * 0.08;
-      if (embedded) embeddedPhase += dt * 0.06;
-
-      // When inside ScrollSmoother's transformed content, cancel parent translation
-      // so the decor stays visually fixed to the viewport.
-      if (layerRef.current && !embedded) {
-        const layerOffset = smoother ? targetScrollY : 0;
-        if (Math.abs(layerOffset - lastLayerOffset) > 0.1 || Number.isNaN(lastLayerOffset)) {
-          layerRef.current.style.transform = `translate3d(0, ${layerOffset}px, 0)`;
-          lastLayerOffset = layerOffset;
-        }
-      }
-
+      lastDrawTs = now;
       ctx.clearRect(0, 0, W, H);
 
       activeShapes.forEach((shape, i) => {
         const baseYpx = shape.baseY * H;
-        const motionSource = embedded ? embeddedPhase : smoothScrollY;
+        const motionSource = scrollPos;
         const offset  = -(motionSource * shape.parallax) % H;
         let cy = ((baseYpx + offset) % H + H) % H;
         const cx = shape.baseX * W;
@@ -276,12 +255,13 @@ export default function SideDecor({ embedded = false }: { embedded?: boolean }) 
         const normalizedX = shape.baseX * 2 - 1;
         const rx = normalizedY * 0.55 + Math.sin(shape.baseY * 9  + i) * 0.09;
         const ry = normalizedX * 0.48 + Math.sin(shape.baseX * 11 + i * 0.8) * 0.28;
+        const sizeNorm = (shape.size - minShapeSize) / shapeSizeRange;
+        const depthAlpha = 0.25 + sizeNorm * 0.75;
 
         ctx.save();
-        if (shape.blur > 0 && !embedded) ctx.filter = `blur(${shape.blur}px)`;
-        ctx.globalAlpha = shape.alpha;
+        ctx.globalAlpha = shape.alpha * depthAlpha;
         ctx.strokeStyle = shape.color;
-        const desktopLine = shape.blur > 2 ? 2.0 : (shape.blur > 0 ? 2.6 : 3.2);
+        const desktopLine = 1.8 + sizeNorm * 1.6;
         ctx.lineWidth = embedded
           ? (isMobile ? desktopLine * 0.62 : desktopLine * 0.72)
           : (isMobile ? desktopLine * 0.8 : desktopLine);
@@ -292,14 +272,35 @@ export default function SideDecor({ embedded = false }: { embedded?: boolean }) 
 
         ctx.restore();
       });
+      return true;
+    };
 
-      rafId = requestAnimationFrame(draw);
-    }
-    startLoop();
+    const tick = () => {
+      if (!canRenderNow()) {
+        return;
+      }
+      const smoother = getSmoother();
+      const targetScrollY = smoother ? smoother.scrollTop() : window.scrollY;
+      syncLayerOffset(targetScrollY);
+      const delta = Number.isNaN(lastMotionY) ? Number.POSITIVE_INFINITY : Math.abs(targetScrollY - lastMotionY);
+      lastMotionY = targetScrollY;
+      if (delta > 0.01) {
+        idleFrames = 0;
+        forceFrames = 3;
+      } else {
+        idleFrames += 1;
+      }
+      const shouldDraw = forceFrames > 0 || delta > 0.01 || idleFrames < 2;
+      if (!shouldDraw) return;
+      const drew = drawFrame(targetScrollY, performance.now());
+      if (drew && forceFrames > 0) forceFrames -= 1;
+    };
+
+    gsap.ticker.add(tick);
+    tick();
 
     return () => {
-      stopLoop();
-      window.removeEventListener('scroll', onScroll);
+      gsap.ticker.remove(tick);
       window.removeEventListener('resize', onResize);
       document.removeEventListener('visibilitychange', onVisibility);
       ro?.disconnect();
