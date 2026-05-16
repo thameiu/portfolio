@@ -2,6 +2,7 @@
 // import '../styles/v2/v2.css'
 
 import Head from "next/head";
+import type { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -18,13 +19,13 @@ import HeaderV2      from "../components/v2/HeaderV2";
 import ScrollbarV2   from "../components/v2/ScrollbarV2";
 import type { ProjectData } from "../components/v2/ProjectCard3D";
 
-const RAW_SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
-const SITE_URL = RAW_SITE_URL.replace(/\/+$/, "");
-const PREVIEW_PATH = "/preview.png?v=2";
-const OG_IMAGE_URL = SITE_URL ? `${SITE_URL}${PREVIEW_PATH}` : PREVIEW_PATH;
-const PAGE_URL = SITE_URL || "/";
+const PREVIEW_PATH = "/preview.png";
+
+type PortfolioV2Props = {
+  pageUrl: string;
+  ogImageUrl: string;
+  ogImageSecureUrl: string | null;
+};
 
 /* ─── 4 projects ──────────────────────────────── */
 const PROJECTS: ProjectData[] = [
@@ -139,7 +140,38 @@ const PROJECTS: ProjectData[] = [
   },
 ];
 
-export default function PortfolioV2() {
+export const getServerSideProps: GetServerSideProps<PortfolioV2Props> = async ({ req }) => {
+  const envSiteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
+
+  const forwardedHost = req.headers["x-forwarded-host"];
+  const host = Array.isArray(forwardedHost)
+    ? forwardedHost[0]
+    : (forwardedHost || req.headers.host || "");
+
+  const forwardedProtoHeader = req.headers["x-forwarded-proto"];
+  const forwardedProto = Array.isArray(forwardedProtoHeader)
+    ? forwardedProtoHeader[0]
+    : forwardedProtoHeader;
+  const proto = (forwardedProto?.split(",")[0].trim() || (host.includes("localhost") ? "http" : "https"));
+  const requestSiteUrl = host ? `${proto}://${host}` : "";
+
+  const siteUrl = (requestSiteUrl || envSiteUrl).replace(/\/+$/, "");
+  const pageUrl = siteUrl || "/";
+  const ogImageUrl = siteUrl ? `${siteUrl}${PREVIEW_PATH}` : PREVIEW_PATH;
+  const ogImageSecureUrl = ogImageUrl.startsWith("https://") ? ogImageUrl : null;
+
+  return {
+    props: {
+      pageUrl,
+      ogImageUrl,
+      ogImageSecureUrl,
+    },
+  };
+};
+
+export default function PortfolioV2({ pageUrl, ogImageUrl, ogImageSecureUrl }: PortfolioV2Props) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -214,22 +246,23 @@ export default function PortfolioV2() {
           content="Mathieu Hernandez, portfolio, développeur web, développeur full-stack, développeur frontend, développeur backend, Next.js, React, TypeScript, NestJS, FastAPI, Laravel, Docker, Leaflet, PostgreSQL, cybersécurité, cloud, alternance, Marseille, Aix-en-Provence, Windev, rgbast, RGBast, GGPS, Pathfinder, 2Clock, Three, Three.js, Web Design, Web Designer, webdev, web dev, dev web"
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={PAGE_URL} />
+        <meta property="og:url" content={pageUrl} />
         <meta property="og:site_name" content="Mathieu Hernandez Portfolio" />
         <meta property="og:title" content="Mathieu Hernandez - Portfolio" />
-        <meta property="og:description" content="Portfolio de Mathieu Hernandez, développeur polyvalent (Frontend, Backend, Cloud, Cybersécurité)." />
-        <meta property="og:image" content={OG_IMAGE_URL} />
+        <meta property="og:description" content="Portfolio de Mathieu Hernandez, développeur polyvalent (Frontend, Backend, Web Design, Cloud, Cybersécurité)." />
+        <meta property="og:image" content={ogImageUrl} />
+        {ogImageSecureUrl ? <meta property="og:image:secure_url" content={ogImageSecureUrl} /> : null}
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="644" />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:alt" content="Aperçu du portfolio de Mathieu Hernandez" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content={PAGE_URL} />
+        <meta name="twitter:url" content={pageUrl} />
         <meta name="twitter:title" content="Mathieu Hernandez - Portfolio" />
         <meta name="twitter:description" content="Portfolio de Mathieu Hernandez, développeur full-stack." />
-        <meta name="twitter:image" content={OG_IMAGE_URL} />
+        <meta name="twitter:image" content={ogImageUrl} />
         <meta name="twitter:image:alt" content="Aperçu du portfolio de Mathieu Hernandez" />
-        <link rel="canonical" href={PAGE_URL} />
+        <link rel="canonical" href={pageUrl} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
