@@ -327,8 +327,8 @@ body.v2-page .v2-project-info-scroller::-webkit-scrollbar-thumb:hover {
 }
 
 @keyframes v2-skeleton-soft-red {
-  from { background-position: 125% 0; }
-  to { background-position: -125% 0; }
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
 }
 
 .v2-image-skeleton-wrap {
@@ -348,8 +348,8 @@ body.v2-page .v2-project-info-scroller::-webkit-scrollbar-thumb:hover {
       color-mix(in srgb, var(--v2-skeleton-accent) 42%, transparent) 48%,
       color-mix(in srgb, var(--v2-skeleton-accent) 22%, transparent) 74%
     );
-  background-size: 250% 100%;
-  animation: v2-skeleton-soft-red 1.08s linear infinite;
+  background-size: 200% 100%;
+  animation: v2-skeleton-soft-red 1s linear infinite;
   opacity: 1;
 }
 

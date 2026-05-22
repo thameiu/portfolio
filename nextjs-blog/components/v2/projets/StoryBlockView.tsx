@@ -103,10 +103,28 @@ export default function StoryBlockView({
   isDark: boolean;
 }) {
   const textColor = isDark ? "#FFFFFF" : "#000000";
+  const isPlanningImage = Boolean(
+    block.image && /2clock[-_]planning\.png$/i.test(block.image),
+  );
+  const isClockImage = Boolean(
+    block.image && /2clock-clock\.png$/i.test(block.image),
+  );
+  const isKpiDbImage = Boolean(
+    block.image && /2clock-(kpi|db)\.png$/i.test(block.image),
+  );
+  const isSmall2ClockSplitImage = isPlanningImage || isClockImage;
   const isPortraitStoryImage = Boolean(
-    block.image && /(rgbast-generation|rgbast-cube)\.png$/i.test(block.image),
+    block.image &&
+      /(rgbast-generation|rgbast-cube|2clock[-_]planning|2clock-clock)\.png$/i.test(
+        block.image,
+      ),
   );
   const imageAspectRatio = isPortraitStoryImage ? "5/6" : "16/10";
+  const imageWidth = isSmall2ClockSplitImage
+    ? "50%"
+    : isKpiDbImage
+      ? "60%"
+      : "100%";
 
   const textNode = block.text ? (
     <p
@@ -126,10 +144,11 @@ export default function StoryBlockView({
     <div
       style={{
         position: "relative",
-        width: "100%",
+        width: imageWidth,
         aspectRatio: imageAspectRatio,
         overflow: "hidden",
         borderRadius: 8,
+        marginInline: imageWidth === "100%" ? undefined : "auto",
       }}
     >
       <ProjectImageWithSkeleton
@@ -165,9 +184,12 @@ export default function StoryBlockView({
   }
 
   if (block.layout === "split-left-image" || block.layout === "split-right-image") {
+    const imageFirstDesktop = isPlanningImage;
     const splitColumnsStyle = isPortraitStoryImage
       ? ({
-          gridTemplateColumns: "minmax(0, 0.7fr) minmax(0, 0.3fr)",
+          gridTemplateColumns: imageFirstDesktop
+            ? "minmax(0, 0.3fr) minmax(0, 0.7fr)"
+            : "minmax(0, 0.7fr) minmax(0, 0.3fr)",
         } as const)
       : undefined;
 
@@ -178,7 +200,10 @@ export default function StoryBlockView({
         }`}
         style={splitColumnsStyle}
       >
-        <div className="order-1 md:order-1" style={{ textAlign: "left" }}>
+        <div
+          className={imageFirstDesktop ? "order-1 md:order-2" : "order-1 md:order-1"}
+          style={{ textAlign: "left" }}
+        >
           {block.title ? (
             <h4
               className="mb-2"
@@ -196,7 +221,11 @@ export default function StoryBlockView({
           ) : null}
           {textNode}
         </div>
-        <div className="order-2 md:order-2 md:self-center">{imageNode}</div>
+        <div
+          className={imageFirstDesktop ? "order-2 md:order-1 md:self-center" : "order-2 md:order-2 md:self-center"}
+        >
+          {imageNode}
+        </div>
       </article>
     );
   }
