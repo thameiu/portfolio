@@ -1,377 +1,369 @@
 @import "tailwindcss";
 
 :root {
-  --color-primary: #334A52;
-  --color-secondary: #59C3F0;
-  --color-accent: #8DE1FD;
-  --color-light: #C5EFFD;
+    --color-primary: #334a52;
+    --color-secondary: #59c3f0;
+    --color-accent: #8de1fd;
+    --color-light: #c5effd;
 }
 
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: 'sofia-pro-regular', sans-serif;
-  /* background-color: #192231; */
+    padding: 0;
+    margin: 0;
+    font-family: "Sora", sans-serif;
+    /* background-color: #192231; */
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 12px;
+    width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+    background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #8CE1FE;
-  border-radius: 10px;
+    background: #dd3a3a;
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #59C3F0;
+    background: #b92020;
 }
 
-::-webkit-scrollbar-button { display: none; }
+::-webkit-scrollbar-button {
+    display: none;
+}
 
 ::selection {
-  background: rgb(139, 225, 255,0.8);
-  color: #334A52;
+    background: rgb(139, 225, 255, 0.8);
+    color: #334a52;
 }
 
 /* For Firefox */
 * {
-  scrollbar-width: thin;
-  scrollbar-color: #8CE1FE #182231;
+    scrollbar-width: thin;
+    scrollbar-color: #dd3a3a #2a1717;
 }
 
 h2 {
-  font-weight:bold;
+    font-weight: bold;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 
 a:visited {
-  color: inherit;
+    color: inherit;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 img {
-  max-width: 100%;
-  height: auto;
+    max-width: 100%;
+    height: auto;
 }
-
 
 /* Canvas styling */
 #topo-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  z-index: -1;
-  display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    display: block;
 }
 
 /* Custom animations */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes slideIn {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.3s ease-in-out;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 .animate-slide-in {
-  animation: slideIn 0.3s ease-in-out;
+    animation: slideIn 0.3s ease-in-out;
 }
 
 @font-face {
-  font-family: 'archivo-black';
-  src: url('./fonts/ArchivoBlack-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+    font-family: "archivo-black";
+    src: url("./fonts/ArchivoBlack-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: 'sofia-pro-regular';
-  src: url('./fonts/Sofia\ Pro\ Regular\ Az.woff') format('woff2'),
-       url('./fonts/Sofia\ Pro\ Regular\ Az.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+    font-family: "cedarville-cursive-regular";
+    src: url("./fonts/CedarvilleCursive-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: 'cedarville-cursive-regular';
-  src: url('./fonts/CedarvilleCursive-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+    font-family: "Mango Grotesque";
+    src: url("./fonts/MangoGrotesque-Thin.ttf") format("truetype");
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: 'Mango Grotesque';
-  src: url('./fonts/MangoGrotesque-Thin.ttf') format('truetype');
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
+    font-family: "Mango Grotesque";
+    src: url("./fonts/MangoGrotesque-ThinItalic.ttf") format("truetype");
+    font-weight: 100;
+    font-style: italic;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: 'Mango Grotesque';
-  src: url('./fonts/MangoGrotesque-ThinItalic.ttf') format('truetype');
-  font-weight: 100;
-  font-style: italic;
-  font-display: swap;
+    font-family: "Mango Grotesque";
+    src: url("./fonts/MangoGrotesque-ExtraLight.ttf") format("truetype");
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: 'Mango Grotesque';
-  src: url('./fonts/MangoGrotesque-ExtraLight.ttf') format('truetype');
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
+    font-family: "Mango Grotesque";
+    src: url("./fonts/MangoGrotesque-Light.ttf") format("truetype");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: 'Mango Grotesque';
-  src: url('./fonts/MangoGrotesque-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
+    font-family: "Mango Grotesque";
+    src: url("./fonts/MangoGrotesque-LightItalic.ttf") format("truetype");
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: 'Mango Grotesque';
-  src: url('./fonts/MangoGrotesque-LightItalic.ttf') format('truetype');
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
+    font-family: "Mango Grotesque";
+    src: url("./fonts/MangoGrotesque-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: 'Mango Grotesque';
-  src: url('./fonts/MangoGrotesque-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
+    font-family: "Mango Grotesque";
+    src: url("./fonts/MangoGrotesque-Italic.ttf") format("truetype");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: 'Mango Grotesque';
-  src: url('./fonts/MangoGrotesque-Italic.ttf') format('truetype');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
+    font-family: "Mango Grotesque";
+    src: url("./fonts/MangoGrotesque-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: 'Mango Grotesque';
-  src: url('./fonts/MangoGrotesque-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
+    font-family: "Mango Grotesque";
+    src: url("./fonts/MangoGrotesque-MediumItalic.ttf") format("truetype");
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: 'Mango Grotesque';
-  src: url('./fonts/MangoGrotesque-MediumItalic.ttf') format('truetype');
-  font-weight: 500;
-  font-style: italic;
-  font-display: swap;
+    font-family: "Mango Grotesque";
+    src: url("./fonts/MangoGrotesque-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: 'Mango Grotesque';
-  src: url('./fonts/MangoGrotesque-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
+    font-family: "Mango Grotesque";
+    src: url("./fonts/MangoGrotesque-SemiBoldItalic.ttf") format("truetype");
+    font-weight: 600;
+    font-style: italic;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: 'Mango Grotesque';
-  src: url('./fonts/MangoGrotesque-SemiBoldItalic.ttf') format('truetype');
-  font-weight: 600;
-  font-style: italic;
-  font-display: swap;
+    font-family: "Mango Grotesque";
+    src: url("./fonts/MangoGrotesque-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: 'Mango Grotesque';
-  src: url('./fonts/MangoGrotesque-Bold.ttf') format('truetype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
+    font-family: "Mango Grotesque";
+    src: url("./fonts/MangoGrotesque-BoldItalic.ttf") format("truetype");
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: 'Mango Grotesque';
-  src: url('./fonts/MangoGrotesque-BoldItalic.ttf') format('truetype');
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
+    font-family: "Mango Grotesque";
+    src: url("./fonts/MangoGrotesque-ExtraBold.ttf") format("truetype");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: 'Mango Grotesque';
-  src: url('./fonts/MangoGrotesque-ExtraBold.ttf') format('truetype');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
+    font-family: "Mango Grotesque";
+    src: url("./fonts/MangoGrotesque-Black.ttf") format("truetype");
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: 'Mango Grotesque';
-  src: url('./fonts/MangoGrotesque-Black.ttf') format('truetype');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
+    font-family: "Mango Grotesque";
+    src: url("./fonts/MangoGrotesque-BlackItalic.ttf") format("truetype");
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: 'Mango Grotesque';
-  src: url('./fonts/MangoGrotesque-BlackItalic.ttf') format('truetype');
-  font-weight: 900;
-  font-style: italic;
-  font-display: swap;
+    font-family: "Sora";
+    src: url("fonts/Sora-Thin.otf") format("opentype");
+    font-weight: 100;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: 'Sora';
-  src: url('fonts/Sora-Thin.otf') format('opentype');
-  font-weight: 100;
-  font-style: normal;
+    font-family: "Sora";
+    src: url("fonts/Sora-ThinItalic.otf") format("opentype");
+    font-weight: 100;
+    font-style: italic;
 }
 
 @font-face {
-  font-family: 'Sora';
-  src: url('fonts/Sora-ThinItalic.otf') format('opentype');
-  font-weight: 100;
-  font-style: italic;
+    font-family: "Sora";
+    src: url("fonts/Sora-ExtraLight.otf") format("opentype");
+    font-weight: 200;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: 'Sora';
-  src: url('fonts/Sora-ExtraLight.otf') format('opentype');
-  font-weight: 200;
-  font-style: normal;
+    font-family: "Sora";
+    src: url("fonts/Sora-ExtraLightItalic.otf") format("opentype");
+    font-weight: 200;
+    font-style: italic;
 }
 
 @font-face {
-  font-family: 'Sora';
-  src: url('fonts/Sora-ExtraLightItalic.otf') format('opentype');
-  font-weight: 200;
-  font-style: italic;
+    font-family: "Sora";
+    src: url("fonts/Sora-Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: 'Sora';
-  src: url('fonts/Sora-Light.otf') format('opentype');
-  font-weight: 300;
-  font-style: normal;
+    font-family: "Sora";
+    src: url("fonts/Sora-LightItalic.otf") format("opentype");
+    font-weight: 300;
+    font-style: italic;
 }
 
 @font-face {
-  font-family: 'Sora';
-  src: url('fonts/Sora-LightItalic.otf') format('opentype');
-  font-weight: 300;
-  font-style: italic;
+    font-family: "Sora";
+    src: url("fonts/Sora-Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: 'Sora';
-  src: url('fonts/Sora-Regular.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
+    font-family: "Sora";
+    src: url("fonts/Sora-Italic.otf") format("opentype");
+    font-weight: 400;
+    font-style: italic;
 }
 
 @font-face {
-  font-family: 'Sora';
-  src: url('fonts/Sora-Italic.otf') format('opentype');
-  font-weight: 400;
-  font-style: italic;
+    font-family: "Sora";
+    src: url("fonts/Sora-Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: 'Sora';
-  src: url('fonts/Sora-Medium.otf') format('opentype');
-  font-weight: 500;
-  font-style: normal;
+    font-family: "Sora";
+    src: url("fonts/Sora-MediumItalic.otf") format("opentype");
+    font-weight: 500;
+    font-style: italic;
 }
 
 @font-face {
-  font-family: 'Sora';
-  src: url('fonts/Sora-MediumItalic.otf') format('opentype');
-  font-weight: 500;
-  font-style: italic;
+    font-family: "Sora";
+    src: url("fonts/Sora-SemiBold.otf") format("opentype");
+    font-weight: 600;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: 'Sora';
-  src: url('fonts/Sora-SemiBold.otf') format('opentype');
-  font-weight: 600;
-  font-style: normal;
+    font-family: "Sora";
+    src: url("fonts/Sora-SemiBoldItalic.otf") format("opentype");
+    font-weight: 600;
+    font-style: italic;
 }
 
 @font-face {
-  font-family: 'Sora';
-  src: url('fonts/Sora-SemiBoldItalic.otf') format('opentype');
-  font-weight: 600;
-  font-style: italic;
+    font-family: "Sora";
+    src: url("fonts/Sora-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: 'Sora';
-  src: url('fonts/Sora-Bold.otf') format('opentype');
-  font-weight: 700;
-  font-style: normal;
+    font-family: "Sora";
+    src: url("fonts/Sora-BoldItalic.otf") format("opentype");
+    font-weight: 700;
+    font-style: italic;
 }
 
 @font-face {
-  font-family: 'Sora';
-  src: url('fonts/Sora-BoldItalic.otf') format('opentype');
-  font-weight: 700;
-  font-style: italic;
+    font-family: "Sora";
+    src: url("fonts/Sora-ExtraBold.otf") format("opentype");
+    font-weight: 800;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: 'Sora';
-  src: url('fonts/Sora-ExtraBold.otf') format('opentype');
-  font-weight: 800;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Sora';
-  src: url('fonts/Sora-ExtraBoldItalic.otf') format('opentype');
-  font-weight: 800;
-  font-style: italic;
+    font-family: "Sora";
+    src: url("fonts/Sora-ExtraBoldItalic.otf") format("opentype");
+    font-weight: 800;
+    font-style: italic;
 }
 
 /* CV Viewer - no scroll, no white background, fit to container */
@@ -379,50 +371,49 @@ img {
 .cv-viewer .rpv-core__viewer,
 .cv-viewer .rpv-core__inner-container,
 .cv-viewer .rpv-core__inner-pages {
-  height: 100% !important;
-  overflow: hidden !important;
-  background: transparent !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    background: transparent !important;
 }
 
 .cv-viewer .rpv-core__inner-page,
 .cv-viewer .rpv-core__page-layer {
-  background: transparent !important;
-  box-shadow: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
 }
 /* Section animations - targeting elements that have backdrop-filter to prevent popping */
 
 /* Section animations - targeting elements that have backdrop-filter to prevent popping */
-
 
 /* Section Entrance Animation */
 @keyframes sectionFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes sectionFadeOut {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(20px);
-  }
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
 }
 
 .fade-in-section {
-  opacity: 0;
-  animation: sectionFadeOut 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    opacity: 0;
+    animation: sectionFadeOut 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 section[data-visible="true"] .fade-in-section {
-  animation: sectionFadeIn 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  opacity: 1;
+    animation: sectionFadeIn 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    opacity: 1;
 }

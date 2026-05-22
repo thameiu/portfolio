@@ -3,12 +3,11 @@ import { useEffect, useRef, useState, useCallback, useId } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import {
-  SiNextdotjs, SiExpress, SiTypescript, SiSupabase, SiDocker, SiJenkins, SiJest, SiVite,
-  SiFastapi, SiSqlalchemy, SiGithubactions, SiNginx, SiLeaflet, SiLaravel, SiPhp, SiPostgresql,
-  SiNestjs, SiSocketdotio, SiVuedotjs,
-} from "react-icons/si";
 import { IoClose } from "react-icons/io5";
+import { getProjectIconLayout, getProjectVisualStyle } from "./projets";
+import ProjectBackdropLayer from "./projets/ProjectBackdropLayer";
+import { TECH_ICON } from "./projets/techIcons";
+import type { IconType, ProjectData } from "./projets/types";
 
 const PROJECT_PIN_DISTANCE = 1800;
 const PROJECT_PIN_DISTANCE_MOBILE_FACTOR = 1.7;
@@ -116,8 +115,6 @@ const ControllerSvgIcon = () => (
   </div>
 );
 
-type IconType = "circles" | "clock" | "satellite" | "controller" | "cubegrid";
-
 function ProjectIcon({
   type,
   color,
@@ -131,40 +128,6 @@ function ProjectIcon({
   if (type === "clock")      return <ClockIcon     color={color} spinRef={spinRef}/>;
   if (type === "satellite")  return <PathfinderIcon color={color} spinRef={spinRef}/>;
   return <ControllerSvgIcon />;
-}
-
-/* ═══════════════════════════════════════════════
-   ICON LAYOUTS  (per project type)
-   ═══════════════════════════════════════════════ */
-interface IconPos { x: string; y: string; size: string; rotation?: number }
-
-function getIconLayout(iconType: IconType): IconPos[] {
-  if (iconType === "clock") {
-    return [
-      { x: "10%", y: "10%", size: "min(30vw,360px)" },
-      { x: "44%", y: "4%",  size: "min(30vw,360px)" },
-      { x: "70%", y: "36%", size: "min(30vw,360px)" },
-    ];
-  }
-  if (iconType === "controller") {
-    return [
-      { x: "8%",  y: "3%",  size: "min(20vw,260px)", rotation: -18 },
-      { x: "44%", y: "0%",  size: "min(20vw,260px)", rotation: 28  },
-      { x: "74%", y: "18%", size: "min(20vw,260px)", rotation: -36 },
-      { x: "18%", y: "58%", size: "min(20vw,260px)", rotation: 42  },
-      { x: "58%", y: "64%", size: "min(20vw,260px)", rotation: -22 },
-    ];
-  }
-  if (iconType === "satellite") {
-    return [
-      { x: "46%", y: "43%", size: "min(78vw,920px)" },
-    ];
-  }
-  /* circles — two thin icons for RGBast */
-  return [
-    { x: "8%",  y: "6%",  size: "min(44vw,540px)" },
-    { x: "54%", y: "40%", size: "min(44vw,540px)" },
-  ];
 }
 
 /* ═══════════════════════════════════════════════
@@ -464,17 +427,6 @@ function Carousel({ images, accentColor, isDark }: {
   );
 }
 
-/* ═══════════════════════════════════════════════
-   PROJECT DATA TYPE
-   ═══════════════════════════════════════════════ */
-export interface ProjectData {
-  id: string; title: string; fullTitle?: string; titleSvg?: string;
-  description: string; details: string; techStack: string[];
-  bgColor: string; accentColor: string; isDark: boolean;
-  iconType: IconType; screenshots?: string[];
-  link?: string; linkText?: string;
-}
-
 const activeProjectStates = new Set<string>();
 const activeFocusedCarousels = new Set<string>();
 let lastProjectTopMaskColor = "";
@@ -504,28 +456,6 @@ function setCarouselFocusActive(key: string, active: boolean) {
   document.body.classList.toggle("v2-carousel-focus-active", activeFocusedCarousels.size > 0);
 }
 
-const TECH_ICON: Record<string, React.ReactNode> = {
-  "Next.js": <SiNextdotjs />,
-  Express: <SiExpress />,
-  TypeScript: <SiTypescript />,
-  Supabase: <SiSupabase />,
-  Docker: <SiDocker />,
-  Jenkins: <SiJenkins />,
-  Jest: <SiJest />,
-  "Vue 3": <SiVuedotjs />,
-  Vite: <SiVite />,
-  FastAPI: <SiFastapi />,
-  SQLAlchemy: <SiSqlalchemy />,
-  "GitHub Actions": <SiGithubactions />,
-  Nginx: <SiNginx />,
-  Leaflet: <SiLeaflet />,
-  Laravel: <SiLaravel />,
-  PHP: <SiPhp />,
-  PostgreSQL: <SiPostgresql />,
-  NestJS: <SiNestjs />,
-  "Socket.io": <SiSocketdotio />,
-};
-
 
 /* ═══════════════════════════════════════════════
    MAIN COMPONENT
@@ -543,7 +473,8 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [viewportHeight, setViewportHeight] = useState(1080);
 
-  const iconLayout = getIconLayout(project.iconType);
+  const iconLayout = getProjectIconLayout(project.id);
+  const projectVisualStyle = getProjectVisualStyle(project.id);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 1023px)");
@@ -580,7 +511,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const useSimplifiedMotion = prefersReducedMotion;
-    const layoutForMotion = getIconLayout(project.iconType);
+    const layoutForMotion = getProjectIconLayout(project.id);
 
     const ctx = gsap.context(() => {
       gsap.set(hugeTitleRef.current, { opacity: 0 });
@@ -742,9 +673,6 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
   const textPrimary = isDark ? "rgba(255,255,255,0.92)" : "rgba(15,8,8,0.88)";
   const textMuted   = isDark ? "rgba(255,255,255,0.52)" : "rgba(15,8,8,0.50)";
   const borderCol   = isDark ? `${accentColor}35`       : `${accentColor}50`;
-  const isRgbast = project.id === "rgbast";
-  const isGgps = project.id === "ggps";
-  const isPathfinder = project.id === "pathfinder";
   const useSimplifiedMotion = prefersReducedMotion;
   const fullViewportHeight = isMobile ? "100svh" : "100vh";
   const projectOverlap = isMobile
@@ -804,53 +732,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
         )}
 
         {/* Project-specific subtle backdrops */}
-        {isRgbast && (
-          <div
-            aria-hidden="true"
-            style={{
-              position: "absolute",
-              inset: 0,
-              zIndex: 0,
-              pointerEvents: "none",
-              backgroundImage:
-                "radial-gradient(circle, rgba(38,38,38,0.22) 1.2px, transparent 1.3px), radial-gradient(circle, rgba(38,38,38,0.14) 1px, transparent 1.1px)",
-              backgroundSize: "20px 20px, 20px 20px",
-              backgroundPosition: "0 0, 10px 10px",
-              opacity: 0.46,
-            }}
-          />
-        )}
-        {isGgps && (
-          <div
-            aria-hidden="true"
-            style={{
-              position: "absolute",
-              inset: 0,
-              zIndex: 0,
-              pointerEvents: "none",
-              backgroundImage:
-                "repeating-radial-gradient(140% 90% at -10% 100%, rgba(188,28,28,0.52) 0 1px, transparent 1px 12px), repeating-radial-gradient(140% 90% at -10% 100%, rgba(120,0,0,0.36) 0 1px, transparent 1px 24px)",
-              backgroundPosition: "0 0, 0 6px",
-              opacity: 0.58,
-            }}
-          />
-        )}
-        {isPathfinder && (
-          <div
-            aria-hidden="true"
-            style={{
-              position: "absolute",
-              inset: 0,
-              zIndex: 0,
-              pointerEvents: "none",
-              backgroundImage: "url('/pathfinder/pathfinder-background.png')",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center center",
-              backgroundSize: "cover",
-              opacity: 0.24,
-            }}
-          />
-        )}
+        <ProjectBackdropLayer config={projectVisualStyle?.modalBackdrop} />
 
         {/* Floating background icons */}
         {iconLayout.map((icon, i) => (

@@ -17,7 +17,7 @@ import Loader        from "../components/v2/Loader";
 import SideDecor     from "../components/v2/SideDecor";
 import HeaderV2      from "../components/v2/HeaderV2";
 import ScrollbarV2   from "../components/v2/ScrollbarV2";
-import type { ProjectData } from "../components/v2/ProjectCard3D";
+import type { ProjectData } from "../components/v2/projets/types";
 
 const PREVIEW_PATH = "/preview.png";
 
@@ -35,7 +35,7 @@ const PROJECTS: ProjectData[] = [
     fullTitle: "RGBast",
     titleSvg: "/rgbast/rgbast.svg",
     description:
-      "Application web de versionning pour palettes de couleurs : snapshots, branches, merge, revert, dossiers, générateur de palettes, bast score et sélecteur de couleur interactif.",
+      "Application web de versionning et génération de palettes de couleurs pour designers et développeurs.",
     details:
       "Frontend Vue 3 + Vite · Backend FastAPI + SQLAlchemy + Alembic · VPS Ubuntu + CI/CD GitHub Actions · reverse proxy Nginx + Docker.",
     bgColor: "#E9E9E9",
@@ -54,6 +54,77 @@ const PROJECTS: ProjectData[] = [
       "/rgbast/rgbast-8.png",
       "/rgbast/rgbast-9.png",
       "/rgbast/rgbast-10.png",
+      "/rgbast/rgbast-11.png",
+      "/rgbast/rgbast-12.png",
+      "/rgbast/rgbast-8.png",
+      "/rgbast/rgbast-9.png",
+      "/rgbast/rgbast-10.png",
+    ],
+    story: [
+      {
+        id: "rgbast-story-1",
+        layout: "text",
+        title: "Contexte",
+        text: "J’utilisais souvent Coolors, application web de génération et visualisation de **palettes**, en outil pour réaliser les chartes graphiques de mes projets d’études. Mais ce site a certains défauts qui me gênaient. Outre les fonctionnalités qui sont **payantes**, ce qui est déjà très limitant, on ne peut pas modifier une **palette** enregistrée : l’ouvrir dans le générateur et la sauvegarder en crée une autre. Et le générateur de palettes est très linéaire, on ne peut pas choisir de **couleurs** à garder, ou de types d’harmonies, c’est complètement aléatoire.<br/><br/>À l’origine je voulais simplement créer un meilleur système de sauvegarde de palette… Puis j’ai eu une meilleure idée : **Git**.",
+      },
+      {
+        id: "rgbast-story-2",
+        layout: "split-right-image",
+        title: "Fonctionnalités",
+        text: "Sur RGBAST, on peut créer des palettes avec 1 à 15 couleurs, chacune avec son label personnalisé. Chaque sauvegarde crée un **Snapshot** avec des changements liés à celui-ci. Au-delà du snapshot initial, SEULS les changements sont stockés : **Addition**, **Modification** (code hexadécimal ou label), **déplacement**, **suppression**). Cela permet de ne stocker que les informations nécessaires sans duplication de données, reproduisant l’essence de Git.",
+        image: "/rgbast/rgbast-4.png",
+        imageAlt: "Section avec en parallèle l’image rgbast-4",
+      },
+      {
+        id: "rgbast-story-3",
+        layout: "text",
+        text: "J’ai également implémenté un système de **branches**, qui ici servent de brouillons pour explorer des variantes de couleurs. Un **Merge** peut être effectué d’une branche vers la palette principale afin de valider des changements. Mais si la version la plus récente de la palette ne vous convient plus, il est toujours possible d’effectuer un **Revert**, ce qui fait revenir une branche à un ancien snapshot.",
+      },
+      {
+        id: "rgbast-story-4",
+        layout: "text",
+        text: "Pour l’indexation des couleurs, afin de conserver leur ordre sans devoir réindexer chaque élément en cas d’une insertion au début, RGBAST utilise un **Classement Lexicographique**, avec des lettres à la place de chiffres.<br/> [Lexicographic order - Wikipedia](https://en.wikipedia.org/wiki/Lexicographic_order)<br/><br/>Seul l’élément déplacé ou inséré est modifié, aucun changement supplémentaire ne doit être stocké.",
+      },
+      {
+        id: "rgbast-story-5",
+        layout: "text",
+        text: "En restant dans le thème du dépôt de code, un système de dossiers est présent, pour ranger ses palettes, et pour générer des URLs plus pertinentes :<br/><br/>[https://www.rgbast.com/users/thameiu/projets/ErgoSix](https://www.rgbast.com/users/thameiu/projets%2FErgoSix)",
+      },
+      {
+        id: "rgbast-story-6",
+        layout: "split-left-image",
+        text: "Pour la génération de palettes, un choix d’**harmonies** est disponible, permettant par exemple d’avoir des couleurs opposées, ou plutôt des nuances proches, et surtout permet de générer des palettes autour d’1 à 3 couleurs, si une vous tient à cœur. Ou alors, si une image est inspirante, il est possible d’en extraire les **couleurs dominantes**.",
+        image: "/rgbast/rgbast-generation.png",
+        imageAlt: "Section avec en parallèle l’image rgbast-generation",
+      },
+      {
+        id: "rgbast-story-7",
+        layout: "text",
+        text: "Un export en PDF, PNG, SVG et même en variables CSS/SCSS est également disponible pour la portabilité maximale de la palette.",
+      },
+      {
+        id: "rgbast-story-8",
+        layout: "text",
+        text: "Afin de compléter l’application, un **sélecteur de couleur** est disponible, donnant toutes les informations pertinentes d’une couleur, comme les conversions, son nom approximatif, son contraste sur du noir, blanc, ou une autre couleur, ses équivalences avec différents types de daltonisme, et surtout le **Bast Score** : Score inédit indiquant, sur une échelle de 0 à 100 à quel point une couleur est indescriptible, ambiguë, bâtarde. C’est de là que RGBAST tient son nom, même si un jeu de mot avec “Past” existe aussi.",
+      },
+      {
+        id: "rgbast-story-9",
+        layout: "text",
+        text: "Dans le contexte de cet ajout, je suis tombé sur une autre problématique. Je voulais trouver un moyen d’afficher un sélecteur affichant l’intégralité des couleurs RGB en une image… mais c’est impossible, si l’on veut un résultat lisible, car le système RGB est en 3 dimensions. C’est en faisant mes recherches que je suis tombé sur le concept de **visualisateur RGB 3D** : Sous la forme d’un cube, sur lequel les axes x, y et z correspondent à des valeurs, de 0 à 255, de rouge, vert, bleu.",
+      },
+      {
+        id: "rgbast-story-10",
+        layout: "split-right-image",
+        text: "J’ai donc implémenté ce sélecteur, en le rendant le plus intuitif et maniable possible : avec des **sliders** pour chaque axe, permettant de “trancher” le cube pour accéder aux valeurs en son centre, et un 4ème slider optionnel pour limiter le nombre de valeurs par axe. Vous devez vous dire : à quoi sert un sélecteur 3D de couleurs ? … Ça sert à rien, j’avoue. Mais si jamais quelqu’un en a besoin, ça existe. C’est toute l’essence de RGBAST.",
+        image: "/rgbast/rgbast-cube.png",
+        imageAlt: "Section avec en parallèle rgbast-cube",
+      },
+      {
+        id: "rgbast-story-11",
+        layout: "text",
+        title: "Stack Technique",
+        text: "Côté stack, RGBAST repose sur **Vue.js** pour le frontend, **FastAPI** pour l’API, **PostgreSQL** en tant que SGBDR et **Docker** pour conteneuriser le Back. Celui-ci est déployé sur un **VPS Ubuntu IONOS**, exposé via **Nginx** en reverse proxy. J’ai aussi mis en place **SMTP IONOS** pour les emails (inscription et réinitialisation de mot de passe), ainsi qu’un pipeline **GitHub Actions** pour le déploiement du backend et les migrations automatiques.<br/><br/>Ce projet m’a permis de travailler sur tous les aspects du développement - **architecture backend**, **conceptualisation BDD 4NF**, **web design & UX** - tout en m’amusant.",
+      },
     ],
     link: "https://rgbast.com",
     linkText: "Voir RGBast",
@@ -89,6 +160,8 @@ const PROJECTS: ProjectData[] = [
       "/2clock/2clock-14.png",
       "/2clock/2clock-15.png",
     ],
+    // Story temporairement désactivée (hors RGBast).
+    story: [],
     link: "https://github.com/abakar-oumar-abdallah/T-DEV-700",
     linkText: "Voir le dépôt",
   },
@@ -113,6 +186,8 @@ const PROJECTS: ProjectData[] = [
       "/pathfinder/pathfinder-4.png",
       "/pathfinder/pathfinder-5.png",
     ],
+    // Story temporairement désactivée (hors RGBast).
+    story: [],
     link: "https://miratlas.com",
     linkText: "Voir Miratlas",
   },
@@ -136,7 +211,11 @@ const PROJECTS: ProjectData[] = [
       "/ggps/ggps-3.png",
       "/ggps/ggps-4.png",
       "/ggps/ggps-5.png",
+      "/ggps/ggps-6.png",
+      "/ggps/ggps-7.png",
     ],
+    // Story temporairement désactivée (hors RGBast).
+    story: [],
   },
 ];
 

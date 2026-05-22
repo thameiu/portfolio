@@ -299,6 +299,60 @@ body.v2-page * {
   -ms-overflow-style: none;
 }
 
+/* Project info scroller uses custom component scrollbar */
+body.v2-page .v2-project-info-scroller {
+  scrollbar-width: none !important;
+  scrollbar-color: transparent transparent !important;
+  -ms-overflow-style: none !important;
+}
+body.v2-page .v2-project-info-scroller::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+  background: transparent !important;
+}
+body.v2-page .v2-project-info-scroller::-webkit-scrollbar-track {
+  display: none !important;
+  background: transparent !important;
+}
+body.v2-page .v2-project-info-scroller::-webkit-scrollbar-thumb {
+  display: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+body.v2-page .v2-project-info-scroller::-webkit-scrollbar-thumb:hover {
+  background: transparent !important;
+}
+
+@keyframes v2-skeleton-soft-red {
+  from { background-position: 125% 0; }
+  to { background-position: -125% 0; }
+}
+
+.v2-image-skeleton-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.v2-image-skeleton {
+  --v2-skeleton-accent: #CB8383;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      110deg,
+      color-mix(in srgb, var(--v2-skeleton-accent) 22%, transparent) 18%,
+      color-mix(in srgb, var(--v2-skeleton-accent) 42%, transparent) 48%,
+      color-mix(in srgb, var(--v2-skeleton-accent) 22%, transparent) 74%
+    );
+  background-size: 250% 100%;
+  animation: v2-skeleton-soft-red 1.08s linear infinite;
+  opacity: 1;
+}
+
 .v2-carousel-side-nav {
   position: absolute;
   top: 50%;
