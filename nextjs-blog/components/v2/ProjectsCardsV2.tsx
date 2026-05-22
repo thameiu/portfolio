@@ -8,6 +8,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { IoArrowBack, IoClose } from "react-icons/io5";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
     getProjectCardPreviewIndex,
     getProjectIconLayout,
@@ -963,6 +964,9 @@ export default function ProjectsCardsV2({
         const html = document.documentElement;
         const body = document.body;
         const scroller = infoScrollRef.current;
+        const isMobileScrollContext = window.matchMedia(
+            "(max-width: 1023px), (pointer: coarse)",
+        ).matches;
         const saved = {
             htmlOverflow: html.style.overflow,
             bodyOverflow: body.style.overflow,
@@ -975,6 +979,9 @@ export default function ProjectsCardsV2({
         html.style.overscrollBehavior = "none";
         body.style.overflow = "hidden";
         body.style.overscrollBehavior = "none";
+        if (isMobileScrollContext) {
+            ScrollTrigger.normalizeScroll(false);
+        }
         if (scroller) scroller.style.scrollBehavior = "auto";
 
         const isEditableTarget = (target: EventTarget | null) => {
@@ -1022,6 +1029,9 @@ export default function ProjectsCardsV2({
             body.style.overflow = saved.bodyOverflow;
             html.style.overscrollBehavior = saved.htmlOverscrollBehavior;
             body.style.overscrollBehavior = saved.bodyOverscrollBehavior;
+            if (isMobileScrollContext) {
+                ScrollTrigger.normalizeScroll(true);
+            }
             if (scroller)
                 scroller.style.scrollBehavior = saved.scrollerScrollBehavior;
         };
@@ -1466,6 +1476,7 @@ export default function ProjectsCardsV2({
                                     overflowY: "auto",
                                     WebkitOverflowScrolling: "touch",
                                     overscrollBehavior: "contain",
+                                    touchAction: "pan-y",
                                     opacity: infoVisible ? 1 : 0,
                                     transform: infoVisible
                                         ? "translateY(0)"

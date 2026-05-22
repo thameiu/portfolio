@@ -112,6 +112,7 @@ export default function StoryBlockView({
   const isKpiDbImage = Boolean(
     block.image && /2clock-(kpi|db)\.png$/i.test(block.image),
   );
+  const isRgbastOr2ClockStoryBlock = /^(rgbast|2clock)-story-/i.test(block.id);
   const isSmall2ClockSplitImage = isPlanningImage || isClockImage;
   const isPortraitStoryImage = Boolean(
     block.image &&
@@ -120,11 +121,11 @@ export default function StoryBlockView({
       ),
   );
   const imageAspectRatio = isPortraitStoryImage ? "5/6" : "16/10";
-  const imageWidth = isSmall2ClockSplitImage
-    ? "50%"
+  const imageContainerClass = isSmall2ClockSplitImage
+    ? "w-full md:w-1/2 md:mx-auto"
     : isKpiDbImage
-      ? "60%"
-      : "100%";
+      ? "w-full md:w-[60%] md:mx-auto"
+      : "w-full";
 
   const textNode = block.text ? (
     <p
@@ -142,13 +143,12 @@ export default function StoryBlockView({
 
   const imageNode = block.image ? (
     <div
+      className={imageContainerClass}
       style={{
         position: "relative",
-        width: imageWidth,
         aspectRatio: imageAspectRatio,
         overflow: "hidden",
         borderRadius: 8,
-        marginInline: imageWidth === "100%" ? undefined : "auto",
       }}
     >
       <ProjectImageWithSkeleton
@@ -185,23 +185,23 @@ export default function StoryBlockView({
 
   if (block.layout === "split-left-image" || block.layout === "split-right-image") {
     const imageFirstDesktop = isPlanningImage;
-    const splitColumnsStyle = isPortraitStoryImage
-      ? ({
-          gridTemplateColumns: imageFirstDesktop
-            ? "minmax(0, 0.3fr) minmax(0, 0.7fr)"
-            : "minmax(0, 0.7fr) minmax(0, 0.3fr)",
-        } as const)
-      : undefined;
+    const imageFirstMobile = isRgbastOr2ClockStoryBlock;
+    const splitColumnsClass = isPortraitStoryImage
+      ? imageFirstDesktop
+        ? "md:[grid-template-columns:minmax(0,0.3fr)_minmax(0,0.7fr)]"
+        : "md:[grid-template-columns:minmax(0,0.7fr)_minmax(0,0.3fr)]"
+      : "";
 
     return (
       <article
         className={`grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 ${
           isPortraitStoryImage ? "items-start md:items-center" : "items-start"
-        }`}
-        style={splitColumnsStyle}
+        } ${splitColumnsClass}`}
       >
         <div
-          className={imageFirstDesktop ? "order-1 md:order-2" : "order-1 md:order-1"}
+          className={`${imageFirstMobile ? "order-2" : "order-1"} ${
+            imageFirstDesktop ? "md:order-2" : "md:order-1"
+          }`}
           style={{ textAlign: "left" }}
         >
           {block.title ? (
@@ -222,7 +222,9 @@ export default function StoryBlockView({
           {textNode}
         </div>
         <div
-          className={imageFirstDesktop ? "order-2 md:order-1 md:self-center" : "order-2 md:order-2 md:self-center"}
+          className={`${imageFirstMobile ? "order-1" : "order-2"} ${
+            imageFirstDesktop ? "md:order-1" : "md:order-2"
+          } md:self-center`}
         >
           {imageNode}
         </div>
