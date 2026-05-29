@@ -177,20 +177,34 @@ body.v2-page .side-decor-layer.embedded .side-decor-canvas {
   }
 }
 
-body.v2-contact-shapes-visible .side-decor-layer.embedded .side-decor-canvas {
-  opacity: 0.24;
-}
-
-@media (max-width: 767px) {
-  body.v2-contact-shapes-visible .side-decor-layer.embedded .side-decor-canvas {
-    opacity: 0.16;
-  }
-}
-
 body.v2-page .v2-main-section {
   position: relative;
   z-index: 20 !important;
   isolation: isolate;
+}
+
+/* ── Contact random glyph background ── */
+.v2-contact-glyph-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+  overflow: hidden;
+}
+
+.v2-contact-glyph {
+  position: absolute;
+  left: var(--v2-glyph-left);
+  top: var(--v2-glyph-top);
+  transform: translate(-50%, -50%);
+  font-family: "Sora", sans-serif;
+  font-size: var(--v2-glyph-size);
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: 0;
+  color: #701515;
+  opacity: var(--v2-glyph-opacity);
 }
 
 /* ── Career tabs indicator ── */
@@ -217,19 +231,22 @@ body.v2-page.v2-carousel-focus-active .v2-project-local-top-mask {
 }
 
 body.v2-contact-active .side-decor-canvas {
-  opacity: 0.2 !important;
+  opacity: 0 !important;
 }
 
 body.v2-project-active.v2-contact-active .side-decor-canvas {
-  opacity: 0.2 !important;
+  opacity: 0 !important;
 }
 
 @media (max-width: 767px) {
+  .v2-contact-glyph {
+    opacity: calc(var(--v2-glyph-opacity) * 0.82);
+  }
   body.v2-contact-active .side-decor-canvas {
-    opacity: 0.12 !important;
+    opacity: 0 !important;
   }
   body.v2-project-active.v2-contact-active .side-decor-canvas {
-    opacity: 0.12 !important;
+    opacity: 0 !important;
   }
 }
 

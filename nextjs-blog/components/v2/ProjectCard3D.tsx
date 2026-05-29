@@ -21,7 +21,7 @@ const PROJECT_INFO_TOP_BLEED_PX = 2;
    ICONS
    ═══════════════════════════════════════════════ */
 
-/* RGBast — scroll-driven spinning circles */
+/* RGBast scroll-driven spinning circles */
 const CirclesIcon = ({ color, spinRef }: { color: string; spinRef?: (el: SVGGElement | null) => void }) => (
   <svg viewBox="0 0 280 280" fill="none" style={{ overflow: "visible" }}>
     <g
@@ -38,7 +38,7 @@ const CirclesIcon = ({ color, spinRef }: { color: string; spinRef?: (el: SVGGEle
   </svg>
 );
 
-/* 2Clock — static tick ring, scroll-driven spinning hands */
+/* 2Clock static tick ring, scroll-driven spinning hands */
 const ClockIcon = ({ color, spinRef }: { color: string; spinRef?: (el: SVGGElement | null) => void }) => (
   <svg viewBox="0 0 120 120" fill="none">
     <circle cx="60" cy="60" r="54" stroke={color} strokeWidth="1.5" opacity="0.4"/>
@@ -68,7 +68,7 @@ const ClockIcon = ({ color, spinRef }: { color: string; spinRef?: (el: SVGGEleme
   </svg>
 );
 
-/* Pathfinder — 7 concentric semicircles */
+/* Pathfinder 7 concentric semicircles */
 const PathfinderIcon = ({ color, spinRef }: { color: string; spinRef?: (el: SVGGElement | null) => void }) => {
   const cx = 350;
   const cy = 220;
@@ -100,7 +100,7 @@ const PathfinderIcon = ({ color, spinRef }: { color: string; spinRef?: (el: SVGG
   );
 };
 
-/* GGPS — controller.svg image */
+/* GGPS controller.svg image */
 const ControllerSvgIcon = () => (
   <div style={{ position: "relative", width: "100%", aspectRatio: "150/110" }}>
     <Image
@@ -578,7 +578,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
           });
         });
 
-        /* Main scrubbed trigger — pin the section itself */
+        /* Main scrubbed trigger pin the section itself */
         const pinDistance = isMobile
           ? Math.round(window.innerHeight * PROJECT_PIN_DISTANCE_MOBILE_FACTOR)
           : Math.max(PROJECT_PIN_DISTANCE, Math.round(window.innerHeight * PROJECT_PIN_DISTANCE_DESKTOP_FACTOR));
@@ -753,7 +753,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
           </div>
         ))}
 
-        {/* Big centered title — logo appears at 50%, info appears during fade-out */}
+        {/* Big centered title logo appears at 50%, info appears during fade-out */}
         {!useSimplifiedMotion && !isMobile && (
           <div ref={hugeTitleRef} style={{
             position: "absolute", top: "50%", left: "50%",
@@ -889,7 +889,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
             </div>
           </div>
 
-          {/* Right column — carousel */}
+          {/* Right column : carousel */}
           {!isMobile && (
           <div ref={carouselRef}
             style={{
@@ -912,7 +912,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}>
                 <span style={{ color: `${accentColor}40`, fontFamily: "'Sora',sans-serif", fontSize: 12 }}>
-                  — aperçu bientôt —
+                  ▪ aperçu bientôt ▪
                 </span>
               </div>
             )}

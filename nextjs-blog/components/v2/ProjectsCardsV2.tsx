@@ -1721,7 +1721,7 @@ export default function ProjectsCardsV2({
                                                                 fontSize: 12,
                                                             }}
                                                         >
-                                                            — aperçu bientôt —
+                                                            ▪ aperçu bientôt ▪
                                                         </span>
                                                     </div>
                                                 )}

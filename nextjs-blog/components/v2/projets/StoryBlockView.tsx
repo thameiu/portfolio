@@ -112,6 +112,9 @@ export default function StoryBlockView({
   const isKpiDbImage = Boolean(
     block.image && /2clock-(kpi|db)\.png$/i.test(block.image),
   );
+  const isSmallRgbastSplitImage = Boolean(
+    block.image && /(rgbast-generation|rgbast-cube)\.png$/i.test(block.image),
+  );
   const isRgbastOr2ClockStoryBlock = /^(rgbast|2clock)-story-/i.test(block.id);
   const isSmall2ClockSplitImage = isPlanningImage || isClockImage;
   const isPortraitStoryImage = Boolean(
@@ -121,7 +124,7 @@ export default function StoryBlockView({
       ),
   );
   const imageAspectRatio = isPortraitStoryImage ? "5/6" : "16/10";
-  const imageContainerClass = isSmall2ClockSplitImage
+  const imageContainerClass = isSmall2ClockSplitImage || isSmallRgbastSplitImage
     ? "w-full md:w-1/2 md:mx-auto"
     : isKpiDbImage
       ? "w-full md:w-[60%] md:mx-auto"

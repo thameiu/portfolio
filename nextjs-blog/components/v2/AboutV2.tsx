@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { IoLocationOutline } from "react-icons/io5";
 import GlitchTitle from "./GlitchTitle";
 import MainSectionV2 from "./MainSectionV2";
 
@@ -34,7 +35,7 @@ export default function AboutV2() {
 
       // ── Image parallax ──
       gsap.to(imgRef.current, {
-        y: -60,
+        y: -24,
         ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -69,28 +70,28 @@ export default function AboutV2() {
       />
 
       {/* Content row */}
-      <div ref={contentRef} className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center opacity-0">
+      <div ref={contentRef} className="flex flex-col lg:flex-row gap-7 md:gap-9 lg:gap-20 items-center opacity-0">
         {/* Photo */}
         <div
           ref={imgRef}
-          className="relative flex-shrink-0 w-52 h-64 md:w-64 md:h-80 overflow-hidden"
-          style={{
-            borderRadius: "10px",
-            boxShadow: "0 24px 60px rgba(136,17,17,0.12)",
-            border: "1px solid rgba(136,17,17,0.14)",
-          }}
+          className="relative flex-shrink-0 w-56 h-72 md:w-80 md:h-[24.5rem] lg:self-start lg:mt-10 overflow-visible"
         >
           <Image
-            src="/photoHernandez.jpg"
+            src="/mered.png"
             alt="Mathieu Hernandez"
-            fill
-            className="object-cover object-[center_20%] saturate-[1.05] contrast-[1.02]"
+            width={400}
+            height={400}
+            className="object-contain object-[center_20%] saturate-[1.05] contrast-[1.02]"
+            style={{
+              filter:
+                "drop-shadow(0 18px 34px rgba(136,17,17,0.26)) drop-shadow(0 6px 14px rgba(136,17,17,0.18))",
+            }}
             priority
           />
         </div>
 
         {/* Text */}
-        <div className="max-w-3xl space-y-6" style={{ fontFamily: "'Sora', sans-serif" }}>
+        <div className="max-w-3xl space-y-6 lg:-mt-10" style={{ fontFamily: "'Sora', sans-serif" }}>
           <p className="text-lg md:text-xl leading-relaxed" style={{ color: "#2D1010" }}>
             Je m'appelle{" "}
             <strong className="font-bold" style={{ color: "#881111" }}>Mathieu HERNANDEZ</strong>,
@@ -110,17 +111,24 @@ export default function AboutV2() {
             développement.
           </p>
 
-          {/* Accent rule */}
-          <div className="flex items-center gap-4 pt-2">
+          <div className="flex items-center gap-2.5 pt-2">
             <span
-              className="block h-px flex-1 max-w-[3rem]"
-              style={{ background: "#881111" }}
-            />
+              aria-hidden="true"
+              style={{
+                color: "#881111",
+                display: "inline-flex",
+                alignItems: "center",
+                fontSize: "0.95rem",
+                lineHeight: 1,
+              }}
+            >
+              <IoLocationOutline />
+            </span>
             <span
               className="text-xs uppercase tracking-[0.25em]"
               style={{ color: "#881111", fontFamily: "'Sora', sans-serif" }}
             >
-              Bouc-Bel-Air · France
+              Bouc-Bel-Air ▪ France
             </span>
           </div>
         </div>

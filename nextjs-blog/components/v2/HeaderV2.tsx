@@ -14,11 +14,12 @@ const navItems = [
   { id: "v2-projects",       label: "Projets"  },
   { id: "v2-contact",        label: "Contact"  },
 ];
+const DEFAULT_ACTIVE_SECTION = "v2-about";
 
 export default function HeaderV2() {
   const [isVisible,      setVisible]    = useState(false);
   const [menuVisible,    setMenu]       = useState(false);
-  const [activeSection,  setActive]     = useState("");
+  const [activeSection,  setActive]     = useState(DEFAULT_ACTIVE_SECTION);
   const [hovering,       setHovering]   = useState(false);
   const isClickScrolling = useRef(false);
   const hideTimerRef     = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -43,7 +44,8 @@ export default function HeaderV2() {
     };
 
     const onScroll = () => {
-      const y = window.scrollY;
+      const smoother = ScrollSmoother.get();
+      const y = smoother ? smoother.scrollTop() : window.scrollY;
       const lastY = lastScrollYRef.current;
       const hoveringNow = hoveringRef.current || Boolean(headerHoverRef.current?.matches(":hover"));
 
@@ -59,7 +61,9 @@ export default function HeaderV2() {
       }
 
       if (!isClickScrolling.current) {
-        if (window.innerHeight + y >= document.documentElement.scrollHeight - 10) {
+        const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+        const isReallyScrollable = maxScroll > 120;
+        if (isReallyScrollable && y >= maxScroll - 10) {
           setActive("v2-contact");
         }
       }
@@ -85,11 +89,31 @@ export default function HeaderV2() {
 
   /* section detection */
   useEffect(() => {
+    const resolveActiveSection = () => {
+      if (isClickScrolling.current) return;
+      const focusY = window.innerHeight * 0.42;
+      let bestId = "";
+      let bestDist = Number.POSITIVE_INFINITY;
+
+      navItems.forEach(({ id }) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        if (rect.bottom <= 0 || rect.top >= window.innerHeight) return;
+        const center = (rect.top + rect.bottom) * 0.5;
+        const dist = Math.abs(center - focusY);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestId = id;
+        }
+      });
+
+      if (bestId) setActive(bestId);
+    };
+
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(e => {
-          if (e.isIntersecting && !isClickScrolling.current) setActive(e.target.id);
-        });
+      () => {
+        resolveActiveSection();
       },
       { rootMargin: "-35% 0px -35% 0px" }
     );
@@ -97,7 +121,12 @@ export default function HeaderV2() {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
-    return () => observer.disconnect();
+    window.addEventListener("resize", resolveActiveSection);
+    resolveActiveSection();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", resolveActiveSection);
+    };
   }, []);
 
   useEffect(() => {

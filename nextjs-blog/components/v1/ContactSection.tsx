@@ -46,7 +46,7 @@ const ContactSection = () => {
       <div className="w-full h-px bg-white/10" />
 
       <a
-        href="https://www.linkedin.com/in/mathieu-hernandez-306914264/"
+        href="https://www.linkedin.com/in/mathieu-hernandez-dev/"
         target="_blank"
         rel="noopener noreferrer"
         className={linkClass}

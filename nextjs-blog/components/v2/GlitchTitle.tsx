@@ -4,7 +4,12 @@ import type { CSSProperties, RefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const GLITCH = "#$%\\|{}[]<>@!?^*~0123456789+=;:.,";
+const GLITCH_CHARS = [
+  "#", "$", "%", "\\", "|", "{", "}", "[", "]", "<", ">", "@",
+  "!", "?", "^", "*", "~", "+", "=", ";", ":", ".", ",",
+  "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+  "☺\uFE0E",
+];
 
 type GlitchTitleProps = {
   text: string;
@@ -60,13 +65,13 @@ export default function GlitchTitle({
           return;
         }
 
-        span.textContent = GLITCH[Math.floor(Math.random() * GLITCH.length)];
+        span.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
         gsap.set(span, { opacity: 0.42, y: -16, color: "rgba(120,80,80,0.72)" });
 
         const delay = i * 95 + Math.random() * 55;
         const glitchDuration = 430 + Math.random() * 210;
         const iv = setInterval(() => {
-          span.textContent = GLITCH[Math.floor(Math.random() * GLITCH.length)];
+          span.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
           gsap.to(span, {
             y: -16 + Math.random() * 8,
             duration: 0.06,
@@ -92,7 +97,7 @@ export default function GlitchTitle({
           const microGlitch = setInterval(() => {
             if (Math.random() > 0.93) {
               const orig = span.textContent;
-              span.textContent = GLITCH[Math.floor(Math.random() * GLITCH.length)];
+              span.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
               gsap.to(span, { y: -2, color: "rgba(120,80,80,0.9)", duration: 0.07, ease: "power1.out" });
               setTimeout(() => {
                 span.textContent = orig;

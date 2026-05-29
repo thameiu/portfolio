@@ -56,12 +56,12 @@ interface XPEntry {
 const XPItem = ({ e }: { e: XPEntry }) => (
   <div className="relative pl-10 pb-12 group">
     <div
-      className="absolute left-0 top-1 w-3 h-3 rounded-full border-2 transition-all duration-300"
-      style={{ borderColor: "#881111", background: "#FFEFEF" }}
+      className="absolute left-0 top-1 w-3 h-3 transition-all duration-300"
+      style={{ background: "#881111" }}
     />
     <div
-      className="absolute left-[5px] top-4 bottom-0 w-px group-last:hidden"
-      style={{ background: "rgba(136,17,17,0.18)" }}
+      className="absolute left-[6px] top-[10px] bottom-[-10px] w-px group-last:hidden"
+      style={{ background: "rgba(136,17,17,0.35)" }}
     />
     <div className="flex flex-col items-start gap-1 mb-1 md:flex-row md:items-start md:justify-between md:gap-2">
       <span className="text-xs font-medium tracking-wide" style={{ color: "rgba(45,16,16,0.5)", fontFamily: "'Sora', sans-serif" }}>
@@ -124,7 +124,7 @@ const experiences: XPEntry[] = [
   {
     period: "Septembre 2025 - Aujourd'hui",
     role: "Analyste Développeur",
-    org: "ACD — Aix-en-Provence",
+    org: "ACD ▪ Aix-en-Provence",
     badge: <JobTag>Alternance</JobTag>,
     desc: <>Maintenance applicative et développement sur <strong>Suite Expert</strong>, solution Bureau et Web pour experts comptables. Optimisation des performances, résolution de bugs, refactorisation.</>,
     tags: <><Badge><SiDotnet/> ASP.NET MVC</Badge><Badge><PiFileCSharp/> C#</Badge><Badge><SiJavascript/> JavaScript</Badge><Badge><SiMysql/> SQL</Badge><Badge><VscAzureDevops/> Azure DevOps</Badge><Badge><WindevIcon/> WinDev</Badge></>,
@@ -132,7 +132,7 @@ const experiences: XPEntry[] = [
   {
     period: "Septembre 2024 - Juin 2025",
     role: "Développeur Full-Stack",
-    org: "Miratlas — Pertuis",
+    org: "Miratlas ▪ Pertuis",
     badge: <JobTag>Alternance</JobTag>,
     desc: <>Refonte de <strong>Pathfinder</strong>, application de cartographie de perturbations atmosphériques (FSOC). Conception BDD, API REST, dynamisation Frontend via Leaflet, graphiques temps réel.</>,
     tags: <><Badge><SiNextdotjs/> Next.js</Badge><Badge><SiLaravel/> Laravel</Badge><Badge><SiLeaflet/> Leaflet</Badge><Badge><SiDocker/> Docker</Badge><Badge><SiPostgresql/> PostgreSQL</Badge><Badge><SiGitlab/> GitLab</Badge></>,
@@ -140,7 +140,7 @@ const experiences: XPEntry[] = [
   {
     period: "Avril - Juin 2024",
     role: "Développeur Web",
-    org: "Amiltone — Aix-en-Provence",
+    org: "Amiltone ▪ Aix-en-Provence",
     badge: <JobTag>Stage</JobTag>,
     desc: <>Développement sur <strong>Flotto</strong>, solution web de gestion de flotte automobile. Nouvelles fonctionnalités Frontend/Backend, accessibilité, corrections de bugs.</>,
     tags: <><Badge><SiReact/> React</Badge><Badge><SiAngular/> Angular</Badge><Badge><SiNestjs/> NestJS</Badge><Badge><SiTypescript/> TypeScript</Badge><Badge><SiGitlab/> GitLab</Badge></>,
@@ -151,13 +151,13 @@ const formations: XPEntry[] = [
   {
     period: "2025 - 2027",
     role: "Master of Science Technique",
-    org: "Epitech - Marseille",
+    org: "Epitech ▪ Marseille",
     desc: "Architecte de Systèmes d'Information. Spécialisation Cybersécurité + Cloud. Projets avancés en équipe, projet de fin d'études sur 2 ans.",
   },
   {
     period: "2022 - 2025",
     role: "BUT Informatique",
-    org: "Aix-Marseille Université — IUT d'Arles",
+    org: "Aix-Marseille Université ▪ IUT d'Arles",
     desc: "Formation complète en développement logiciel, bases de données, réseaux et gestion de projet. Méthodologies agiles et bonnes pratiques.",
   },
 ];

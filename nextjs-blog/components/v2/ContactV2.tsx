@@ -11,9 +11,53 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CVModal from "../v1/CVModal";
 import CuteLinks from "../v1/CuteLinks";
 import GlitchTitle from "./GlitchTitle";
-import SideDecor from "./SideDecor";
 
 const CONTACT_OVERLAP = "clamp(-120px, -7vw, -36px)";
+const CONTACT_BG_GLYPHS = [
+    { char: "#", x: 7, y: 14, size: "clamp(3.4rem, 8vw, 8.2rem)", rot: "-8deg", opacity: 0.14 },
+    { char: "&", x: 16, y: 33, size: "clamp(3rem, 6.6vw, 6.8rem)", rot: "11deg", opacity: 0.12 },
+    { char: "~", x: 24, y: 16, size: "clamp(2.8rem, 6vw, 6rem)", rot: "-5deg", opacity: 0.1 },
+    { char: "-", x: 31, y: 46, size: "clamp(3.2rem, 7vw, 7.2rem)", rot: "18deg", opacity: 0.12 },
+    { char: "/", x: 42, y: 20, size: "clamp(3.8rem, 8.5vw, 8.8rem)", rot: "-14deg", opacity: 0.16 },
+    { char: "<", x: 52, y: 35, size: "clamp(3rem, 6.8vw, 6.9rem)", rot: "7deg", opacity: 0.11 },
+    { char: "}", x: 61, y: 13, size: "clamp(4rem, 9vw, 9.4rem)", rot: "-4deg", opacity: 0.16 },
+    { char: ":", x: 69, y: 43, size: "clamp(3.2rem, 6.5vw, 6.6rem)", rot: "9deg", opacity: 0.1 },
+    { char: "#", x: 79, y: 22, size: "clamp(3.6rem, 7.4vw, 7.8rem)", rot: "-12deg", opacity: 0.15 },
+    { char: "&", x: 91, y: 15, size: "clamp(2.8rem, 6vw, 6.1rem)", rot: "4deg", opacity: 0.1 },
+    { char: "~", x: 11, y: 67, size: "clamp(3.9rem, 8.8vw, 8.9rem)", rot: "-9deg", opacity: 0.14 },
+    { char: "/", x: 21, y: 79, size: "clamp(3rem, 6.5vw, 6.7rem)", rot: "15deg", opacity: 0.11 },
+    { char: "☺︎", x: 34, y: 63, size: "clamp(4.2rem, 9.4vw, 9.6rem)", rot: "-6deg", opacity: 0.17 },
+    { char: "}", x: 44, y: 84, size: "clamp(3.5rem, 7.6vw, 7.9rem)", rot: "8deg", opacity: 0.13 },
+    { char: ":", x: 55, y: 70, size: "clamp(3.1rem, 6.3vw, 6.5rem)", rot: "-11deg", opacity: 0.1 },
+    { char: "-", x: 66, y: 86, size: "clamp(4rem, 8.8vw, 9rem)", rot: "12deg", opacity: 0.14 },
+    { char: "#", x: 76, y: 67, size: "clamp(3.2rem, 6.8vw, 7rem)", rot: "-3deg", opacity: 0.12 },
+    { char: "&", x: 86, y: 82, size: "clamp(3.7rem, 8vw, 8.2rem)", rot: "6deg", opacity: 0.15 },
+    { char: "?", x: 95, y: 60, size: "clamp(2.9rem, 6.1vw, 6.3rem)", rot: "-15deg", opacity: 0.1 },
+] as const;
+
+function ContactGlyphBackground() {
+    return (
+        <div className="v2-contact-glyph-bg" aria-hidden="true">
+            {CONTACT_BG_GLYPHS.map((glyph, idx) => (
+                <span
+                    key={`${glyph.char}-${idx}`}
+                    className="v2-contact-glyph"
+                    style={
+                        {
+                            ["--v2-glyph-left" as string]: `${glyph.x}%`,
+                            ["--v2-glyph-top" as string]: `${glyph.y}%`,
+                            ["--v2-glyph-size" as string]: glyph.size,
+                            ["--v2-glyph-rot" as string]: glyph.rot,
+                            ["--v2-glyph-opacity" as string]: glyph.opacity,
+                        } as React.CSSProperties
+                    }
+                >
+                    {glyph.char}
+                </span>
+            ))}
+        </div>
+    );
+}
 
 /* ─── ASCII cat art ────────────────────────────── */
 const CAT_LINES = [
@@ -117,7 +161,6 @@ const CAT_LINE_BOUNDS = CAT_LINES.map((line) => {
     return { start: first, length: last - first + 1 };
 });
 
-/* Cat art is 91 lines × ~122 chars.  At 5.5 px / char the block is ≈ 450×590 px — fits a right column comfortably. */
 function CatArt({ compact = false }: { compact?: boolean }) {
     const preRef = useRef<HTMLPreElement>(null);
     const waveRafRef = useRef<number | null>(null);
@@ -436,22 +479,6 @@ export default function ContactV2() {
                     document.body.classList.remove("v2-contact-active"),
             });
 
-            // Show contact-local background shapes only once contact is truly reached,
-            // so they never overlay the projects section during overlap/pin transition.
-            ScrollTrigger.create({
-                trigger: sectionRef.current,
-                start: "top 62%",
-                end: "bottom top",
-                onEnter: () =>
-                    document.body.classList.add("v2-contact-shapes-visible"),
-                onEnterBack: () =>
-                    document.body.classList.add("v2-contact-shapes-visible"),
-                onLeave: () =>
-                    document.body.classList.remove("v2-contact-shapes-visible"),
-                onLeaveBack: () =>
-                    document.body.classList.remove("v2-contact-shapes-visible"),
-            });
-
             // Cover transition: contact rises over projects while projects stay pinned behind.
             const previousSection = document.getElementById("v2-projects");
             if (previousSection) {
@@ -552,7 +579,6 @@ export default function ContactV2() {
         return () => {
             ctx.revert();
             document.body.classList.remove("v2-contact-active");
-            document.body.classList.remove("v2-contact-shapes-visible");
         };
     }, []);
 
@@ -574,7 +600,7 @@ export default function ContactV2() {
                 marginTop: CONTACT_OVERLAP,
             }}
         >
-            <SideDecor embedded />
+            <ContactGlyphBackground />
 
             <div ref={contentRef} className="relative z-20">
                 {/* Mega title */}
@@ -605,7 +631,6 @@ export default function ContactV2() {
                             simplement échanger.
                         </p>
 
-                        {/* 2×2 grid — no backgrounds */}
                         <div className="v2-contact-grid grid grid-cols-1 sm:grid-cols-2 gap-0">
                             <ContactCard
                                 icon={<FaEnvelope />}
@@ -617,7 +642,7 @@ export default function ContactV2() {
                                 icon={<FaLinkedin />}
                                 label="LinkedIn"
                                 value="Mathieu Hernandez"
-                                href="https://www.linkedin.com/in/mathieu-hernandez-306914264/"
+                                href="https://www.linkedin.com/in/mathieu-hernandez-dev/"
                             />
                             <ContactCard
                                 icon={<FaGithub />}

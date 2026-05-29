@@ -6,7 +6,12 @@ import MainSectionV2 from "./MainSectionV2";
 
 const LINE1 = "MATHIEU";
 const LINE2 = "HERNANDEZ";
-const GLITCH = "#$%\\|{}[]<>@!?^*~0123456789+=;:.,";
+const GLITCH_CHARS = [
+  "#", "$", "%", "\\", "|", "{", "}", "[", "]", "<", ">", "@",
+  "!", "?", "^", "*", "~", "+", "=", ";", ":", ".", ",",
+  "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+  "☺\uFE0E",
+];
 
 /* negative margin-right tightens specific character pairs */
 const KERN: Record<string, Record<number, string>> = {
@@ -55,7 +60,7 @@ export default function HeroSection() {
     // Init: set random glitch chars above the final baseline
     allSpans.forEach(span => {
       if (!span) return;
-      span.textContent = GLITCH[Math.floor(Math.random() * GLITCH.length)];
+      span.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
       gsap.set(span, { y: startLift, opacity: 0.45, color: "rgba(136,17,17,0.62)" });
     });
 
@@ -68,7 +73,7 @@ export default function HeroSection() {
       const glitchDuration = 620 + Math.random() * 280;
 
       const iv = setInterval(() => {
-        span.textContent = GLITCH[Math.floor(Math.random() * GLITCH.length)];
+        span.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
         gsap.to(span, {
           y: isMobile ? 0 : (-20 + Math.random() * 10),
           duration: 0.06,
@@ -102,7 +107,7 @@ export default function HeroSection() {
           const flash = setInterval(() => {
             if (Math.random() > 0.93) {
               const orig = span.textContent;
-              span.textContent = GLITCH[Math.floor(Math.random() * GLITCH.length)];
+              span.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
               gsap.to(span, { y: settleGlitchLift, color: "#664d4d", duration: 0.07, ease: "power1.out" });
               setTimeout(() => {
                 span.textContent = orig;
