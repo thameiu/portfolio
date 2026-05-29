@@ -185,8 +185,7 @@ export default function HeaderV2() {
 
   const scrollToSection = (id: string) => {
     closeMobileMenu();
-    setVisible(false);
-    setHovering(false);
+    setVisible(true);
     isClickScrolling.current = true;
     setActive(id);
     setTimeout(() => { isClickScrolling.current = false; }, 1500);
