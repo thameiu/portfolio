@@ -1329,6 +1329,7 @@ export default function ProjectsCardsV2({
                                     getProjectVisualStyle(activeProject.id)
                                         ?.modalBackdrop
                                 }
+                                opacityMultiplier={modalBgFade}
                             />
                             {getProjectIconLayout(activeProject.id).map((icon, i) => (
                                 <div

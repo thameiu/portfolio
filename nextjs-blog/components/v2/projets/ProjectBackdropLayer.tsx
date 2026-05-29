@@ -57,8 +57,7 @@ export default function ProjectBackdropLayer({
         aria-hidden="true"
         style={{
           ...commonLayerStyle(opacity),
-          backgroundImage:
-            "url('/_next/image?url=%2Fpathfinder%2Fpathfinder-background.png&w=1600&q=58')",
+          backgroundImage: "url('/pathfinder/pathfinder-background.png')",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center center",
           backgroundSize: "cover",
