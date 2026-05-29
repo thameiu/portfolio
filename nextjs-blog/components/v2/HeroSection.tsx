@@ -51,11 +51,14 @@ export default function HeroSection() {
     gsap.registerPlugin(ScrollTrigger);
     const isMobile = window.matchMedia("(max-width: 1023px)").matches;
     const startLift = isMobile ? 0 : -20;
-    const settleGlitchLift = isMobile ? 0 : -2;
 
     const allSpans = [...(line1Refs.current), ...(line2Refs.current)];
     const allChars = Array.from(LINE1 + LINE2);
-    const intervals: ReturnType<typeof setInterval>[] = [];
+    const delayedCalls: gsap.core.Tween[] = [];
+    const revealStartStep = isMobile ? 0.07 : 0.085;
+    const revealScrambleStep = isMobile ? 0.048 : 0.054;
+    const scrambleCount = isMobile ? 2 : 3;
+    let latestSettleAt = 0;
 
     // Init: set random glitch chars above the final baseline
     allSpans.forEach(span => {
@@ -64,27 +67,28 @@ export default function HeroSection() {
       gsap.set(span, { y: startLift, opacity: 0.45, color: "rgba(136,17,17,0.62)" });
     });
 
-    // Slot-machine-like settle: each char glitches, then drops into place
+    // Lightweight scramble: only a few one-shot updates per char, then settle.
     allChars.forEach((targetChar, i) => {
       const span = allSpans[i];
       if (!span) return;
 
-      const delay = i * 130 + Math.random() * 95;
-      const glitchDuration = 620 + Math.random() * 280;
-
-      const iv = setInterval(() => {
-        span.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
-        gsap.to(span, {
-          y: isMobile ? 0 : (-20 + Math.random() * 10),
-          duration: 0.06,
-          overwrite: "auto",
-          ease: "power1.out",
+      const startAt = i * revealStartStep + Math.random() * 0.04;
+      for (let step = 0; step < scrambleCount; step += 1) {
+        const scrambleAt = startAt + step * revealScrambleStep;
+        const scrambleCall = gsap.delayedCall(scrambleAt, () => {
+          span.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+          gsap.set(span, {
+            y: isMobile ? 0 : (-18 + Math.random() * 8),
+            opacity: 0.44,
+            color: "rgba(136,17,17,0.62)",
+          });
         });
-      }, 85);
-      intervals.push(iv);
+        delayedCalls.push(scrambleCall);
+      }
 
-      setTimeout(() => {
-        clearInterval(iv);
+      const settleAt = startAt + scrambleCount * revealScrambleStep;
+      latestSettleAt = Math.max(latestSettleAt, settleAt);
+      const settleCall = gsap.delayedCall(settleAt, () => {
         span.textContent = targetChar;
         gsap.set(span, { color: "#E14C4C" });
         gsap.to(span, {
@@ -101,36 +105,22 @@ export default function HeroSection() {
             });
           },
         });
-
-        // Occasional micro-glitch after settling
-        setTimeout(() => {
-          const flash = setInterval(() => {
-            if (Math.random() > 0.93) {
-              const orig = span.textContent;
-              span.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
-              gsap.to(span, { y: settleGlitchLift, color: "#664d4d", duration: 0.07, ease: "power1.out" });
-              setTimeout(() => {
-                span.textContent = orig;
-                gsap.to(span, { y: 0, color: "#881111", duration: 0.16, ease: "power1.out" });
-              }, 60);
-            }
-          }, 2000);
-          intervals.push(flash);
-        }, 800);
-      }, delay + glitchDuration);
+      });
+      delayedCalls.push(settleCall);
     });
 
     // Subtitle + scroll hint appear
+    const subtitleDelay = latestSettleAt + 0.55;
     if (subRef.current) {
       gsap.fromTo(subRef.current,
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.8, delay: (allChars.length * 0.11) + 0.6, ease: "power2.out" }
+        { opacity: 1, y: 0, duration: 0.8, delay: subtitleDelay, ease: "power2.out" }
       );
     }
     if (scrollHintRef.current) {
       gsap.fromTo(scrollHintRef.current,
         { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.6, delay: (allChars.length * 0.11) + 1.2, ease: "power2.out" }
+        { opacity: 1, y: 0, duration: 0.6, delay: subtitleDelay + 0.6, ease: "power2.out" }
       );
     }
 
@@ -151,7 +141,7 @@ export default function HeroSection() {
     }, containerRef);
 
     return () => {
-      intervals.forEach(clearInterval);
+      delayedCalls.forEach((t) => t.kill());
       ctx.revert();
     };
   }, []);

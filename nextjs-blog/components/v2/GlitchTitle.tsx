@@ -36,9 +36,9 @@ export default function GlitchTitle({
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+    const isMobile = window.matchMedia("(max-width: 1023px)").matches;
 
     const chars = text.split("");
-    const intervals: ReturnType<typeof setInterval>[] = [];
     const delayedCalls: gsap.core.Tween[] = [];
     const section = triggerRef.current;
     const title = titleRef.current;
@@ -52,6 +52,9 @@ export default function GlitchTitle({
     const runGlitch = () => {
       if (playedRef.current) return;
       playedRef.current = true;
+      const scrambleCount = isMobile ? 2 : 3;
+      const startStep = isMobile ? 0.072 : 0.082;
+      const scrambleStep = isMobile ? 0.046 : 0.052;
 
       chars.forEach((targetChar, i) => {
         const span = charRefs.current[i];
@@ -68,21 +71,21 @@ export default function GlitchTitle({
         span.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
         gsap.set(span, { opacity: 0.42, y: -16, color: "rgba(120,80,80,0.72)" });
 
-        const delay = i * 95 + Math.random() * 55;
-        const glitchDuration = 430 + Math.random() * 210;
-        const iv = setInterval(() => {
-          span.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
-          gsap.to(span, {
-            y: -16 + Math.random() * 8,
-            duration: 0.06,
-            overwrite: "auto",
-            ease: "power1.out",
+        const startAt = i * startStep + Math.random() * 0.04;
+        for (let step = 0; step < scrambleCount; step += 1) {
+          const scrambleAt = startAt + step * scrambleStep;
+          const scrambleCall = gsap.delayedCall(scrambleAt, () => {
+            span.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+            gsap.set(span, {
+              y: isMobile ? 0 : (-16 + Math.random() * 8),
+              opacity: 0.42,
+              color: "rgba(120,80,80,0.72)",
+            });
           });
-        }, 75);
-        intervals.push(iv);
+          delayedCalls.push(scrambleCall);
+        }
 
-        const settleCall = gsap.delayedCall((delay + glitchDuration) / 1000, () => {
-          clearInterval(iv);
+        const settleCall = gsap.delayedCall(startAt + scrambleCount * scrambleStep, () => {
           span.textContent = targetChar;
           gsap.set(span, { color });
           gsap.to(span, {
@@ -92,26 +95,11 @@ export default function GlitchTitle({
             ease: "back.out(1.7)",
             overwrite: "auto",
           });
-
-          // Occasional micro-glitch after settling (same spirit as main name)
-          const microGlitch = setInterval(() => {
-            if (Math.random() > 0.93) {
-              const orig = span.textContent;
-              span.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
-              gsap.to(span, { y: -2, color: "rgba(120,80,80,0.9)", duration: 0.07, ease: "power1.out" });
-              setTimeout(() => {
-                span.textContent = orig;
-                gsap.to(span, { y: 0, color, duration: 0.16, ease: "power1.out" });
-              }, 60);
-            }
-          }, 2000);
-          intervals.push(microGlitch);
         });
         delayedCalls.push(settleCall);
       });
     };
 
-    const isMobile = window.matchMedia("(max-width: 1023px)").matches;
     const st = ScrollTrigger.create({
       trigger: section,
       start: isMobile ? startMobile : startDesktop,
@@ -122,7 +110,6 @@ export default function GlitchTitle({
     if (st.progress > 0 || st.isActive) runGlitch();
 
     return () => {
-      intervals.forEach(clearInterval);
       delayedCalls.forEach((t) => t.kill());
       st.kill();
     };
