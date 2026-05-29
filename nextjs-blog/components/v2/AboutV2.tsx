@@ -83,7 +83,7 @@ export default function AboutV2() {
         {/* Photo */}
         <div
           ref={imgRef}
-          className="relative flex-shrink-0 w-56 h-72 md:w-80 md:h-[24.5rem] overflow-visible"
+          className="relative flex-shrink-0 w-56 h-56 md:w-80 md:h-80 overflow-visible"
         >
           <button
             type="button"
@@ -97,11 +97,13 @@ export default function AboutV2() {
               padding: 0,
               border: "none",
               background: "transparent",
+              lineHeight: 0,
               overflow: showCubeGif ? "visible" : "hidden",
               borderRadius: showCubeGif ? 0 : "0.9rem",
               boxShadow: showCubeGif
                 ? "none"
                 : "0 18px 34px rgba(136,17,17,0.22), 0 6px 14px rgba(136,17,17,0.14)",
+              backgroundColor: showCubeGif ? "transparent" : "#f6e8ea",
               cursor: "pointer",
             }}
           >
@@ -114,9 +116,11 @@ export default function AboutV2() {
               // quality={100}
               className="w-full h-full saturate-[1.05] contrast-[1.02]"
               style={{
-                objectFit: showCubeGif ? "contain" : "cover",
+                objectFit: "contain",
                 objectPosition: "center",
+                display: "block",
                 transform: showCubeGif ? "none" : "scale(1.01)",
+                transformOrigin: "center",
               }}
               priority
             />
@@ -136,7 +140,7 @@ export default function AboutV2() {
             un <BoldKeyword>BUT Informatique</BoldKeyword> à l'IUT d'Arles.
           </p>
           <p className="text-lg md:text-xl leading-relaxed" style={{ color: "#2D1010" }}>
-            À travers mes études et expériences professionnelle,
+            À travers mes études et expériences professionnelles,
             j'ai non seulement développé des compétences solides en{" "}
             <BoldKeyword>développement et en programmation</BoldKeyword>,
             mais surtout cultivé une{" "}<BoldKeyword>passion</BoldKeyword> pour ce domaine,

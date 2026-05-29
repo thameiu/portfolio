@@ -287,15 +287,6 @@ function Carousel({ images, accentColor, isDark }: {
     willChange: "transform",
   });
 
-  const arrowStyle = (side: "left" | "right"): React.CSSProperties => ({
-    position: "absolute", [side]: 16, top: "50%", transform: "translateY(-50%)",
-    zIndex: 20, background: "rgba(0,0,0,0.5)", border: `1px solid ${accentColor}70`,
-    color: accentColor, width: 48, height: 48,
-    display: "flex", alignItems: "center", justifyContent: "center",
-    borderRadius: "50%", cursor: "pointer", fontSize: 24, lineHeight: 1,
-    transition: "background 0.2s",
-  });
-
   return (
     <div className="w-full flex flex-col gap-3 select-none">
 
@@ -313,7 +304,7 @@ function Carousel({ images, accentColor, isDark }: {
           }}
           onClick={closeFocus}
         >
-          <div style={{ position: "relative", width: "100vw", height: "100vh", padding: "6vh 5vw" }}
+          <div style={{ position: "relative", width: "100vw", height: "100vh", padding: "6vh 5vw 5vh", display: "flex", flexDirection: "column" }}
                onClick={e => e.stopPropagation()}>
             <button onClick={closeFocus} style={{
               position: "absolute", top: 24, right: 12,
@@ -325,41 +316,77 @@ function Carousel({ images, accentColor, isDark }: {
               padding: 0,
             }}><IoClose /></button>
 
-            <div style={{ width: "100%", height: "100%", overflow: "hidden", position: "relative" }}>
+            <div className="v2-carousel-focus-stage">
               {images.length > 1 && (
                 <button onClick={(e) => { e.stopPropagation(); prev(); }}
-                  style={arrowStyle("left") as React.CSSProperties}>‹</button>
+                  className="v2-carousel-side-nav v2-carousel-side-nav-left v2-carousel-focus-desktop-nav"
+                  style={{ color: accentColor }}
+                  aria-label="Image précédente">‹</button>
               )}
-              <div style={trackStyle(translate)}
-                onMouseDown={onDown} onMouseMove={onMove}
-                onMouseUp={onUp}    onMouseLeave={onUp}
-                onTouchStart={onDown} onTouchMove={onMove} onTouchEnd={onUp}>
-                {images.map((src, i) => (
-                  <div key={src} style={{ minWidth: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <div style={{ position: "relative", width: "100%", height: "100%" }}>
-                      <Image src={src} alt={`Screenshot ${i+1}`} fill
-                        sizes="100vw"
-                        quality={72}
-                        className="object-contain pointer-events-none" draggable={false}/>
+              <div style={{ width: "100%", height: "100%", overflow: "hidden", position: "relative" }}>
+                <div style={trackStyle(translate)}
+                  onMouseDown={onDown} onMouseMove={onMove}
+                  onMouseUp={onUp}    onMouseLeave={onUp}
+                  onTouchStart={onDown} onTouchMove={onMove} onTouchEnd={onUp}>
+                  {images.map((src, i) => (
+                    <div key={src} style={{ minWidth: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <div style={{ position: "relative", width: "100%", height: "100%" }}>
+                        <Image src={src} alt={`Screenshot ${i+1}`} fill
+                          sizes="100vw"
+                          quality={72}
+                          className="object-contain pointer-events-none" draggable={false}/>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
               {images.length > 1 && (
                 <button onClick={(e) => { e.stopPropagation(); next(); }}
-                  style={arrowStyle("right") as React.CSSProperties}>›</button>
+                  className="v2-carousel-side-nav v2-carousel-side-nav-right v2-carousel-focus-desktop-nav"
+                  style={{ color: accentColor }}
+                  aria-label="Image suivante">›</button>
               )}
             </div>
-
-            <div style={{ position: "absolute", bottom: 24, left: 0, right: 0, display: "flex", gap: 6, justifyContent: "center" }}>
-              {images.map((_, i) => (
-                <div key={i} onClick={() => go(i)} style={{
-                  width: i === idx ? 24 : 6, height: 6, borderRadius: 3,
-                  background: i === idx ? accentColor : `${accentColor}50`,
-                  cursor: "pointer", transition: "width 0.3s ease, background-color 0.3s ease",
-                }}/>
-              ))}
-            </div>
+            {images.length > 1 && (
+              <div className="v2-carousel-focus-mobile-controls">
+                <button
+                  onClick={(e) => { e.stopPropagation(); prev(); }}
+                  className="v2-carousel-focus-mobile-nav"
+                  style={{ color: accentColor }}
+                  aria-label="Image précédente"
+                >
+                  ‹
+                </button>
+                <div style={{ display: "flex", gap: 6, justifyContent: "center", alignItems: "center" }}>
+                  {images.map((_, i) => (
+                    <button key={`focus-mobile-dot-${i}`} onClick={() => go(i)} style={{
+                      width: i === idx ? 18 : 6, height: 6, borderRadius: 3, border: "none",
+                      cursor: "pointer", background: i === idx ? accentColor : `${accentColor}40`,
+                      transition: "width 0.3s ease, background-color 0.3s ease",
+                    }}/>
+                  ))}
+                </div>
+                <button
+                  onClick={(e) => { e.stopPropagation(); next(); }}
+                  className="v2-carousel-focus-mobile-nav"
+                  style={{ color: accentColor }}
+                  aria-label="Image suivante"
+                >
+                  ›
+                </button>
+              </div>
+            )}
+            {images.length > 1 && (
+              <div className="v2-carousel-focus-desktop-dots" style={{ marginTop: "1rem", gap: 6, justifyContent: "center" }}>
+                {images.map((_, i) => (
+                  <button key={`focus-dot-${i}`} onClick={() => go(i)} style={{
+                    width: i === idx ? 18 : 6, height: 6, borderRadius: 3, border: "none",
+                    cursor: "pointer", background: i === idx ? accentColor : `${accentColor}40`,
+                    transition: "width 0.3s ease, background-color 0.3s ease",
+                  }}/>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
