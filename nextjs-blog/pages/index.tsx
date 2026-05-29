@@ -377,7 +377,8 @@ export default function PortfolioV2({
         document.body.classList.toggle("v2-smooth", !shouldUseNativeScroll);
         let cancelled = false;
         let smoother: ReturnType<typeof ScrollSmoother.create> | null = null;
-        let idleHandle: number | null = null;
+        let idleCallbackHandle: number | null = null;
+        let timeoutHandle: ReturnType<typeof setTimeout> | null = null;
 
         const setupSmoother = () => {
             if (cancelled) return;
@@ -396,24 +397,21 @@ export default function PortfolioV2({
         };
 
         if ("requestIdleCallback" in window) {
-            idleHandle = window.requestIdleCallback(setupSmoother, {
+            idleCallbackHandle = window.requestIdleCallback(setupSmoother, {
                 timeout: 500,
             });
         } else {
-            idleHandle = window.setTimeout(setupSmoother, 180);
+            timeoutHandle = globalThis.setTimeout(setupSmoother, 180);
         }
 
         return () => {
             cancelled = true;
             document.body.classList.remove("v2-smooth");
-            if (
-                idleHandle !== null &&
-                "cancelIdleCallback" in window &&
-                "requestIdleCallback" in window
-            ) {
-                window.cancelIdleCallback(idleHandle);
-            } else if (idleHandle !== null) {
-                window.clearTimeout(idleHandle);
+            if (idleCallbackHandle !== null && "cancelIdleCallback" in window) {
+                window.cancelIdleCallback(idleCallbackHandle);
+            }
+            if (timeoutHandle !== null) {
+                globalThis.clearTimeout(timeoutHandle);
             }
             smoother?.kill();
             ScrollTrigger.getAll().forEach((t) => t.kill());
