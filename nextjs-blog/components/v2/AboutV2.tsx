@@ -79,9 +79,10 @@ export default function AboutV2() {
           <Image
             src="/mered.png"
             alt="Mathieu Hernandez"
-            width={400}
-            height={400}
-            className="object-contain object-[center_20%] saturate-[1.05] contrast-[1.02]"
+            fill
+            sizes="(max-width: 767px) 14rem, (max-width: 1023px) 20rem, 22rem"
+            quality={60}
+            className="w-full h-full object-contain object-[center_20%] saturate-[1.05] contrast-[1.02]"
             style={{
               filter:
                 "drop-shadow(0 18px 34px rgba(136,17,17,0.26)) drop-shadow(0 6px 14px rgba(136,17,17,0.18))",

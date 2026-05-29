@@ -467,6 +467,34 @@ export default function PortfolioV2({
                     name="twitter:image:alt"
                     content="Aperçu du portfolio de Mathieu Hernandez"
                 />
+                <link
+                    rel="preload"
+                    href="/fonts/Sora-Regular.otf"
+                    as="font"
+                    type="font/otf"
+                    crossOrigin="anonymous"
+                />
+                <link
+                    rel="preload"
+                    href="/fonts/Sora-SemiBold.otf"
+                    as="font"
+                    type="font/otf"
+                    crossOrigin="anonymous"
+                />
+                <link
+                    rel="preload"
+                    href="/fonts/MangoGrotesque-Black.ttf"
+                    as="font"
+                    type="font/ttf"
+                    crossOrigin="anonymous"
+                />
+                <link
+                    rel="preload"
+                    href="/fonts/MangoGrotesque-ExtraBold.ttf"
+                    as="font"
+                    type="font/ttf"
+                    crossOrigin="anonymous"
+                />
                 <link rel="canonical" href={pageUrl} />
                 <link rel="icon" href="/favicon.ico" />
             </Head>

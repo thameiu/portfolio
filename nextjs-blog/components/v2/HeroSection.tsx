@@ -27,7 +27,7 @@ function GlitchLine({ text, lineRef }: { text: string; lineRef: React.RefObject<
         <span
           key={i}
           ref={el => { if (lineRef.current) lineRef.current[i] = el; }}
-          className="v2-char"
+          className={`v2-char${ch === " " ? " space" : ""}`}
           aria-hidden="false"
           style={kern[i] != null ? { marginRight: kern[i] } : undefined}
         >

@@ -128,7 +128,7 @@ img {
 
 @font-face {
     font-family: "Mango Grotesque";
-    src: url("./fonts/MangoGrotesque-Thin.ttf") format("truetype");
+    src: url("/fonts/MangoGrotesque-Thin.ttf") format("truetype");
     font-weight: 100;
     font-style: normal;
     font-display: swap;
@@ -136,7 +136,7 @@ img {
 
 @font-face {
     font-family: "Mango Grotesque";
-    src: url("./fonts/MangoGrotesque-ThinItalic.ttf") format("truetype");
+    src: url("/fonts/MangoGrotesque-ThinItalic.ttf") format("truetype");
     font-weight: 100;
     font-style: italic;
     font-display: swap;
@@ -144,7 +144,7 @@ img {
 
 @font-face {
     font-family: "Mango Grotesque";
-    src: url("./fonts/MangoGrotesque-ExtraLight.ttf") format("truetype");
+    src: url("/fonts/MangoGrotesque-ExtraLight.ttf") format("truetype");
     font-weight: 200;
     font-style: normal;
     font-display: swap;
@@ -152,7 +152,7 @@ img {
 
 @font-face {
     font-family: "Mango Grotesque";
-    src: url("./fonts/MangoGrotesque-Light.ttf") format("truetype");
+    src: url("/fonts/MangoGrotesque-Light.ttf") format("truetype");
     font-weight: 300;
     font-style: normal;
     font-display: swap;
@@ -160,7 +160,7 @@ img {
 
 @font-face {
     font-family: "Mango Grotesque";
-    src: url("./fonts/MangoGrotesque-LightItalic.ttf") format("truetype");
+    src: url("/fonts/MangoGrotesque-LightItalic.ttf") format("truetype");
     font-weight: 300;
     font-style: italic;
     font-display: swap;
@@ -168,7 +168,7 @@ img {
 
 @font-face {
     font-family: "Mango Grotesque";
-    src: url("./fonts/MangoGrotesque-Regular.ttf") format("truetype");
+    src: url("/fonts/MangoGrotesque-Regular.ttf") format("truetype");
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -176,7 +176,7 @@ img {
 
 @font-face {
     font-family: "Mango Grotesque";
-    src: url("./fonts/MangoGrotesque-Italic.ttf") format("truetype");
+    src: url("/fonts/MangoGrotesque-Italic.ttf") format("truetype");
     font-weight: 400;
     font-style: italic;
     font-display: swap;
@@ -184,7 +184,7 @@ img {
 
 @font-face {
     font-family: "Mango Grotesque";
-    src: url("./fonts/MangoGrotesque-Medium.ttf") format("truetype");
+    src: url("/fonts/MangoGrotesque-Medium.ttf") format("truetype");
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -192,7 +192,7 @@ img {
 
 @font-face {
     font-family: "Mango Grotesque";
-    src: url("./fonts/MangoGrotesque-MediumItalic.ttf") format("truetype");
+    src: url("/fonts/MangoGrotesque-MediumItalic.ttf") format("truetype");
     font-weight: 500;
     font-style: italic;
     font-display: swap;
@@ -200,7 +200,7 @@ img {
 
 @font-face {
     font-family: "Mango Grotesque";
-    src: url("./fonts/MangoGrotesque-SemiBold.ttf") format("truetype");
+    src: url("/fonts/MangoGrotesque-SemiBold.ttf") format("truetype");
     font-weight: 600;
     font-style: normal;
     font-display: swap;
@@ -208,7 +208,7 @@ img {
 
 @font-face {
     font-family: "Mango Grotesque";
-    src: url("./fonts/MangoGrotesque-SemiBoldItalic.ttf") format("truetype");
+    src: url("/fonts/MangoGrotesque-SemiBoldItalic.ttf") format("truetype");
     font-weight: 600;
     font-style: italic;
     font-display: swap;
@@ -216,7 +216,7 @@ img {
 
 @font-face {
     font-family: "Mango Grotesque";
-    src: url("./fonts/MangoGrotesque-Bold.ttf") format("truetype");
+    src: url("/fonts/MangoGrotesque-Bold.ttf") format("truetype");
     font-weight: 700;
     font-style: normal;
     font-display: swap;
@@ -224,7 +224,7 @@ img {
 
 @font-face {
     font-family: "Mango Grotesque";
-    src: url("./fonts/MangoGrotesque-BoldItalic.ttf") format("truetype");
+    src: url("/fonts/MangoGrotesque-BoldItalic.ttf") format("truetype");
     font-weight: 700;
     font-style: italic;
     font-display: swap;
@@ -232,7 +232,7 @@ img {
 
 @font-face {
     font-family: "Mango Grotesque";
-    src: url("./fonts/MangoGrotesque-ExtraBold.ttf") format("truetype");
+    src: url("/fonts/MangoGrotesque-ExtraBold.ttf") format("truetype");
     font-weight: 800;
     font-style: normal;
     font-display: swap;
@@ -240,7 +240,7 @@ img {
 
 @font-face {
     font-family: "Mango Grotesque";
-    src: url("./fonts/MangoGrotesque-Black.ttf") format("truetype");
+    src: url("/fonts/MangoGrotesque-Black.ttf") format("truetype");
     font-weight: 900;
     font-style: normal;
     font-display: swap;
@@ -248,7 +248,7 @@ img {
 
 @font-face {
     font-family: "Mango Grotesque";
-    src: url("./fonts/MangoGrotesque-BlackItalic.ttf") format("truetype");
+    src: url("/fonts/MangoGrotesque-BlackItalic.ttf") format("truetype");
     font-weight: 900;
     font-style: italic;
     font-display: swap;
@@ -256,114 +256,42 @@ img {
 
 @font-face {
     font-family: "Sora";
-    src: url("fonts/Sora-Thin.otf") format("opentype");
-    font-weight: 100;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "Sora";
-    src: url("fonts/Sora-ThinItalic.otf") format("opentype");
-    font-weight: 100;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: "Sora";
-    src: url("fonts/Sora-ExtraLight.otf") format("opentype");
-    font-weight: 200;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "Sora";
-    src: url("fonts/Sora-ExtraLightItalic.otf") format("opentype");
-    font-weight: 200;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: "Sora";
-    src: url("fonts/Sora-Light.otf") format("opentype");
+    src: url("/fonts/Sora-Light.otf") format("opentype");
     font-weight: 300;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
     font-family: "Sora";
-    src: url("fonts/Sora-LightItalic.otf") format("opentype");
-    font-weight: 300;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: "Sora";
-    src: url("fonts/Sora-Regular.otf") format("opentype");
+    src: url("/fonts/Sora-Regular.otf") format("opentype");
     font-weight: 400;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
     font-family: "Sora";
-    src: url("fonts/Sora-Italic.otf") format("opentype");
-    font-weight: 400;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: "Sora";
-    src: url("fonts/Sora-Medium.otf") format("opentype");
+    src: url("/fonts/Sora-Medium.otf") format("opentype");
     font-weight: 500;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
     font-family: "Sora";
-    src: url("fonts/Sora-MediumItalic.otf") format("opentype");
-    font-weight: 500;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: "Sora";
-    src: url("fonts/Sora-SemiBold.otf") format("opentype");
+    src: url("/fonts/Sora-SemiBold.otf") format("opentype");
     font-weight: 600;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
     font-family: "Sora";
-    src: url("fonts/Sora-SemiBoldItalic.otf") format("opentype");
-    font-weight: 600;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: "Sora";
-    src: url("fonts/Sora-Bold.otf") format("opentype");
+    src: url("/fonts/Sora-Bold.otf") format("opentype");
     font-weight: 700;
     font-style: normal;
-}
-
-@font-face {
-    font-family: "Sora";
-    src: url("fonts/Sora-BoldItalic.otf") format("opentype");
-    font-weight: 700;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: "Sora";
-    src: url("fonts/Sora-ExtraBold.otf") format("opentype");
-    font-weight: 800;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "Sora";
-    src: url("fonts/Sora-ExtraBoldItalic.otf") format("opentype");
-    font-weight: 800;
-    font-style: italic;
+    font-display: swap;
 }
 
 /* CV Viewer - no scroll, no white background, fit to container */

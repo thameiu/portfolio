@@ -76,7 +76,7 @@ body.v2-page .v2-section-shell {
   min-width: 0.38em;
   text-align: center;
   transition: color 0.04s;
-  will-change: contents;
+  will-change: transform, opacity, color;
 }
 .v2-char.space {
   min-width: 0.3em;

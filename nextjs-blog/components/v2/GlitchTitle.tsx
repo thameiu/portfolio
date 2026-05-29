@@ -126,8 +126,8 @@ export default function GlitchTitle({
         <span
           key={`${ch}-${i}`}
           ref={(el) => { charRefs.current[i] = el; }}
-          className="v2-char"
-          style={{ display: "inline-block", opacity: 0 }}
+          className={`v2-char${ch === " " ? " space" : ""}`}
+          style={{ opacity: 0 }}
         >
           {ch === " " ? "\u00A0" : ch}
         </span>

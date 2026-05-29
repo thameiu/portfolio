@@ -6,24 +6,30 @@ export default function CuteLinks({longer=false}) {
     const CuteLink = ({ href, src, alt, borderColor=null }: { href?: string; src: string; alt: string , borderColor?:string}) => (
       href ? (
         <Link href={href} target="_blank" rel="noopener noreferrer" className='transition-all md:hover:-translate-y-1'>
-            <img 
-            src={src} 
-            alt={alt} 
-            width={80} 
-            height={31} 
-            className='transition-all rounded border w-[68px] h-auto md:w-[80px] md:h-5'
-            style={{ borderColor: borderColor || 'transparent' }}
+            <Image
+              src={src}
+              alt={alt}
+              width={80}
+              height={31}
+              quality={55}
+              loading="lazy"
+              sizes="(max-width: 768px) 68px, 80px"
+              className='transition-all rounded border w-[68px] h-auto md:w-[80px] md:h-5'
+              style={{ borderColor: borderColor || 'transparent' }}
             />
         </Link>
       ) : (
         <div className='transition-all md:hover:-translate-y-1'>
-            <img 
-            src={src} 
-            alt={alt} 
-            width={80} 
-            height={20} 
-            className='transition-all rounded w-[68px] h-auto md:w-[80px] md:h-5'
-            style={{ borderColor: borderColor || 'transparent' }}
+            <Image
+              src={src}
+              alt={alt}
+              width={80}
+              height={20}
+              quality={55}
+              loading="lazy"
+              sizes="(max-width: 768px) 68px, 80px"
+              className='transition-all rounded w-[68px] h-auto md:w-[80px] md:h-5'
+              style={{ borderColor: borderColor || 'transparent' }}
             />
         </div>
       )
@@ -36,7 +42,7 @@ export default function CuteLinks({longer=false}) {
           <CuteLink href="https://soundcloud.com/mydriax" src="/mydriax.gif" alt="Stream Mydriax" borderColor="#24004C" />
           <CuteLink href="https://ergosix-rc.vercel.app/" src="/ergosix.webp" alt="Ergosix Recrutement" borderColor="#3D6D2D" />
           <CuteLink href="https://react-icons.github.io/react-icons/" src="/react-icons.gif" alt="React Icons" borderColor="#E91E63" />
-          <CuteLink href="https://github.com/timothygebhard/js-colormaps" src="/jscolormaps.webp" alt="JS Colormaps by timothygebhard on GitHub" borderColor="#" />
+          <CuteLink href="https://github.com/timothygebhard/js-colormaps" src="/jscolormaps.webp" alt="JS Colormaps by timothygebhard on GitHub" />
 
           <CuteLink href="https://in.tern.et/products/winrar-archive-messenger-bag-prod" src="https://cyber.dabamos.de/88x31/winrar4.gif" alt="Cool Winrar Bag"  />
           <CuteLink href="https://in.tern.et/products/r4-messenger-bag-tern%C2%AE-bundle" src="/R4.webp" alt="Very Cool R4 Bag" borderColor="#AAAAAA" />
