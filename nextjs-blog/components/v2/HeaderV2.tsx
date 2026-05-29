@@ -261,7 +261,7 @@ export default function HeaderV2() {
           }}>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center justify-center h-[46px] p-0 rounded-xl overflow-hidden backdrop-blur-lg shadow-lg w-max relative"
+          <nav className="hidden md:flex items-center justify-center h-[46px] p-0 rounded-xl overflow-hidden backdrop-blur-sm shadow-lg w-max relative"
             style={{ background: `${PRIMARY}55` }}>
             <ul className="flex items-center justify-between h-full relative">
               {navItems.map((item, idx) => {

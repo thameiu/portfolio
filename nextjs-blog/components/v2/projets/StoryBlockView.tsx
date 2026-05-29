@@ -158,6 +158,14 @@ export default function StoryBlockView({
         src={block.image}
         alt={block.imageAlt ?? "Story image"}
         fill
+        sizes={
+          isSmall2ClockSplitImage || isSmallRgbastSplitImage
+            ? "(max-width: 767px) 100vw, 50vw"
+            : isKpiDbImage
+              ? "(max-width: 767px) 100vw, 60vw"
+              : "(max-width: 767px) 100vw, 50vw"
+        }
+        quality={68}
         skeletonColor={accentColor}
         className="object-contain"
         draggable={false}

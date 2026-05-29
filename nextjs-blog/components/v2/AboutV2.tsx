@@ -1,11 +1,19 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { IoLocationOutline } from "react-icons/io5";
 import GlitchTitle from "./GlitchTitle";
 import MainSectionV2 from "./MainSectionV2";
+
+function BoldKeyword({ children }: { children: ReactNode }) {
+  return (
+    <strong className="font-bold" style={{ color: "#881111" }}>
+      {children}
+    </strong>
+  );
+}
 
 export default function AboutV2() {
   const sectionRef  = useRef<HTMLElement>(null);
@@ -95,21 +103,23 @@ export default function AboutV2() {
         <div className="max-w-3xl space-y-6 lg:-mt-10" style={{ fontFamily: "'Sora', sans-serif" }}>
           <p className="text-lg md:text-xl leading-relaxed" style={{ color: "#2D1010" }}>
             Je m'appelle{" "}
-            <strong className="font-bold" style={{ color: "#881111" }}>Mathieu HERNANDEZ</strong>,
+            <BoldKeyword>Mathieu HERNANDEZ</BoldKeyword>,
             j'ai 21 ans et je suis actuellement étudiant à{" "}
-            <strong style={{ color: "#881111" }}>Epitech</strong>, Marseille, dans le cadre d'un{" "}
-            <strong style={{ color: "#881111" }}>Master of Science Technique</strong>, avec une
+            <BoldKeyword>Epitech</BoldKeyword>, Marseille, dans le cadre d'un{" "}
+            <BoldKeyword>Master of Science Technique</BoldKeyword>, avec une
             spécialisation en{" "}
-            <strong style={{ color: "#881111" }}>Cybersécurité + Cloud</strong>, après avoir réalisé
-            un <strong style={{ color: "#881111" }}>BUT Informatique</strong> à l'IUT d'Arles.
+            <BoldKeyword>Cybersécurité + Cloud</BoldKeyword>, après avoir réalisé
+            un <BoldKeyword>BUT Informatique</BoldKeyword> à l'IUT d'Arles.
           </p>
           <p className="text-lg md:text-xl leading-relaxed" style={{ color: "#2D1010" }}>
-            Grâce à ma formation et mes expériences professionnelles, j'ai développé de solides
-            compétences en{" "}
-            <strong style={{ color: "#881111" }}>développement web</strong>, en conception
-            d'architecture, en optimisation des performances, ainsi qu'en{" "}
-            <strong style={{ color: "#881111" }}>gestion de projet</strong> et qualité de
-            développement.
+            À travers mes études et expériences professionnelle,
+            j'ai non seulement développé des compétences solides en{" "}
+            <BoldKeyword>développement et en programmation</BoldKeyword>,
+            mais surtout cultivé une{" "}<BoldKeyword>passion</BoldKeyword> pour ce domaine,
+            que ce soit dans la conception de{" "}<BoldKeyword>structures</BoldKeyword> de données
+            <BoldKeyword>propres et efficaces</BoldKeyword> ou dans le{" "}<BoldKeyword>web design</BoldKeyword>,{" "}
+            qui m'a permis d'exprimer ma {" "}<BoldKeyword>créativité</BoldKeyword> dans le monde du {" "}
+            <BoldKeyword>numérique</BoldKeyword>.
           </p>
 
           <div className="flex items-center gap-2.5 pt-2">

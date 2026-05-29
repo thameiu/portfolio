@@ -68,7 +68,6 @@ export default function ScrollbarV2() {
     const setBg = gsap.quickSetter(thumb, "backgroundColor");
     let lastProgress = -1;
     let lastColor = "";
-    let geometryFrame = 0;
 
     const getSmoother = () => ScrollSmoother.get() as SmootherInstance | null;
 
@@ -104,23 +103,8 @@ export default function ScrollbarV2() {
       lastProgress = -1;
     };
 
-    const refreshScrollRange = () => {
-      const nextMaxScroll = getScrollRange();
-      if (Math.abs(nextMaxScroll - maxScroll) <= 1) return;
-
-      maxScroll = nextMaxScroll;
-      thumbH = Math.max(46, Math.min(96, railH * (window.innerHeight / (maxScroll + window.innerHeight))));
-      gsap.set(thumb, { height: thumbH });
-      lastProgress = -1;
-    };
-
     const update = () => {
       if (document.hidden) return;
-      geometryFrame += 1;
-      if (geometryFrame >= 20) {
-        geometryFrame = 0;
-        refreshScrollRange();
-      }
 
       const smoother = getSmoother();
       const scrollY = smoother ? smoother.scrollTop() : window.scrollY;
@@ -180,6 +164,11 @@ export default function ScrollbarV2() {
       secondRaf = window.requestAnimationFrame(syncGeometry);
     });
     const delayedSync = gsap.delayedCall(0.25, syncGeometry);
+    const contentEl = document.getElementById("smooth-content");
+    const resizeObserver = typeof ResizeObserver !== "undefined"
+      ? new ResizeObserver(syncGeometry)
+      : null;
+    if (resizeObserver && contentEl) resizeObserver.observe(contentEl);
 
     gsap.ticker.add(update);
     thumb.addEventListener("pointerdown", onThumbPointerDown);
@@ -202,6 +191,7 @@ export default function ScrollbarV2() {
       window.removeEventListener("resize", syncGeometry);
       window.removeEventListener("load", syncGeometry);
       ScrollTrigger.removeEventListener("refresh", syncGeometry);
+      resizeObserver?.disconnect();
       sectionObserver.disconnect();
     };
   }, [hideOnMobile, sectionIds]);

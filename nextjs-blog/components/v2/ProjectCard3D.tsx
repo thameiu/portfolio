@@ -305,7 +305,7 @@ function Carousel({ images, accentColor, isDark }: {
           ref={focusOverlayRef}
           style={{
             position: "fixed", inset: 0, zIndex: 2000,
-            background: "rgba(0,0,0,0.985)", backdropFilter: "blur(12px)",
+            background: "rgba(0,0,0,0.985)",
             display: "flex", alignItems: "center", justifyContent: "center",
             opacity: focusVisible ? 1 : 0,
             transform: focusVisible ? "scale(1)" : "scale(1.025)",
@@ -338,6 +338,8 @@ function Carousel({ images, accentColor, isDark }: {
                   <div key={src} style={{ minWidth: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <div style={{ position: "relative", width: "100%", height: "100%" }}>
                       <Image src={src} alt={`Screenshot ${i+1}`} fill
+                        sizes="100vw"
+                        quality={72}
                         className="object-contain pointer-events-none" draggable={false}/>
                     </div>
                   </div>
@@ -354,7 +356,7 @@ function Carousel({ images, accentColor, isDark }: {
                 <div key={i} onClick={() => go(i)} style={{
                   width: i === idx ? 24 : 6, height: 6, borderRadius: 3,
                   background: i === idx ? accentColor : `${accentColor}50`,
-                  cursor: "pointer", transition: "all 0.3s",
+                  cursor: "pointer", transition: "width 0.3s ease, background-color 0.3s ease",
                 }}/>
               ))}
             </div>
@@ -403,6 +405,8 @@ function Carousel({ images, accentColor, isDark }: {
               <div key={src} style={{ minWidth: "100%", height: "100%", padding: "4px 6px" }}>
                 <div style={{ position: "relative", width: "100%", height: "100%" }}>
                   <Image src={src} alt={`Screenshot ${i+1}`} fill
+                    sizes="(max-width: 767px) 100vw, 72vw"
+                    quality={66}
                     className="object-cover object-top pointer-events-none" draggable={false}/>
                 </div>
               </div>
@@ -418,7 +422,7 @@ function Carousel({ images, accentColor, isDark }: {
             <button key={i} onClick={() => go(i)} style={{
               width: i === idx ? 18 : 6, height: 6, borderRadius: 3, border: "none",
               cursor: "pointer", background: i === idx ? accentColor : `${accentColor}40`,
-              transition: "all 0.3s",
+              transition: "width 0.3s ease, background-color 0.3s ease",
             }}/>
           ))}
         </div>
@@ -767,6 +771,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
             {project.titleSvg ? (
               <Image src={project.titleSvg} alt={project.title}
                 width={1200} height={300}
+                sizes="(max-width: 767px) 78vw, 920px"
                 style={{ width: "min(78vw, 920px)", height: "auto", maxHeight: "42vh", objectFit: "contain" }}/>
             ) : (
               <span style={{
@@ -819,6 +824,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
                 {project.titleSvg ? (
                   <Image src={project.titleSvg} alt={project.title}
                     width={760} height={210}
+                    sizes="(max-width: 767px) 70vw, 32vw"
                     style={{ width: "min(32vw,22rem)", minWidth: "10rem", height: "auto", objectFit: "contain" }}/>
                 ) : (
                   <span style={{

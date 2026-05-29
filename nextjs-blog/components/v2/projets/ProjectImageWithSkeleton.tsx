@@ -15,6 +15,15 @@ export default function ProjectImageWithSkeleton(
   const wrapRef = useRef<HTMLSpanElement>(null);
   const isFill = Boolean(props.fill);
   const skeletonColor = props.skeletonColor;
+  const resolvedSizes =
+    props.sizes ??
+    (isFill
+      ? "(max-width: 767px) 100vw, (max-width: 1279px) 80vw, 60vw"
+      : "100vw");
+  const resolvedQuality = props.quality ?? 72;
+  const resolvedLoading = props.priority
+    ? undefined
+    : (props.loading ?? "lazy");
 
   useEffect(() => {
     setLoaded(false);
@@ -44,6 +53,9 @@ export default function ProjectImageWithSkeleton(
     >
       <Image
         {...props}
+        sizes={resolvedSizes}
+        quality={resolvedQuality}
+        loading={resolvedLoading}
         onLoad={(e) => {
           markLoaded();
           props.onLoad?.(e);

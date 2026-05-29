@@ -101,6 +101,7 @@ export default function Loader({ isLoading }: LoaderProps) {
           src="/pirate.svg"
           alt="Loading"
           fill
+          sizes="(max-width: 767px) 8rem, 10rem"
           className="object-contain"
           priority
         />

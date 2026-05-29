@@ -317,7 +317,6 @@ function Carousel({
                           inset: 0,
                           zIndex: 4100,
                           background: "rgba(0,0,0,0.965)",
-                          backdropFilter: "blur(10px)",
                           opacity: focusVisible ? 1 : 0,
                           transition: "opacity 0.32s ease",
                       }}
@@ -418,6 +417,8 @@ function Carousel({
                                               src={src}
                                               alt={`Screenshot ${i + 1}`}
                                               fill
+                                              sizes="100vw"
+                                              quality={72}
                                               skeletonColor={skeletonColor}
                                               className="object-contain pointer-events-none"
                                               draggable={false}
@@ -567,6 +568,8 @@ function Carousel({
                                         src={src}
                                         alt={`Screenshot ${i + 1}`}
                                         fill
+                                        sizes="(max-width: 767px) 100vw, 72vw"
+                                        quality={66}
                                         skeletonColor={skeletonColor}
                                         className="object-cover object-top pointer-events-none"
                                         draggable={false}
@@ -594,7 +597,8 @@ function Carousel({
                                     i === idx
                                         ? accentColor
                                         : `${accentColor}40`,
-                                transition: "all 0.3s",
+                                transition:
+                                    "width 0.3s ease, background-color 0.3s ease",
                             }}
                         />
                     ))}
@@ -1301,7 +1305,6 @@ export default function ProjectsCardsV2({
                             inset: 0,
                             zIndex: 3900,
                             background: "rgba(8,6,6,0.74)",
-                            backdropFilter: "blur(8px)",
                             opacity: panelVisible ? 1 : 0,
                             transition: "opacity 0.34s ease",
                         }}
@@ -1426,6 +1429,7 @@ export default function ProjectsCardsV2({
                                         }
                                         width={1240}
                                         height={300}
+                                        sizes="(max-width: 767px) 84vw, 58rem"
                                         skeletonColor={
                                             activeProject.accentColor
                                         }
@@ -1501,6 +1505,7 @@ export default function ProjectsCardsV2({
                                                             }
                                                             width={440}
                                                             height={120}
+                                                            sizes="93vw"
                                                             skeletonColor={
                                                                 activeProject.accentColor
                                                             }
@@ -1560,6 +1565,7 @@ export default function ProjectsCardsV2({
                                                             }
                                                             width={760}
                                                             height={210}
+                                                            sizes="(max-width: 1023px) 60vw, 36vw"
                                                             skeletonColor={
                                                                 activeProject.accentColor
                                                             }

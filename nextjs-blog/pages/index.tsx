@@ -362,6 +362,8 @@ export default function PortfolioV2({
     }, []);
 
     useEffect(() => {
+        if (isLoading) return;
+
         gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
         const shouldUseNativeScroll = window.matchMedia(
@@ -373,24 +375,50 @@ export default function PortfolioV2({
         });
 
         document.body.classList.toggle("v2-smooth", !shouldUseNativeScroll);
-        const smoother = shouldUseNativeScroll
-              ? null
-            : ScrollSmoother.create({
-                  wrapper: "#smooth-wrapper",
-                  content: "#smooth-content",
-                  smooth: 1.4,
-                  effects: false,
-              });
+        let cancelled = false;
+        let smoother: ReturnType<typeof ScrollSmoother.create> | null = null;
+        let idleHandle: number | null = null;
 
-        if (smoother) smoother.scrollTop(0);
-        else window.scrollTo(0, 0);
+        const setupSmoother = () => {
+            if (cancelled) return;
+
+            smoother = shouldUseNativeScroll
+                ? null
+                : ScrollSmoother.create({
+                      wrapper: "#smooth-wrapper",
+                      content: "#smooth-content",
+                      smooth: 1.15,
+                      effects: false,
+                  });
+
+            if (smoother) smoother.scrollTop(0);
+            else window.scrollTo(0, 0);
+        };
+
+        if ("requestIdleCallback" in window) {
+            idleHandle = window.requestIdleCallback(setupSmoother, {
+                timeout: 500,
+            });
+        } else {
+            idleHandle = window.setTimeout(setupSmoother, 180);
+        }
 
         return () => {
+            cancelled = true;
             document.body.classList.remove("v2-smooth");
+            if (
+                idleHandle !== null &&
+                "cancelIdleCallback" in window &&
+                "requestIdleCallback" in window
+            ) {
+                window.cancelIdleCallback(idleHandle);
+            } else if (idleHandle !== null) {
+                window.clearTimeout(idleHandle);
+            }
             smoother?.kill();
             ScrollTrigger.getAll().forEach((t) => t.kill());
         };
-    }, []);
+    }, [isLoading]);
 
     useEffect(() => {
         const finishLoading = () => setIsLoading(false);
@@ -476,6 +504,13 @@ export default function PortfolioV2({
                 />
                 <link
                     rel="preload"
+                    href="/fonts/Sora-Bold.otf"
+                    as="font"
+                    type="font/otf"
+                    crossOrigin="anonymous"
+                />
+                <link
+                    rel="preload"
                     href="/fonts/MangoGrotesque-Black.ttf"
                     as="font"
                     type="font/ttf"
@@ -494,11 +529,11 @@ export default function PortfolioV2({
 
             {/* Fixed elements outside smooth-content */}
             <HeaderV2 />
-            <ScrollbarV2 />
+            {!isLoading ? <ScrollbarV2 /> : null}
 
             <div id="smooth-wrapper">
                 <div id="smooth-content">
-                    <SideDecor />
+                    {!isLoading ? <SideDecor /> : null}
                     <HeroSection />
                     <AboutV2 />
                     <CareerV2 />
