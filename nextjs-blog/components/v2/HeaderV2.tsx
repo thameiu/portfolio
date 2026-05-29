@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { FaBars, FaTimes } from "react-icons/fa";
 import gsap from "gsap";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
@@ -35,11 +34,15 @@ export default function HeaderV2() {
 
   /* hide/show on scroll */
   useEffect(() => {
+    let maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    const updateScrollBounds = () => {
+      maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    };
+
     const scheduleHide = () => {
       if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
       hideTimerRef.current = setTimeout(() => {
-        const hoveringNow = hoveringRef.current || Boolean(headerHoverRef.current?.matches(":hover"));
-        if (!hoveringNow) setVisible(false);
+        if (!hoveringRef.current) setVisible(false);
       }, 1500);
     };
 
@@ -47,9 +50,8 @@ export default function HeaderV2() {
       const smoother = ScrollSmoother.get();
       const y = smoother ? smoother.scrollTop() : window.scrollY;
       const lastY = lastScrollYRef.current;
-      const hoveringNow = hoveringRef.current || Boolean(headerHoverRef.current?.matches(":hover"));
 
-      if (hoveringNow) {
+      if (hoveringRef.current) {
         if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
         setVisible(true);
       } else if (y > lastY + 2) {
@@ -61,7 +63,6 @@ export default function HeaderV2() {
       }
 
       if (!isClickScrolling.current) {
-        const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
         const isReallyScrollable = maxScroll > 120;
         if (isReallyScrollable && y >= maxScroll - 10) {
           setActive("v2-contact");
@@ -79,10 +80,15 @@ export default function HeaderV2() {
 
     window.addEventListener("scroll",    onScroll, { passive: true });
     window.addEventListener("mousemove", onMouse);
+    window.addEventListener("resize", updateScrollBounds);
+    window.addEventListener("load", updateScrollBounds);
+    updateScrollBounds();
     onScroll();
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("mousemove", onMouse);
+      window.removeEventListener("resize", updateScrollBounds);
+      window.removeEventListener("load", updateScrollBounds);
       if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
     };
   }, []);
@@ -234,11 +240,16 @@ export default function HeaderV2() {
         onMouseEnter={() => setVisible(true)}
         aria-hidden="true"
       />
-      <motion.header
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: shouldShow ? 0 : -100, opacity: shouldShow ? 1 : 0 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
+      <header
         className="fixed top-4 left-0 w-full z-[140] flex justify-start md:justify-center px-4 pointer-events-none"
+        style={{
+          opacity: shouldShow ? 1 : 0,
+          transform: shouldShow
+            ? "translate3d(0,0,0)"
+            : "translate3d(0,-100px,0)",
+          transition: "transform 300ms ease-in-out, opacity 300ms ease-in-out",
+          willChange: "transform, opacity",
+        }}
       >
         <div ref={headerHoverRef} className="pointer-events-auto flex"
           onMouseEnter={() => { setHovering(true); if (hideTimerRef.current) clearTimeout(hideTimerRef.current); }}
@@ -266,10 +277,8 @@ export default function HeaderV2() {
                       {item.label}
                     </span>
                     {isActive && (
-                      <motion.div
+                      <div
                         className={`absolute inset-0 -z-0 ${isFirst ? "rounded-l-xl" : ""} ${isLast ? "rounded-r-xl" : ""}`}
-                        layoutId="v2-active-pill"
-                        transition={{ type: "spring", stiffness: 800, damping: 40, mass: 0.5 }}
                         style={{
                           background: "rgba(255,255,255,0.14)",
                           border: "none",
@@ -295,11 +304,10 @@ export default function HeaderV2() {
             )}
           </div>
         </div>
-      </motion.header>
+      </header>
 
       {/* Mobile menu */}
-      <AnimatePresence>
-        {menuVisible && (
+      {menuVisible && (
           <div className="fixed inset-0 z-[1000] md:hidden">
             <div
               ref={mobileMenuOverlayRef}
@@ -325,10 +333,8 @@ export default function HeaderV2() {
                         {item.label}
                       </span>
                       {isActive && (
-                        <motion.div
+                        <div
                           className="absolute inset-0 -z-0 rounded-xl"
-                          layoutId="v2-active-pill-mobile"
-                          transition={{ type: "spring", stiffness: 800, damping: 40, mass: 0.5 }}
                           style={{ borderRadius: 12, background: "rgba(136,17,17,0.1)" }}
                         />
                       )}
@@ -345,8 +351,7 @@ export default function HeaderV2() {
               </button>
             </div>
           </div>
-        )}
-      </AnimatePresence>
+      )}
     </>
   );
 }

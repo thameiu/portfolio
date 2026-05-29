@@ -82,8 +82,27 @@ body.v2-page .v2-section-shell {
   min-width: 0.3em;
 }
 
+.v2-glitch-line {
+  position: relative;
+  display: block;
+}
+
+.v2-glitch-base {
+  display: inline-block;
+}
+
+.v2-glitch-overlay {
+  position: absolute;
+  inset: 0;
+  display: inline-block;
+  pointer-events: none;
+  white-space: inherit;
+  will-change: transform, opacity, color;
+}
+
 /* ── Section mega-title ── */
 .v2-mega-title {
+  position: relative;
   font-family: 'Mango Grotesque', 'archivo-black', sans-serif;
   font-size: clamp(3.25rem, 12vw, 15vw);
   line-height: 0.86;

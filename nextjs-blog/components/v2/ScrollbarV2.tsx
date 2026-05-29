@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const COLOR_BY_SECTION: Record<string, string> = {
   "v2-about": "#881111",
@@ -13,6 +14,9 @@ const COLOR_BY_SECTION: Record<string, string> = {
 const DEFAULT_COLOR = "#881111";
 const RAIL_TOP = 14;
 const RAIL_BOTTOM = 14;
+type SmootherInstance = ReturnType<typeof ScrollSmoother.get> & {
+  maxScroll?: () => number;
+};
 
 export default function ScrollbarV2() {
   const thumbRef = useRef<HTMLDivElement>(null);
@@ -36,7 +40,7 @@ export default function ScrollbarV2() {
 
   useEffect(() => {
     if (hideOnMobile) return;
-    gsap.registerPlugin(ScrollSmoother);
+    gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
 
     const thumb = thumbRef.current;
     if (!thumb) return;
@@ -58,47 +62,70 @@ export default function ScrollbarV2() {
     sections.forEach((el) => sectionObserver.observe(el));
 
     let thumbH = 70;
+    let railH = Math.max(0, window.innerHeight - RAIL_TOP - RAIL_BOTTOM);
+    let maxScroll = 1;
     const setY = gsap.quickSetter(thumb, "y", "px");
     const setBg = gsap.quickSetter(thumb, "backgroundColor");
     let lastProgress = -1;
     let lastColor = "";
+    let geometryFrame = 0;
 
-    const getMaxScroll = () =>
-      Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const getSmoother = () => ScrollSmoother.get() as SmootherInstance | null;
 
-    const getRailHeight = () =>
-      Math.max(0, window.innerHeight - RAIL_TOP - RAIL_BOTTOM);
+    const getScrollRange = () => {
+      const smoother = getSmoother();
+      if (smoother && typeof smoother.maxScroll === "function") {
+        return Math.max(1, smoother.maxScroll());
+      }
+
+      const smoothContent = document.getElementById("smooth-content");
+      const contentHeight = smoothContent?.scrollHeight ?? document.documentElement.scrollHeight;
+      return Math.max(1, contentHeight - window.innerHeight);
+    };
 
     const yToScroll = (thumbY: number) => {
-      const railH = getRailHeight();
       const travel = Math.max(1, railH - thumbH);
       const clampedY = gsap.utils.clamp(RAIL_TOP, RAIL_TOP + travel, thumbY);
       const progress = (clampedY - RAIL_TOP) / travel;
-      return progress * getMaxScroll();
+      return progress * maxScroll;
     };
 
     const scrollTo = (y: number) => {
-      const smoother = ScrollSmoother.get();
+      const smoother = getSmoother();
       if (smoother) smoother.scrollTop(y);
       else window.scrollTo(0, y);
     };
 
     const updateGeometry = () => {
-      const doc = document.documentElement;
-      const railH = Math.max(0, window.innerHeight - RAIL_TOP - RAIL_BOTTOM);
-      thumbH = Math.max(46, Math.min(96, railH * (window.innerHeight / doc.scrollHeight)));
+      railH = Math.max(0, window.innerHeight - RAIL_TOP - RAIL_BOTTOM);
+      maxScroll = getScrollRange();
+      thumbH = Math.max(46, Math.min(96, railH * (window.innerHeight / (maxScroll + window.innerHeight))));
       gsap.set(thumb, { height: thumbH });
+      lastProgress = -1;
+    };
+
+    const refreshScrollRange = () => {
+      const nextMaxScroll = getScrollRange();
+      if (Math.abs(nextMaxScroll - maxScroll) <= 1) return;
+
+      maxScroll = nextMaxScroll;
+      thumbH = Math.max(46, Math.min(96, railH * (window.innerHeight / (maxScroll + window.innerHeight))));
+      gsap.set(thumb, { height: thumbH });
+      lastProgress = -1;
     };
 
     const update = () => {
       if (document.hidden) return;
-      const doc = document.documentElement;
-      const smoother = ScrollSmoother.get();
+      geometryFrame += 1;
+      if (geometryFrame >= 20) {
+        geometryFrame = 0;
+        refreshScrollRange();
+      }
+
+      const smoother = getSmoother();
       const scrollY = smoother ? smoother.scrollTop() : window.scrollY;
-      const maxScroll = Math.max(1, doc.scrollHeight - window.innerHeight);
       const progress = gsap.utils.clamp(0, 1, scrollY / maxScroll);
 
-      const railH = getRailHeight();
       const travel = Math.max(0, railH - thumbH);
       if (Math.abs(progress - lastProgress) > 0.0004 || draggingRef.current) {
         setY(RAIL_TOP + travel * progress);
@@ -142,25 +169,39 @@ export default function ScrollbarV2() {
       if (e) thumb.releasePointerCapture(e.pointerId);
     };
 
-    updateGeometry();
-    update();
+    const syncGeometry = () => {
+      updateGeometry();
+      update();
+    };
+
+    let secondRaf = 0;
+    const firstRaf = window.requestAnimationFrame(() => {
+      syncGeometry();
+      secondRaf = window.requestAnimationFrame(syncGeometry);
+    });
+    const delayedSync = gsap.delayedCall(0.25, syncGeometry);
 
     gsap.ticker.add(update);
     thumb.addEventListener("pointerdown", onThumbPointerDown);
     window.addEventListener("pointermove", onPointerMove, { passive: true });
     window.addEventListener("pointerup", stopDrag);
     window.addEventListener("pointercancel", stopDrag);
-    window.addEventListener("resize", updateGeometry);
-    window.addEventListener("resize", update);
+    window.addEventListener("resize", syncGeometry);
+    window.addEventListener("load", syncGeometry);
+    ScrollTrigger.addEventListener("refresh", syncGeometry);
 
     return () => {
+      window.cancelAnimationFrame(firstRaf);
+      window.cancelAnimationFrame(secondRaf);
+      delayedSync.kill();
       gsap.ticker.remove(update);
       thumb.removeEventListener("pointerdown", onThumbPointerDown);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", stopDrag);
       window.removeEventListener("pointercancel", stopDrag);
-      window.removeEventListener("resize", updateGeometry);
-      window.removeEventListener("resize", update);
+      window.removeEventListener("resize", syncGeometry);
+      window.removeEventListener("load", syncGeometry);
+      ScrollTrigger.removeEventListener("refresh", syncGeometry);
       sectionObserver.disconnect();
     };
   }, [hideOnMobile, sectionIds]);

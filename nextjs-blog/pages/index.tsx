@@ -372,27 +372,20 @@ export default function PortfolioV2({
             ignoreMobileResize: shouldUseNativeScroll,
         });
 
-        if (shouldUseNativeScroll) {
-            ScrollTrigger.normalizeScroll(true);
-        }
-
         document.body.classList.toggle("v2-smooth", !shouldUseNativeScroll);
         const smoother = shouldUseNativeScroll
-            ? null
+              ? null
             : ScrollSmoother.create({
                   wrapper: "#smooth-wrapper",
                   content: "#smooth-content",
                   smooth: 1.4,
-                  effects: true,
+                  effects: false,
               });
 
         if (smoother) smoother.scrollTop(0);
         else window.scrollTo(0, 0);
 
         return () => {
-            if (shouldUseNativeScroll) {
-                ScrollTrigger.normalizeScroll(false);
-            }
             document.body.classList.remove("v2-smooth");
             smoother?.kill();
             ScrollTrigger.getAll().forEach((t) => t.kill());

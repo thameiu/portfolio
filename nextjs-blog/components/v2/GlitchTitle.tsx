@@ -11,6 +11,12 @@ const GLITCH_CHARS = [
   "☺\uFE0E",
 ];
 
+const randomGlitchChar = () => GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+const randomGlitchText = (text: string) =>
+  text.split("").map((char) => (char === " " ? "\u00A0" : randomGlitchChar())).join("");
+const placeholderGlitchText = (text: string) =>
+  text.split("").map((char) => (char === " " ? "\u00A0" : "#")).join("");
+
 type GlitchTitleProps = {
   text: string;
   color: string;
@@ -31,7 +37,8 @@ export default function GlitchTitle({
   startMobile = "top 92%",
 }: GlitchTitleProps) {
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const charRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const baseRef = useRef<HTMLSpanElement>(null);
+  const overlayRef = useRef<HTMLSpanElement>(null);
   const playedRef = useRef(false);
 
   useEffect(() => {
@@ -42,41 +49,36 @@ export default function GlitchTitle({
     const delayedCalls: gsap.core.Tween[] = [];
     const section = triggerRef.current;
     const title = titleRef.current;
-    if (!section || !title) return;
+    const base = baseRef.current;
+    const overlay = overlayRef.current;
+    if (!section || !title || !base || !overlay) return;
 
-    charRefs.current.forEach((span) => {
-      if (!span) return;
-      gsap.set(span, { opacity: 0, y: -18, color });
-    });
+    gsap.set(base, { opacity: 0 });
+    gsap.set(overlay, { opacity: 0, y: -18, color });
 
     const runGlitch = () => {
       if (playedRef.current) return;
       playedRef.current = true;
-      const scrambleCount = isMobile ? 2 : 3;
-      const startStep = isMobile ? 0.072 : 0.082;
-      const scrambleStep = isMobile ? 0.046 : 0.052;
+      const scrambleCount = isMobile ? 3 : 4;
+      const startStep = isMobile ? 0.108 : 0.125;
+      const scrambleStep = isMobile ? 0.07 : 0.078;
+      let displayed = randomGlitchText(text).split("");
+
+      overlay.textContent = displayed.join("");
+      gsap.set(overlay, { opacity: 0.42, y: -16, color: "rgba(120,80,80,0.72)" });
 
       chars.forEach((targetChar, i) => {
-        const span = charRefs.current[i];
-        if (!span) return;
         if (targetChar === " ") {
-          const spaceCall = gsap.delayedCall(i * 0.03 + 0.06, () => {
-            span.textContent = "\u00A0";
-            gsap.to(span, { y: 0, opacity: 1, duration: 0.2, ease: "power1.out" });
-          });
-          delayedCalls.push(spaceCall);
           return;
         }
 
-        span.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
-        gsap.set(span, { opacity: 0.42, y: -16, color: "rgba(120,80,80,0.72)" });
-
-        const startAt = i * startStep + Math.random() * 0.04;
+        const startAt = i * startStep + Math.random() * 0.06;
         for (let step = 0; step < scrambleCount; step += 1) {
           const scrambleAt = startAt + step * scrambleStep;
           const scrambleCall = gsap.delayedCall(scrambleAt, () => {
-            span.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
-            gsap.set(span, {
+            displayed[i] = randomGlitchChar();
+            overlay.textContent = displayed.join("");
+            gsap.set(overlay, {
               y: isMobile ? 0 : (-16 + Math.random() * 8),
               opacity: 0.42,
               color: "rgba(120,80,80,0.72)",
@@ -86,18 +88,30 @@ export default function GlitchTitle({
         }
 
         const settleCall = gsap.delayedCall(startAt + scrambleCount * scrambleStep, () => {
-          span.textContent = targetChar;
-          gsap.set(span, { color });
-          gsap.to(span, {
+          displayed[i] = targetChar;
+          overlay.textContent = displayed.join("");
+          gsap.to(overlay, {
             y: 0,
             opacity: 1,
-            duration: 0.42,
+            color,
+            duration: 0.56,
             ease: "back.out(1.7)",
             overwrite: "auto",
           });
         });
         delayedCalls.push(settleCall);
       });
+
+      const finishAt = chars.length * startStep + scrambleCount * scrambleStep + 0.3;
+      delayedCalls.push(gsap.delayedCall(finishAt, () => {
+        gsap.set(base, { opacity: 1 });
+        gsap.to(overlay, {
+          opacity: 0,
+          duration: 0.32,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+      }));
     };
 
     const st = ScrollTrigger.create({
@@ -122,16 +136,12 @@ export default function GlitchTitle({
       style={style}
       aria-label={text}
     >
-      {text.split("").map((ch, i) => (
-        <span
-          key={`${ch}-${i}`}
-          ref={(el) => { charRefs.current[i] = el; }}
-          className={`v2-char${ch === " " ? " space" : ""}`}
-          style={{ opacity: 0 }}
-        >
-          {ch === " " ? "\u00A0" : ch}
-        </span>
-      ))}
+      <span ref={baseRef} className="v2-glitch-base">
+        {text}
+      </span>
+      <span ref={overlayRef} className="v2-glitch-overlay" aria-hidden="true">
+        {placeholderGlitchText(text)}
+      </span>
     </h2>
   );
 }
