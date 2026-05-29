@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -19,6 +19,7 @@ export default function AboutV2() {
   const sectionRef  = useRef<HTMLElement>(null);
   const contentRef  = useRef<HTMLDivElement>(null);
   const imgRef      = useRef<HTMLDivElement>(null);
+  const [showCubeGif, setShowCubeGif] = useState(false);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -78,29 +79,52 @@ export default function AboutV2() {
       />
 
       {/* Content row */}
-      <div ref={contentRef} className="flex flex-col lg:flex-row gap-7 md:gap-9 lg:gap-20 items-center opacity-0">
+      <div ref={contentRef} className="flex flex-col lg:flex-row gap-7 md:gap-9 lg:gap-20 items-center lg:items-start opacity-0">
         {/* Photo */}
         <div
           ref={imgRef}
-          className="relative flex-shrink-0 w-56 h-72 md:w-80 md:h-[24.5rem] lg:self-start lg:mt-10 overflow-visible"
+          className="relative flex-shrink-0 w-56 h-72 md:w-80 md:h-[24.5rem] overflow-visible"
         >
-          <Image
-            src="/mered.png"
-            alt="Mathieu Hernandez"
-            fill
-            sizes="(max-width: 767px) 14rem, (max-width: 1023px) 20rem, 22rem"
-            quality={60}
-            className="w-full h-full object-contain object-[center_20%] saturate-[1.05] contrast-[1.02]"
+          <button
+            type="button"
+            aria-label={showCubeGif ? "Afficher la photo normale" : "Afficher la version cube"}
+            onClick={() => setShowCubeGif((prev) => !prev)}
             style={{
-              filter:
-                "drop-shadow(0 18px 34px rgba(136,17,17,0.26)) drop-shadow(0 6px 14px rgba(136,17,17,0.18))",
+              position: "relative",
+              display: "block",
+              width: "100%",
+              height: "100%",
+              padding: 0,
+              border: "none",
+              background: "transparent",
+              overflow: showCubeGif ? "visible" : "hidden",
+              borderRadius: showCubeGif ? 0 : "0.9rem",
+              boxShadow: showCubeGif
+                ? "none"
+                : "0 18px 34px rgba(136,17,17,0.22), 0 6px 14px rgba(136,17,17,0.14)",
+              cursor: "pointer",
             }}
-            priority
-          />
+          >
+            <Image
+              src={showCubeGif ? "/me_but_cube.gif" : "/mathieu.webp"}
+              alt="Mathieu Hernandez"
+              fill
+              unoptimized={showCubeGif}
+              sizes="(max-width: 767px) 14rem, (max-width: 1023px) 20rem, 22rem"
+              // quality={100}
+              className="w-full h-full saturate-[1.05] contrast-[1.02]"
+              style={{
+                objectFit: showCubeGif ? "contain" : "cover",
+                objectPosition: "center",
+                transform: showCubeGif ? "none" : "scale(1.01)",
+              }}
+              priority
+            />
+          </button>
         </div>
 
         {/* Text */}
-        <div className="max-w-3xl space-y-6 lg:-mt-10" style={{ fontFamily: "'Sora', sans-serif" }}>
+        <div className="max-w-3xl space-y-6 lg:-mt-4" style={{ fontFamily: "'Sora', sans-serif" }}>
           <p className="text-lg md:text-xl leading-relaxed" style={{ color: "#2D1010" }}>
             Je m'appelle{" "}
             <BoldKeyword>Mathieu HERNANDEZ</BoldKeyword>,
