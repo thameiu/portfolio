@@ -96,9 +96,9 @@ export default function Loader({ isLoading }: LoaderProps) {
 
   return (
     <div className={`fixed inset-0 bg-[#FFEFEF] z-[9999] flex items-center justify-center transition-opacity duration-700 ${isLoading ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
-      <div className="relative w-32 h-32 md:w-40 md:h-40 v2-loader-icon">
+      <div className="relative w-32 h-32 md:w-32 md:h-32 v2-loader-icon">
         <Image
-          src="/pirate.svg"
+          src="/MH.svg"
           alt="Loading"
           fill
           sizes="(max-width: 767px) 8rem, 10rem"
