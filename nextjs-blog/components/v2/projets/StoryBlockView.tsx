@@ -137,6 +137,8 @@ export default function StoryBlockView({
         color: textColor,
         fontFamily: "'Sora',sans-serif",
         whiteSpace: "pre-line",
+        overflowWrap: "anywhere",
+        wordBreak: "break-word",
         fontSize: "clamp(0.95rem, 0.34vw + 0.86rem, 1.3rem)",
       }}
     >
@@ -184,6 +186,8 @@ export default function StoryBlockView({
               color: textColor,
               fontFamily: "'Sora',sans-serif",
               whiteSpace: "pre-line",
+              overflowWrap: "anywhere",
+              wordBreak: "break-word",
               fontSize: "clamp(0.82rem, 0.24vw + 0.76rem, 1.08rem)",
             }}
           >
