@@ -108,13 +108,13 @@ export default function AboutV2() {
             }}
           >
             <Image
-              src={showCubeGif ? "/me_but_cube.gif" : "/mathieu.webp"}
+              src={showCubeGif ? "/me_but_cube.gif" : "/mathieu.png"}
               alt="Mathieu Hernandez"
               fill
               unoptimized={showCubeGif}
               sizes="(max-width: 767px) 14rem, (max-width: 1023px) 20rem, 22rem"
               // quality={100}
-              className="w-full h-full saturate-[1.05] contrast-[1.02]"
+              className="w-full h-full"
               style={{
                 objectFit: "contain",
                 objectPosition: "center",

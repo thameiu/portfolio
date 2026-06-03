@@ -20,6 +20,8 @@ export interface ProjectStoryBlock {
   text?: string;
   image?: string;
   imageAlt?: string;
+  imageSecondary?: string;
+  imageSecondaryAlt?: string;
   caption?: string;
 }
 

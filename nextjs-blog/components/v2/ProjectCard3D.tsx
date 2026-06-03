@@ -70,15 +70,26 @@ const ClockIcon = ({ color, spinRef }: { color: string; spinRef?: (el: SVGGEleme
 
 /* Pathfinder 7 concentric semicircles */
 const PathfinderIcon = ({ color, spinRef }: { color: string; spinRef?: (el: SVGGElement | null) => void }) => {
-  const cx = 350;
-  const cy = 220;
-  const startAngle = (300 * Math.PI) / 180;
-  const endAngle = (60 * Math.PI) / 180;
-  const radii = [52, 84, 128, 174, 228, 282, 336];
+  const cx = 312;
+  const cy = 194;
+  const radii = [76, 122, 170, 218, 270, 324];
+  const ringColors = ["#941f62", "#ee1d24", "#ef7d33", "#fede00", "#8ec73f", "#26689e"];
+  const ringWidths = [7.2, 6.6, 6, 5.4, 4.8, 4.2];
+  const arcConfigs = [
+    { startDeg: 188, endDeg: 308, largeArc: 0, sweep: 1 },
+    { startDeg: 132, endDeg: 330, largeArc: 1, sweep: 1 },
+    { startDeg: 152, endDeg: 272, largeArc: 0, sweep: 1 },
+    { startDeg: 102, endDeg: 300, largeArc: 1, sweep: 1 },
+    { startDeg: 216, endDeg: 336, largeArc: 0, sweep: 1 },
+    { startDeg: 86, endDeg: 284, largeArc: 1, sweep: 1 },
+  ];
   return (
     <svg viewBox="0 0 700 420" fill="none" style={{ overflow: "visible" }}>
       <g ref={spinRef}>
       {radii.map((r, i) => {
+        const config = arcConfigs[i];
+        const startAngle = (config.startDeg * Math.PI) / 180;
+        const endAngle = (config.endDeg * Math.PI) / 180;
         const x1 = cx + r * Math.cos(startAngle);
         const y1 = cy + r * Math.sin(startAngle);
         const x2 = cx + r * Math.cos(endAngle);
@@ -86,11 +97,12 @@ const PathfinderIcon = ({ color, spinRef }: { color: string; spinRef?: (el: SVGG
         return (
           <g key={i} data-path-ring={i}>
             <path
-              d={`M ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2}`}
-              stroke={color}
-              strokeWidth={3 - i * 0.25}
+              d={`M ${x1} ${y1} A ${r} ${r} 0 ${config.largeArc} ${config.sweep} ${x2} ${y2}`}
+              stroke={ringColors[i] ?? color}
+              strokeWidth={ringWidths[i] ?? 4.2}
               fill="none"
-              opacity={0.9 - i * 0.08}
+              opacity={0.98}
+              strokeLinecap="butt"
             />
           </g>
         );
@@ -556,6 +568,9 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
           if (!el) return;
           const baseRot = layoutForMotion[i]?.rotation ?? 0;
           gsap.set(el, { rotate: baseRot });
+          if (project.iconType === "satellite") {
+            return;
+          }
           gsap.to(el, {
             y: (i % 2 === 0 ? -1 : 1) * (7 + (i % 3) * 2),
             x: (i % 2 === 0 ? 1 : -1) * (4 + (i % 2) * 2),
@@ -595,6 +610,10 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
           if (!el) return;
           const baseRot  = layoutForMotion[i]?.rotation ?? 0;
           if (isMobile) {
+            gsap.set(el, { rotate: baseRot });
+            return;
+          }
+          if (project.iconType === "satellite") {
             gsap.set(el, { rotate: baseRot });
             return;
           }
@@ -649,7 +668,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
               gsap.set(logoRef.current,    { opacity: info });
               gsap.set(contentRef.current, { opacity: info });
               gsap.set(carouselRef.current,{ opacity: info });
-              gsap.set(decorRefs.current,  { opacity: info * 0.24 });
+              gsap.set(decorRefs.current,  { opacity: info * 0.312 });
             }
 
             /* Scroll-reactive background motion */
@@ -665,7 +684,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
                   if (el) el.style.transform = `rotate(${p * 180}deg)`;
                 });
               } else if (project.iconType === "satellite") {
-                const speed = [110, -160, 80, -130, 60, -95, 140];
+                const speed = [154, -224, 80, -130, 84, -95, 140];
                 spinRefs.current.forEach(el => {
                   if (!el) return;
                   const rings = el.querySelectorAll("[data-path-ring]");

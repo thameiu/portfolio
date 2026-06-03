@@ -540,6 +540,11 @@ body.v2-page .v2-project-info-scroller::-webkit-scrollbar-thumb:hover {
   animation: v2-project-shape-float var(--v2-shape-float-duration, 12s) ease-in-out infinite;
 }
 
+.v2-project-overlay-shape.type-satellite {
+  animation: none;
+  transform: none;
+}
+
 .v2-project-overlay-shape-spin {
   width: 100%;
   height: 100%;
@@ -575,7 +580,7 @@ body.v2-page .v2-project-info-scroller::-webkit-scrollbar-thumb:hover {
 }
 
 .v2-project-overlay-shape.type-satellite .v2-path-ring {
-  transform-origin: 350px 220px;
+  transform-origin: 312px 194px;
   transform-box: view-box;
   animation-name: v2-path-ring-spin;
   animation-duration: var(--v2-path-ring-spin-duration, 42s);

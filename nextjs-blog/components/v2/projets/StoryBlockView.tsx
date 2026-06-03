@@ -116,6 +116,9 @@ export default function StoryBlockView({
     block.image && /(rgbast-generation|rgbast-cube)\.png$/i.test(block.image),
   );
   const isRgbastOr2ClockStoryBlock = /^(rgbast|2clock)-story-/i.test(block.id);
+  const isPathfinderStoryBlock = /^pathfinder-story-/i.test(block.id);
+  const isPathfinderDualImageBlock = /^pathfinder-story-6b$/i.test(block.id);
+  const isPathfinderSmallFullImage = block.image === "/pathfinder/pathfinder-3.png";
   const isSmall2ClockSplitImage = isPlanningImage || isClockImage;
   const isPortraitStoryImage = Boolean(
     block.image &&
@@ -174,11 +177,47 @@ export default function StoryBlockView({
       />
     </div>
   ) : null;
+  const secondaryImageNode = block.imageSecondary ? (
+    <div
+      style={{
+        position: "relative",
+        aspectRatio: imageAspectRatio,
+        overflow: "hidden",
+        borderRadius: 8,
+      }}
+    >
+      <ProjectImageWithSkeleton
+        src={block.imageSecondary}
+        alt={block.imageSecondaryAlt ?? "Story image"}
+        fill
+        sizes="(max-width: 767px) 100vw, 30vw"
+        quality={68}
+        skeletonColor={accentColor}
+        className="object-contain"
+        draggable={false}
+      />
+    </div>
+  ) : null;
 
   if (block.layout === "full-image") {
     return (
       <article className="flex flex-col gap-2">
-        {imageNode}
+        {secondaryImageNode ? (
+          <div
+            className={`grid gap-3 ${
+              isPathfinderDualImageBlock ? "md:grid-cols-2" : "grid-cols-1"
+            }`}
+          >
+            {imageNode}
+            {secondaryImageNode}
+          </div>
+        ) : isPathfinderSmallFullImage ? (
+          <div className="w-full md:w-[44%] md:mx-auto">
+            {imageNode}
+          </div>
+        ) : (
+          imageNode
+        )}
         {block.caption ? (
           <p
             className="text-xs md:text-sm"
@@ -199,9 +238,11 @@ export default function StoryBlockView({
   }
 
   if (block.layout === "split-left-image" || block.layout === "split-right-image") {
-    const imageFirstDesktop = isPlanningImage;
-    const imageFirstMobile = isRgbastOr2ClockStoryBlock;
-    const splitColumnsClass = isPortraitStoryImage
+    const imageFirstDesktop = isPathfinderStoryBlock ? false : isPlanningImage;
+    const imageFirstMobile = isPathfinderStoryBlock ? false : isRgbastOr2ClockStoryBlock;
+    const splitColumnsClass = isPathfinderStoryBlock
+      ? "md:[grid-template-columns:minmax(0,0.7fr)_minmax(0,0.3fr)]"
+      : isPortraitStoryImage
       ? imageFirstDesktop
         ? "md:[grid-template-columns:minmax(0,0.3fr)_minmax(0,0.7fr)]"
         : "md:[grid-template-columns:minmax(0,0.7fr)_minmax(0,0.3fr)]"
@@ -227,7 +268,7 @@ export default function StoryBlockView({
                 fontFamily: "'Mango Grotesque','archivo-black',sans-serif",
                 letterSpacing: "0.035em",
                 fontWeight: 700,
-                fontSize: "clamp(1.9rem, 0.95vw + 1.5rem, 2.65rem)",
+                fontSize: "clamp(2.66rem, 1.33vw + 2.1rem, 3.71rem)",
                 lineHeight: 1.05,
               }}
             >
@@ -239,9 +280,16 @@ export default function StoryBlockView({
         <div
           className={`${imageFirstMobile ? "order-1" : "order-2"} ${
             imageFirstDesktop ? "md:order-1" : "md:order-2"
-          } md:self-center`}
+          } ${isPathfinderStoryBlock ? "md:self-start" : "md:self-center"}`}
         >
-          {imageNode}
+          {secondaryImageNode ? (
+            <div className="grid grid-cols-1 gap-3">
+              {imageNode}
+              {secondaryImageNode}
+            </div>
+          ) : (
+            imageNode
+          )}
         </div>
       </article>
     );
@@ -257,7 +305,7 @@ export default function StoryBlockView({
             fontFamily: "'Mango Grotesque','archivo-black',sans-serif",
             letterSpacing: "0.035em",
             fontWeight: 700,
-            fontSize: "clamp(1.9rem, 0.95vw + 1.5rem, 2.65rem)",
+            fontSize: "clamp(2.66rem, 1.33vw + 2.1rem, 3.71rem)",
             lineHeight: 1.05,
           }}
         >

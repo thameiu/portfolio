@@ -108,14 +108,32 @@ const ClockIcon = ({ color }: { color: string }) => (
 );
 
 const PathfinderIcon = ({ color }: { color: string }) => {
-    const cx = 350;
-    const cy = 220;
-    const startAngle = (300 * Math.PI) / 180;
-    const endAngle = (60 * Math.PI) / 180;
-    const radii = [52, 84, 128, 174, 228, 282, 336];
+    const cx = 312;
+    const cy = 194;
+    const radii = [76, 122, 170, 218, 270, 324];
+    const ringColors = [
+        "#941f62",
+        "#ee1d24",
+        "#ef7d33",
+        "#fede00",
+        "#8ec73f",
+        "#26689e",
+    ];
+    const ringWidths = [7.2, 6.6, 6, 5.4, 4.8, 4.2];
+    const arcConfigs = [
+        { startDeg: 188, endDeg: 308, largeArc: 0, sweep: 1 },
+        { startDeg: 132, endDeg: 330, largeArc: 1, sweep: 1 },
+        { startDeg: 152, endDeg: 272, largeArc: 0, sweep: 1 },
+        { startDeg: 102, endDeg: 300, largeArc: 1, sweep: 1 },
+        { startDeg: 216, endDeg: 336, largeArc: 0, sweep: 1 },
+        { startDeg: 86, endDeg: 284, largeArc: 1, sweep: 1 },
+    ];
     return (
         <svg viewBox="0 0 700 420" fill="none" style={{ overflow: "visible" }}>
             {radii.map((r, i) => {
+                const config = arcConfigs[i];
+                const startAngle = (config.startDeg * Math.PI) / 180;
+                const endAngle = (config.endDeg * Math.PI) / 180;
                 const x1 = cx + r * Math.cos(startAngle);
                 const y1 = cy + r * Math.sin(startAngle);
                 const x2 = cx + r * Math.cos(endAngle);
@@ -125,17 +143,26 @@ const PathfinderIcon = ({ color }: { color: string }) => {
                         key={i}
                         className="v2-path-ring"
                         style={{
-                            ["--v2-path-ring-spin-duration" as string]: `${34 + i * 9}s`,
+                            ["--v2-path-ring-spin-duration" as string]: `${
+                                i === 0
+                                    ? 24.29
+                                    : i === 1
+                                      ? 30.71
+                                      : i === 4
+                                        ? 50
+                                        : 34 + i * 9
+                            }s`,
                             ["--v2-path-ring-spin-direction" as string]:
                                 i % 2 === 0 ? "normal" : "reverse",
                         }}
-                    >
-                        <path
-                            d={`M ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2}`}
-                            stroke={color}
-                            strokeWidth={3 - i * 0.25}
+                        >
+                            <path
+                            d={`M ${x1} ${y1} A ${r} ${r} 0 ${config.largeArc} ${config.sweep} ${x2} ${y2}`}
+                            stroke={ringColors[i] ?? color}
+                            strokeWidth={ringWidths[i] ?? 4.2}
                             fill="none"
-                            opacity={0.9 - i * 0.08}
+                            opacity={0.98}
+                            strokeLinecap="butt"
                         />
                     </g>
                 );
@@ -1407,7 +1434,7 @@ export default function ProjectsCardsV2({
                                         left: icon.x,
                                         top: icon.y,
                                         width: icon.size,
-                                        opacity: 0.22 * modalBgFade,
+                                        opacity: 0.286 * modalBgFade,
                                         pointerEvents: "none",
                                         zIndex: 1,
                                         ["--v2-shape-spin-duration" as string]: `${42 + i * 9}s`,
