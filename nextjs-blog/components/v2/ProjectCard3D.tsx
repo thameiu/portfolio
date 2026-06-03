@@ -690,7 +690,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
                   const rings = el.querySelectorAll("[data-path-ring]");
                   rings.forEach((ring, i) => {
                     const angle = p * speed[i % speed.length];
-                    (ring as SVGGElement).setAttribute("transform", `rotate(${angle} 350 220)`);
+                    (ring as SVGGElement).setAttribute("transform", `rotate(${angle} 312 194)`);
                   });
                 });
               }
@@ -919,9 +919,9 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
                 )}
                 {!isMobile && project.link && (
                   <a href={project.link} target="_blank" rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest border-b pb-0.5 transition-opacity hover:opacity-70"
+                    className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest border-b pb-0.5 transition-opacity hover:opacity-70"
                     style={{ color: accentColor, borderColor: accentColor, fontFamily: "'Sora',sans-serif" }}>
-                    {project.linkText ?? "Voir le projet"} →
+                    {"▪"} {project.linkText ?? "voir le projet"} →
                   </a>
                 )}
                 {isMobile && project.link && (
@@ -930,10 +930,10 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
                       href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest border-b pb-0.5 transition-opacity hover:opacity-70"
+                      className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest border-b pb-0.5 transition-opacity hover:opacity-70"
                       style={{ color: accentColor, borderColor: accentColor, fontFamily: "'Sora',sans-serif" }}
                     >
-                      {project.linkText ?? "Voir le projet"} →
+                      {"▪"} {project.linkText ?? "voir le projet"} →
                     </a>
                   </div>
                 )}

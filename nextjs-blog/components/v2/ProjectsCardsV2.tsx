@@ -949,17 +949,22 @@ export default function ProjectsCardsV2({
             }
             panel.style.transition = "opacity 0.18s ease, transform 0.18s ease";
             panel.style.opacity = "0";
-            panel.style.transform = "translateY(12px)";
+            panel.style.transform = "translateX(-16px)";
             if (tabTimerRef.current) clearTimeout(tabTimerRef.current);
             tabTimerRef.current = setTimeout(() => {
                 setActiveTab(nextTab);
+                panel.style.transition = "none";
+                panel.style.opacity = "0";
+                panel.style.transform = "translateX(16px)";
                 requestAnimationFrame(() => {
-                    panel.style.transition =
-                        "opacity 0.22s ease, transform 0.22s ease";
-                    panel.style.opacity = "1";
-                    panel.style.transform = "translateY(0)";
+                    requestAnimationFrame(() => {
+                        panel.style.transition =
+                            "opacity 0.22s ease, transform 0.22s ease";
+                        panel.style.opacity = "1";
+                        panel.style.transform = "translateX(0)";
+                    });
                 });
-            }, 165);
+            }, 180);
         },
         [activeTab],
     );
@@ -1219,7 +1224,7 @@ export default function ProjectsCardsV2({
                         tabBtnRefs.current[0] = el;
                     }}
                     onClick={() => changeTab("web")}
-                    className="px-3 sm:px-5 py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-semibold transition-colors duration-300 cursor-pointer whitespace-nowrap text-center"
+                    className="relative px-3 sm:px-5 py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-semibold transition-colors duration-300 cursor-pointer whitespace-nowrap text-center"
                     style={{
                         fontFamily: "'Sora',sans-serif",
                         color:
@@ -1231,7 +1236,19 @@ export default function ProjectsCardsV2({
                         letterSpacing: "0.035em",
                     }}
                 >
+                    <span
+                        aria-hidden="true"
+                        className="absolute inset-y-0 left-1.5 sm:left-2.5 flex items-center"
+                    >
+                        {activeTab === "web" ? "▪" : "▫"}
+                    </span>
                     apps web
+                    <span
+                        aria-hidden="true"
+                        className="absolute inset-y-0 right-1.5 sm:right-2.5 flex items-center"
+                    >
+                        {activeTab === "web" ? "▪" : "▫"}
+                    </span>
                 </button>
                 <button
                     type="button"
@@ -1239,7 +1256,7 @@ export default function ProjectsCardsV2({
                         tabBtnRefs.current[1] = el;
                     }}
                     onClick={() => changeTab("others")}
-                    className="px-3 sm:px-5 py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-semibold transition-colors duration-300 cursor-pointer whitespace-nowrap text-center"
+                    className="relative px-3 sm:px-5 py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-semibold transition-colors duration-300 cursor-pointer whitespace-nowrap text-center"
                     style={{
                         fontFamily: "'Sora',sans-serif",
                         color:
@@ -1251,7 +1268,19 @@ export default function ProjectsCardsV2({
                         letterSpacing: "0.035em",
                     }}
                 >
+                    <span
+                        aria-hidden="true"
+                        className="absolute inset-y-0 left-1.5 sm:left-2.5 flex items-center"
+                    >
+                        {activeTab === "others" ? "▪" : "▫"}
+                    </span>
                     autres
+                    <span
+                        aria-hidden="true"
+                        className="absolute inset-y-0 right-1.5 sm:right-2.5 flex items-center"
+                    >
+                        {activeTab === "others" ? "▪" : "▫"}
+                    </span>
                 </button>
                 <div
                     ref={indicatorRef}
@@ -1372,13 +1401,13 @@ export default function ProjectsCardsV2({
                                         {project.description}
                                     </p>
                                     <span
-                                        className="hidden md:inline-block mt-3 text-[0.67rem] font-semibold uppercase tracking-[0.27em] opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0"
+                                        className="hidden md:inline-block mt-3 text-[0.77rem] font-semibold tracking-[0.2em] opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0"
                                         style={{
                                             color: accent,
                                             fontFamily: "'Sora',sans-serif",
                                         }}
                                     >
-                                        Voir plus →
+                                        ▪ voir plus →
                                     </span>
                                 </div>
                             </div>
@@ -1753,7 +1782,7 @@ export default function ProjectsCardsV2({
                                                     href={activeProject.link}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="v2-project-info-link hidden md:inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest transition-opacity hover:opacity-70"
+                                                    className="v2-project-info-link hidden md:inline-flex items-center gap-2 text-xs font-semibold tracking-widest transition-opacity hover:opacity-70"
                                                     style={{
                                                         color: activeProject.accentColor,
                                                         ["--v2-link-accent" as string]:
@@ -1762,8 +1791,8 @@ export default function ProjectsCardsV2({
                                                             "'Sora',sans-serif",
                                                     }}
                                                 >
-                                                    {activeProject.linkText ??
-                                                        "Voir le projet"}{" "}
+                                                    {"▪"} {activeProject.linkText ??
+                                                        "voir le projet"}{" "}
                                                     →
                                                 </a>
                                             )}
@@ -1822,7 +1851,7 @@ export default function ProjectsCardsV2({
                                                         }
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="v2-project-info-link v2-project-info-link-mobile inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest transition-opacity hover:opacity-70"
+                                                        className="v2-project-info-link v2-project-info-link-mobile inline-flex items-center gap-2 text-xs font-semibold tracking-widest transition-opacity hover:opacity-70"
                                                         style={{
                                                             color: activeProject.accentColor,
                                                             ["--v2-link-accent" as string]:
@@ -1831,8 +1860,8 @@ export default function ProjectsCardsV2({
                                                                 "'Sora',sans-serif",
                                                         }}
                                                     >
-                                                        {activeProject.linkText ??
-                                                            "Voir le projet"}{" "}
+                                                        {"▪"} {activeProject.linkText ??
+                                                            "voir le projet"}{" "}
                                                         →
                                                     </a>
                                                 </div>

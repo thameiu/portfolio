@@ -135,7 +135,7 @@ const PROJECTS: ProjectData[] = [
             },
         ],
         link: "https://rgbast.com",
-        linkText: "Voir RGBast",
+        linkText: "voir RGBAST",
     },
     {
         id: "2clock",
@@ -233,7 +233,7 @@ const PROJECTS: ProjectData[] = [
             },
         ],
         link: "https://github.com/abakar-oumar-abdallah/T-DEV-700",
-        linkText: "Voir le dépôt",
+        linkText: "voir le dépôt",
     },
     {
         id: "pathfinder",
@@ -368,7 +368,7 @@ const PROJECTS: ProjectData[] = [
             },
         ],
         link: "https://miratlas.com",
-        linkText: "Voir Miratlas",
+        linkText: "voir Miratlas",
     },
     {
         id: "ggps",

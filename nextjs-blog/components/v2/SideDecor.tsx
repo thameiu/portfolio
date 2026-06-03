@@ -244,6 +244,11 @@ export default function SideDecor({ embedded = false }: { embedded?: boolean }) 
       lastDrawTs = now;
       ctx.clearRect(0, 0, W, H);
 
+      const getRxForY = (shape: Shape, shapeIndex: number, y: number) => {
+        const normalizedY = (y / H) * 2 - 1;
+        return normalizedY * 0.55 + Math.sin(shape.baseY * 9 + shapeIndex) * 0.09;
+      };
+
       activeShapes.forEach((shape, i) => {
         const baseYpx = shape.baseY * H;
         const motionSource = scrollPos;
@@ -251,9 +256,7 @@ export default function SideDecor({ embedded = false }: { embedded?: boolean }) 
         let cy = ((baseYpx + offset) % H + H) % H;
         const cx = shape.baseX * W;
 
-        const normalizedY = (cy / H) * 2 - 1;
         const normalizedX = shape.baseX * 2 - 1;
-        const rx = normalizedY * 0.55 + Math.sin(shape.baseY * 9  + i) * 0.09;
         const ry = normalizedX * 0.48 + Math.sin(shape.baseX * 11 + i * 0.8) * 0.28;
         const sizeNorm = (shape.size - minShapeSize) / shapeSizeRange;
         const depthAlpha = 0.25 + sizeNorm * 0.75;
@@ -266,9 +269,15 @@ export default function SideDecor({ embedded = false }: { embedded?: boolean }) 
           ? (isMobile ? desktopLine * 0.62 : desktopLine * 0.72)
           : (isMobile ? desktopLine * 0.8 : desktopLine);
 
-        drawOne(ctx, shape, cx, cy, rx, ry);
-        if (cy < shape.size + 30) drawOne(ctx, shape, cx, cy + H, rx, ry);
-        if (cy > H - shape.size - 30) drawOne(ctx, shape, cx, cy - H, rx, ry);
+        drawOne(ctx, shape, cx, cy, getRxForY(shape, i, cy), ry);
+        if (cy < shape.size + 30) {
+          const wrappedCy = cy + H;
+          drawOne(ctx, shape, cx, wrappedCy, getRxForY(shape, i, wrappedCy), ry);
+        }
+        if (cy > H - shape.size - 30) {
+          const wrappedCy = cy - H;
+          drawOne(ctx, shape, cx, wrappedCy, getRxForY(shape, i, wrappedCy), ry);
+        }
 
         ctx.restore();
       });

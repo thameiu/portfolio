@@ -60,7 +60,7 @@ const XPItem = ({ e }: { e: XPEntry }) => (
       style={{ background: "#881111" }}
     />
     <div
-      className="absolute left-[6px] top-[10px] bottom-[-10px] w-px group-last:hidden"
+      className="absolute left-1.5 top-2.5 bottom-2.5 w-px group-last:hidden"
       style={{ background: "rgba(136,17,17,0.35)" }}
     />
     <div className="flex flex-col items-start gap-1 mb-1 md:flex-row md:items-start md:justify-between md:gap-2">
@@ -163,7 +163,7 @@ const formations: XPEntry[] = [
 ];
 
 export default function CareerV2() {
-  const [activeTab, setActiveTab] = useState<Tab>("Expériences");
+  const [activeTab, setActiveTab] = useState<Tab>("expériences");
   const [panelMinHeight, setPanelMinHeight] = useState<number>(0);
   const sectionRef   = useRef<HTMLElement>(null);
   const tabNavRef    = useRef<HTMLDivElement>(null);
@@ -344,7 +344,7 @@ export default function CareerV2() {
             key={tab}
             ref={el => { tabBtnRefs.current[i] = el; }}
             onClick={() => changeTab(tab)}
-            className="px-3 sm:px-5 py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-semibold transition-colors duration-300 cursor-pointer whitespace-nowrap text-center"
+            className="relative px-3 sm:px-5 py-2.5 md:py-3 text-xs sm:text-sm md:text-base font-semibold transition-colors duration-300 cursor-pointer whitespace-nowrap text-center"
             style={{
               fontFamily: "'Sora', sans-serif",
               color: activeTab === tab ? "#881111" : "rgba(45,16,16,0.45)",
@@ -353,7 +353,19 @@ export default function CareerV2() {
               letterSpacing: "0.035em",
             }}
           >
+            <span
+              aria-hidden="true"
+              className="absolute inset-y-0 left-1.5 sm:left-2.5 flex items-center"
+            >
+              {activeTab === tab ? "▪" : "▫"}
+            </span>
             {tab}
+            <span
+              aria-hidden="true"
+              className="absolute inset-y-0 right-1.5 sm:right-2.5 flex items-center"
+            >
+              {activeTab === tab ? "▪" : "▫"}
+            </span>
           </button>
         ))}
         {/* animated indicator */}
