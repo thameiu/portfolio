@@ -164,7 +164,7 @@ export default function AboutV2() {
               <IoLocationOutline />
             </span>
             <span
-              className="text-xs  tracking-[0.25em]"
+              className="text-lg tracking-wider "
               style={{ color: "#881111", fontFamily: "'Sora', sans-serif" }}
             >
               Bouc-Bel-Air ▪ France
