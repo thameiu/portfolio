@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import {
     FaEnvelope,
     FaLinkedin,
@@ -679,15 +680,18 @@ export default function ContactV2() {
                             >
                                 © {new Date().getFullYear()} Mathieu Hernandez
                             </p>
-                            <p
-                                className="text-xs"
-                                style={{
-                                    color: "rgba(255,255,255,0.15)",
-                                    fontFamily: "'Sora', sans-serif",
-                                }}
+                            <div
+                                className="flex items-center"
+                                style={{ minHeight: "0.75rem" }}
                             >
-                                PORTFOLIO - v2
-                            </p>
+                                <Image
+                                    src="/MH_light.png"
+                                    alt="MH"
+                                    width={31}
+                                    height={6}
+                                    className="w-auto h-[6px]"
+                                />
+                            </div>
                         </div>
                     </div>
 

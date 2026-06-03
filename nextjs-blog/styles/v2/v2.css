@@ -222,8 +222,8 @@ body.v2-page .v2-main-section {
   line-height: 1;
   font-weight: 300;
   letter-spacing: 0;
-  color: #701515;
-  opacity: var(--v2-glyph-opacity);
+  color: rgba(132, 26, 26, 0.92);
+  opacity: calc(var(--v2-glyph-opacity) * 1.18);
 }
 
 /* ── Career tabs indicator ── */

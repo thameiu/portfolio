@@ -11,8 +11,6 @@ export default function CuteLinks({longer=false}) {
               alt={alt}
               width={80}
               height={31}
-              quality={55}
-              sizes="(max-width: 768px) 68px, 80px"
               className='transition-all  border w-[68px] h-auto md:w-[80px] md:h-5'
               style={{ borderColor: borderColor || 'transparent' }}
             />

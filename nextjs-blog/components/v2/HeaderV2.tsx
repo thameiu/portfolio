@@ -8,10 +8,10 @@ const PRIMARY = "#881111";
 const ACCENT  = "#DD3A3A";
 
 const navItems = [
-  { id: "v2-about",          label: "À propos" },
-  { id: "v2-career",         label: "Parcours" },
-  { id: "v2-projects",       label: "Projets"  },
-  { id: "v2-contact",        label: "Contact"  },
+  { id: "v2-about",          label: "à propos" },
+  { id: "v2-career",         label: "parcours" },
+  { id: "v2-projects",       label: "projets"  },
+  { id: "v2-contact",        label: "contact"  },
 ];
 const DEFAULT_ACTIVE_SECTION = "v2-about";
 
@@ -28,6 +28,35 @@ export default function HeaderV2() {
   const mobileMenuOverlayRef = useRef<HTMLDivElement | null>(null);
   const mobileMenuClosingRef = useRef(false);
   const headerHoverRef = useRef<HTMLDivElement | null>(null);
+
+  const getDocumentTop = (node: HTMLElement) => {
+    let top = 0;
+    let current: HTMLElement | null = node;
+    while (current) {
+      top += current.offsetTop;
+      current = current.offsetParent as HTMLElement | null;
+    }
+    return top;
+  };
+
+  const getSectionTargetTop = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return null;
+    const isMobileViewport = window.innerWidth < 768;
+    const isProjectAnchor = id.startsWith("v2-project-") || id === "v2-projects";
+    const isContactAnchor = id === "v2-contact";
+    const titleEl = (isProjectAnchor || isContactAnchor)
+      ? (el.querySelector(".v2-mega-title") as HTMLElement | null)
+      : null;
+    const baseTop = getDocumentTop(el);
+    const titleTop = titleEl ? getDocumentTop(titleEl) : baseTop;
+    const headerOffset = isMobileViewport ? 82 : 96;
+    const contactNudge = isMobileViewport ? 12 : 16;
+
+    if (isContactAnchor) return Math.max(0, titleTop - headerOffset + contactNudge);
+    if (isProjectAnchor) return Math.max(0, titleTop - headerOffset);
+    return Math.max(0, baseTop - 80);
+  };
 
   /* keep hoveringRef in sync */
   useEffect(() => { hoveringRef.current = hovering; }, [hovering]);
@@ -95,19 +124,19 @@ export default function HeaderV2() {
 
   /* section detection */
   useEffect(() => {
+    let rafId: number | null = null;
+
     const resolveActiveSection = () => {
       if (isClickScrolling.current) return;
-      const focusY = window.innerHeight * 0.42;
+      const smoother = ScrollSmoother.get();
+      const currentY = smoother ? smoother.scrollTop() : window.scrollY;
       let bestId = "";
       let bestDist = Number.POSITIVE_INFINITY;
 
       navItems.forEach(({ id }) => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        const rect = el.getBoundingClientRect();
-        if (rect.bottom <= 0 || rect.top >= window.innerHeight) return;
-        const center = (rect.top + rect.bottom) * 0.5;
-        const dist = Math.abs(center - focusY);
+        const targetTop = getSectionTargetTop(id);
+        if (targetTop === null) return;
+        const dist = Math.abs(targetTop - currentY);
         if (dist < bestDist) {
           bestDist = dist;
           bestId = id;
@@ -117,9 +146,17 @@ export default function HeaderV2() {
       if (bestId) setActive(bestId);
     };
 
+    const scheduleResolveActiveSection = () => {
+      if (rafId !== null) return;
+      rafId = window.requestAnimationFrame(() => {
+        rafId = null;
+        resolveActiveSection();
+      });
+    };
+
     const observer = new IntersectionObserver(
       () => {
-        resolveActiveSection();
+        scheduleResolveActiveSection();
       },
       { rootMargin: "-35% 0px -35% 0px" }
     );
@@ -127,11 +164,16 @@ export default function HeaderV2() {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
-    window.addEventListener("resize", resolveActiveSection);
+    window.addEventListener("scroll", scheduleResolveActiveSection, { passive: true });
+    window.addEventListener("resize", scheduleResolveActiveSection);
+    window.addEventListener("load", scheduleResolveActiveSection);
     resolveActiveSection();
     return () => {
       observer.disconnect();
-      window.removeEventListener("resize", resolveActiveSection);
+      window.removeEventListener("scroll", scheduleResolveActiveSection);
+      window.removeEventListener("resize", scheduleResolveActiveSection);
+      window.removeEventListener("load", scheduleResolveActiveSection);
+      if (rafId !== null) window.cancelAnimationFrame(rafId);
     };
   }, []);
 
@@ -192,32 +234,8 @@ export default function HeaderV2() {
 
     const execute = () => {
       gsap.registerPlugin(ScrollSmoother);
-      const el = document.getElementById(id);
-      if (!el) return;
-      const isMobileViewport = window.innerWidth < 768;
-      const isProjectAnchor = id.startsWith("v2-project-") || id === "v2-projects";
-      const isContactAnchor = id === "v2-contact";
-      const titleEl = (isProjectAnchor || isContactAnchor)
-        ? (el.querySelector(".v2-mega-title") as HTMLElement | null)
-        : null;
-      const getDocumentTop = (node: HTMLElement) => {
-        let top = 0;
-        let current: HTMLElement | null = node;
-        while (current) {
-          top += current.offsetTop;
-          current = current.offsetParent as HTMLElement | null;
-        }
-        return top;
-      };
-      const baseTop = getDocumentTop(el);
-      const titleTop = titleEl ? getDocumentTop(titleEl) : baseTop;
-      const headerOffset = isMobileViewport ? 82 : 96;
-      const contactNudge = isMobileViewport ? 12 : 16;
-      const targetTop = isContactAnchor
-        ? Math.max(0, titleTop - headerOffset + contactNudge)
-        : isProjectAnchor
-          ? Math.max(0, titleTop - headerOffset)
-          : Math.max(0, baseTop - 80);
+      const targetTop = getSectionTargetTop(id);
+      if (targetTop === null) return;
       const smoother = ScrollSmoother.get();
       if (smoother) {
         smoother.scrollTo(targetTop, true);
@@ -265,26 +283,25 @@ export default function HeaderV2() {
             <ul className="flex items-center justify-between h-full relative">
               {navItems.map((item, idx) => {
                 const isActive = activeSection === item.id;
+                const itemHighlightStyle = {
+                  background: "rgba(255,255,255,0.14)",
+                  border: "none",
+                  boxShadow: "none",
+                } as const;
                 const isFirst = idx === 0;
                 const isLast = idx === navItems.length - 1;
                 return (
                   <li key={item.id}
-                    className="relative cursor-pointer flex items-center justify-center h-full transition-colors duration-300 text-white/80 hover:text-white font-['Sora'] font-semibold whitespace-nowrap px-5 lg:px-7"
+                    className="group relative cursor-pointer flex items-center justify-center h-full transition-colors duration-300 text-white font-['Sora'] font-semibold whitespace-nowrap px-7 lg:px-10"
                     onClick={() => scrollToSection(item.id)}>
                     <span className="relative z-10 transition-colors"
-                      style={{ color: isActive ? ACCENT : undefined }}>
-                      {item.label}
+                      style={{ color: isActive ? ACCENT : "#FFFFFF" }}>
+                      {`▪ ${item.label} ▪`}
                     </span>
-                    {isActive && (
-                      <div
-                        className={`absolute inset-0 -z-0 ${isFirst ? "rounded-l-xl" : ""} ${isLast ? "rounded-r-xl" : ""}`}
-                        style={{
-                          background: "rgba(255,255,255,0.14)",
-                          border: "none",
-                          boxShadow: "none",
-                        }}
-                      />
-                    )}
+                    <div
+                      className={`absolute inset-0 -z-0 transition-opacity duration-300 ${isFirst ? "rounded-l-xl" : ""} ${isLast ? "rounded-r-xl" : ""} ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                      style={itemHighlightStyle}
+                    />
                   </li>
                 );
               })}
@@ -325,10 +342,12 @@ export default function HeaderV2() {
                   const isActive = activeSection === item.id;
                   return (
                     <li key={item.id}
-                      className="relative cursor-pointer flex items-center justify-start h-full transition-colors duration-300 text-[#120D0D]/76 hover:text-[#120D0D] font-['Sora'] font-semibold whitespace-nowrap px-4 py-3 text-2xl w-full"
+                      className="relative cursor-pointer flex items-center justify-start h-full transition-colors duration-300 text-[#120D0D]/76 hover:text-[#120D0D] font-['Sora'] font-semibold whitespace-nowrap px-4 py-3 text-2xl w-full text-left"
                       onClick={() => scrollToSection(item.id)}>
-                      <span className="relative z-10 transition-colors"
-                        style={{ color: isActive ? ACCENT : undefined }}>
+                      <span
+                        className="relative z-10 transition-colors"
+                        style={{ color: isActive ? ACCENT : undefined }}
+                      >
                         {item.label}
                       </span>
                       {isActive && (
