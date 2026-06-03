@@ -666,7 +666,7 @@ export default function ContactV2() {
 
                         {/* Footer meta moved here */}
                         <div
-                            className="mt-10 pt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-6"
+                            className="mt-10 pt-6 flex flex-row items-center justify-between gap-4 sm:gap-6"
                             style={{
                                 borderTop: "1px solid rgba(255,255,255,0.06)",
                             }}

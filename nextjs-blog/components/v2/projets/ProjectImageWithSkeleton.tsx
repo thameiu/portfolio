@@ -60,9 +60,6 @@ export default function ProjectImageWithSkeleton(
           markLoaded();
           props.onLoad?.(e);
         }}
-        onLoadingComplete={() => {
-          markLoaded();
-        }}
         onError={(e) => {
           markLoaded();
           props.onError?.(e);

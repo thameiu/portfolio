@@ -11,7 +11,7 @@ import { WindevIcon } from "../v1/Utils";
 import GlitchTitle from "./GlitchTitle";
 import MainSectionV2 from "./MainSectionV2";
 
-const TABS = ["Expériences", "Formation", "Compétences"] as const;
+const TABS = ["expériences", "formation", "compétences"] as const;
 type Tab = typeof TABS[number];
 
 /* ── small reusable badge ── */
@@ -198,8 +198,8 @@ export default function CareerV2() {
 
   useEffect(() => {
     const getActiveTabMeasureRef = () => {
-      if (activeTab === "Expériences") return measureExpRef.current;
-      if (activeTab === "Formation") return measureFormRef.current;
+      if (activeTab === "expériences") return measureExpRef.current;
+      if (activeTab === "formation") return measureFormRef.current;
       return measureSkillsRef.current;
     };
 
@@ -260,10 +260,10 @@ export default function CareerV2() {
   };
 
   const renderTabContent = (tab: Tab) => {
-    if (tab === "Expériences") {
+    if (tab === "expériences") {
       return <div>{experiences.map((e, i) => <XPItem key={`xp-${i}`} e={e} />)}</div>;
     }
-    if (tab === "Formation") {
+    if (tab === "formation") {
       return <div>{formations.map((e, i) => <XPItem key={`f-${i}`} e={e} />)}</div>;
     }
     return (
@@ -385,9 +385,9 @@ export default function CareerV2() {
           visibility: "hidden",
         }}
       >
-        <div ref={measureExpRef}>{renderTabContent("Expériences")}</div>
-        <div ref={measureFormRef}>{renderTabContent("Formation")}</div>
-        <div ref={measureSkillsRef}>{renderTabContent("Compétences")}</div>
+        <div ref={measureExpRef}>{renderTabContent("expériences")}</div>
+        <div ref={measureFormRef}>{renderTabContent("formation")}</div>
+        <div ref={measureSkillsRef}>{renderTabContent("compétences")}</div>
       </div>
     </MainSectionV2>
   );

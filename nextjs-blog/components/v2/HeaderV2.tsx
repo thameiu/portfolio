@@ -296,7 +296,7 @@ export default function HeaderV2() {
                     onClick={() => scrollToSection(item.id)}>
                     <span className="relative z-10 transition-colors"
                       style={{ color: isActive ? ACCENT : "#FFFFFF" }}>
-                      {`▪ ${item.label} ▪`}
+                      {`${isActive ? "▪" : "▫"} ${item.label} ${isActive ? "▪" : "▫"}`}
                     </span>
                     <div
                       className={`absolute inset-0 -z-0 transition-opacity duration-300 ${isFirst ? "rounded-l-xl" : ""} ${isLast ? "rounded-r-xl" : ""} ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}

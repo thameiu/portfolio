@@ -1231,7 +1231,7 @@ export default function ProjectsCardsV2({
                         letterSpacing: "0.035em",
                     }}
                 >
-                    Web
+                    apps web
                 </button>
                 <button
                     type="button"
@@ -1251,7 +1251,7 @@ export default function ProjectsCardsV2({
                         letterSpacing: "0.035em",
                     }}
                 >
-                    Autres
+                    autres
                 </button>
                 <div
                     ref={indicatorRef}

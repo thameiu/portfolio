@@ -192,10 +192,10 @@ export default function HeroSection() {
         {/* Subtitle */}
         <p
           ref={subRef}
-          className="relative z-10 mt-8 text-base md:text-xl font-medium tracking-widest uppercase opacity-0"
+          className="relative z-10 mt-8 ml-1 text-base md:text-xl font-medium tracking-widest lowercase opacity-0"
           style={{ color: "#881111", fontFamily: "'Sora', sans-serif", letterSpacing: "0.25em" }}
         >
-          Développeur Polyvalent
+          ▪ Développeur Transversal ▪
         </p>
 
         {/* Scroll hint
