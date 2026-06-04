@@ -192,7 +192,7 @@ export default function HeroSection() {
         {/* Subtitle */}
         <p
           ref={subRef}
-          className="relative z-10 mt-8 ml-1 text-[1rem] md:text-xl font-medium uppercase opacity-0 whitespace-nowrap"
+          className="relative z-10 mt-8 ml-1 text-xs md:text-xl font-medium uppercase opacity-0 whitespace-nowrap"
           style={{ color: "#881111", fontFamily: "'Sora', sans-serif", letterSpacing: "0.25em" }}
         >
         ▪ Développeur Full-stack ▪
