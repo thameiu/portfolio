@@ -241,9 +241,9 @@ const PROJECTS: ProjectData[] = [
         fullTitle: "Pathfinder (Miratlas)",
         titleSvg: "/pathfinder/pathfinder.svg",
         description:
-            "Application web de cartographie de perturbations atmosphériques pour communications FSOC en optique libre.",
+            "Application web de cartographie de perturbations atmosphériques pour communications optiques en espace libre.",
         details:
-            "Leaflet interactif · traitement pixel-par-pixel des images nuageuses · graphiques Recharts · back-office gestion utilisateurs.",
+            "Leaflet interactif · traitement pixel-par-pixel des images nuageuses · graphiques Recharts · back-office gestion utilisateurs et datasets",
         bgColor: "#D4DADC",
         accentColor: "#2A7A1A",
         isDark: false,
