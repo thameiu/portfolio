@@ -268,7 +268,7 @@ const PROJECTS: ProjectData[] = [
             {
                 id: "pathfinder-story-0",
                 layout: "text",
-                title: "Miratlas",
+                title: "Contexte",
                 text: "Dans le cadre de ma **3ème année** de **BUT Informatique**, j’ai réalisé une alternance chez **Miratlas**.<br/><br/>**Miratlas** est une entreprise française qui fournit aux opérateurs télécoms, institutions spatiales et acteurs de la défense des mesures atmosphériques précises pour garantir la fiabilité des communications optiques, en continu. Pour cela, ils conçoivent et déploient des instruments et des services permettant de mesurer en temps réel l’ensemble des paramètres qui impactent la propagation de la lumière dans l’atmosphère, notamment la **turbulence**, la **couverture nuageuse**, et l’**absorption** de lumière.",
             },
             {
@@ -400,8 +400,32 @@ const PROJECTS: ProjectData[] = [
             "/ggps/ggps-6.png",
             "/ggps/ggps-7.png",
         ],
-        // Story temporairement désactivée (hors RGBast).
-        story: [],
+        story: [
+            {
+                id: "ggps-story-1",
+                layout: "text",
+                title: "Contexte",
+                text: "En 3ème année de **BUT Informatique**, nous devions chacun réaliser un projet individuel mettant en œuvre les compétences de développement développées à travers notre formation, avec un sujet libre.<br/><br/>Voulant lier mon projet à mon alternance, mon objectif était d’utiliser une structure similaire : un frontend utilisant du **React**, communiquant avec une **API REST**, et utilisant **Leaflet** pour visualiser des éléments sur une carte. Mais étant donné que je ne connaissais absolument rien aux communications optiques en espace libre, j’ai eu l’idée de créer une application de localisation et création d’événements du jeu vidéo, que j’ai intitulée **Global Gamer’s Positionning System**, ou plus simplement, **GGPS**.",
+            },
+            {
+                id: "ggps-story-1b",
+                layout: "text",
+                title: "Fonctionnalités",
+                text: "**GGPS** vous permet, par le biais d’une carte, de localiser des tournois, LAN, ou encore des conventions créés sur la plateforme, et de vous y inscrire en un clic. Si celui-ci est privé, le créateur ou un administrateur de l’événement doit accepter votre demande, et vous aurez suite à cela accès à des **chatrooms** de communication.<br/><br/>Celles-ci permettent de discuter avec les participants, et les administrateurs du chat peuvent épingler des messages, mettre des membres en silencieux ou timeout, ou les bannir du chat.<br/><br/>Sur la page d’un événement, tout est instantané : les messages, les acceptations d’inscription, les bans de l’event ou du chat, les messages épinglés, etc.<br/><br/>Une fois votre e-mail vérifié, vous pouvez également créer votre propre événement, directement sur la carte. Il suffit de renseigner les informations (Nom, description, dates, privé) et de cliquer sur la carte, ce qui détectera automatiquement l’adresse, qui peut évidemment être corrigée si nécessaire.<br/><br/>L’application utilise également un système de **cookies** local : si vous recherchez beaucoup un type d’événement ou un thème (ex : **Super Smash Bros.**), les événements affichés sur la carte s’en rapprocheront en priorité.",
+            },
+            {
+                id: "ggps-story-2",
+                layout: "text",
+                title: "Aspect technique",
+                text: "L’application utilise, comme mentionné précédemment, **Next.js** pour le frontend, avec **Leaflet**, et des appels API à **OpenStreetMap** pour détecter l’adresse pointée lors de la création d’un événement.<br/><br/>Le backend a été réalisé en **Nest.js**, framework qui a été pratique vis-à-vis d’une librairie en commun avec le frontend : **Socket.io**.<br/><br/>Afin d’avoir une communication quasi-instantanée au sein des chatrooms, j’ai dû mettre en place un **WebSocket** côté client et serveur, qui est un canal de communication se basant sur le principe de signaux émis et reçus. Des signaux sont partagés à chaque envoi, épingle ou suppression de message, mais aussi lorsqu’une demande d’accès est acceptée, un rôle est modifié ou un participant est banni.<br/><br/>En plus d’éviter des requêtes répétitives, ce canal améliore beaucoup l’**UX**, surtout pour les accès (il n’oblige pas l’utilisateur à recharger la page en boucle).<br/><br/>L’API et la base de données **PostgreSQL** sont conteneurisées avec **Docker** pour faciliter la maintenance.",
+            },
+            {
+                id: "ggps-story-3",
+                layout: "text",
+                title: "Bilan",
+                text: "Ce projet était ma 1ère application web **API-first** complète, et j’ai beaucoup apprécié la réaliser. Bien que son code me semble un peu chaotique aujourd’hui, **GGPS** mérite largement sa place au sein de mon **Portfolio**.",
+            },
+        ],
     },
 ];
 

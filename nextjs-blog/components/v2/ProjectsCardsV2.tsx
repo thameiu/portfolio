@@ -40,8 +40,26 @@ const OTHER_PROJECTS: ProjectData[] = [
             "/glproject/glproject-1.png",
             "/glproject/glproject-2.png",
         ],
-        // Story temporairement désactivée (hors RGBast).
-        story: [],
+        story: [
+            {
+                id: "glproject-story-1",
+                layout: "text",
+                title: "Contexte",
+                text: "Durant ma 3ème année de **BUT Informatique**, nous avons appris la **3D**, plus précisément son fonctionnement **bas niveau** : vertices, edges, textures et shaders, tout à la main.<br/><br/>L’objectif de ce TP était de créer un projet pédagogique, qui présente les fonctionnalités de la librairie graphique bas niveau **OpenGL**.<br/><br/>**GLProject**, nom temporaire - et définitif - que j’ai donné à ce projet à cause d’un manque d’inspiration, permet de visualiser des modèles 3D **.obj**, de leur appliquer une texture, de manipuler la caméra et surtout la lumière : intensité, couleur de la lumière et des réflexions, angle, liaison possible avec la caméra, choix de shader (**Phong**, **Blinn-Phong**, **Gaussian**). Il permet aussi d’appliquer une texture sur le modèle avec des images, en projection plane, cylindrique, cubique ou sphérique.",
+            },
+            {
+                id: "glproject-story-2",
+                layout: "text",
+                title: "Aspect technique",
+                text: "Nous avons réalisé ce projet en **C++**, avec **OpenGL**, qui est une librairie graphique de bas niveau. Ici, nous devions tout gérer : envoi des vertices et edges au **GPU**, calcul des shaders (que nous devions écrire), optimisation, manipulation de la caméra, mise à jour en temps réel de la lumière, etc.",
+            },
+            {
+                id: "glproject-story-3",
+                layout: "text",
+                title: "Bilan",
+                text: "Ce projet était extrêmement complexe, probablement l’un des plus difficiles de ma formation, mais il était cela dit très intéressant. Il n’y a pas de meilleure façon de comprendre le fonctionnement de la **3D** (ou de n’importe quelle autre forme d’informatique, cela dit) qu’en commençant par le **bas niveau**, en se rapprochant le plus possible des composants de l’ordinateur.<br/><br/>Il fait partie d’une catégorie de projets qui est tellement complexe, que la frustration n’est pas l’émotion finale que l’on ressent, mais plutôt la satisfaction d’avoir réussi.",
+            },
+        ],
     },
 ];
 
