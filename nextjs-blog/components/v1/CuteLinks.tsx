@@ -39,9 +39,9 @@ export default function CuteLinks({longer=false}) {
           {/*<CuteLink href="https://ergosix-rc.vercel.app/" src="/ergosix.webp" alt="Ergosix Recrutement" borderColor="#3D6D2D" />*/}
           {/*<CuteLink href="https://github.com/timothygebhard/js-colormaps" src="/jscolormaps.webp" alt="JS Colormaps by timothygebhard on GitHub" />*/}
           <CuteLink href="https://zed.dev" src="/zed.gif" alt="Zed IDE supremacy" borderColor="#5b86e9" />
-          {/*<CuteLink href="https://in.tern.et/products/r4-messenger-bag-tern%C2%AE-bundle" src="/R4.webp" alt="Very Cool R4 Bag" borderColor="#AAAAAA" />*/}
+          <CuteLink href="https://in.tern.et/products/r4-messenger-bag-tern%C2%AE-bundle" src="/R4.webp" alt="Very Cool R4 Bag" borderColor="#AAAAAA" />
 
-          {/*<CuteLink src="https://cyber.dabamos.de/88x31/hasmile.gif" alt="Smile !" />*/}
+          <CuteLink src="https://cyber.dabamos.de/88x31/hasmile.gif" alt="Smile !" />
           {/*<CuteLink src="https://cyber.dabamos.de/88x31/rainbow_bev.gif" alt="Love is love" />*/}
           {/* TODO : EZGif, Ile.a.gammes, Bruno */}
       </div>
