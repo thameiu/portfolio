@@ -1764,9 +1764,9 @@ export default function ProjectsCardsV2({
                                             <div className="flex flex-wrap gap-2 mb-6">
                                                 {activeProject.techStack.map(
                                                     (t) => (
-                                                        <span
-                                                            key={t}
-                                                            className="v2-tech-pill inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium tracking-wide border"
+                                                            <span
+                                                                key={t}
+                                                                className="v2-tech-pill inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium tracking-wide border"
                                                             style={{
                                                                 ["--pill-accent" as string]:
                                                                     activeProject.accentColor,
@@ -1778,7 +1778,7 @@ export default function ProjectsCardsV2({
                                                                 background: `${activeProject.accentColor}10`,
                                                                 fontFamily:
                                                                     "'Sora',sans-serif",
-                                                                borderRadius: 6,
+                                                                borderRadius: 0,
                                                             }}
                                                         >
                                                             {TECH_ICON[t] && (

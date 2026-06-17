@@ -904,7 +904,7 @@ export default function ProjectCard3D({ project, index }: { project: ProjectData
                 <div className="flex flex-wrap gap-2 mb-6">
                   {project.techStack.map(t => (
                     <span key={t} className="v2-tech-pill inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium tracking-wide border"
-                      style={{ color: accentColor, borderColor: borderCol, background: `${accentColor}10`, fontFamily: "'Sora',sans-serif", borderRadius: 6, ["--pill-accent" as string]: accentColor }}>
+                      style={{ color: accentColor, borderColor: borderCol, background: `${accentColor}10`, fontFamily: "'Sora',sans-serif", borderRadius: 0, ["--pill-accent" as string]: accentColor }}>
                       {TECH_ICON[t] && <span className="text-[0.9em]">{TECH_ICON[t]}</span>}
                       {t}
                     </span>

@@ -23,7 +23,7 @@ const Badge = ({ children }: { children: React.ReactNode }) => (
       borderColor: "rgba(136,17,17,0.32)",
       color: "#881111",
       background: "rgba(136,17,17,0.09)",
-      borderRadius: 6,
+      borderRadius: 0,
     }}
   >
     {children}
@@ -91,7 +91,7 @@ const SkillCard = ({
     className="relative p-5 md:p-6 transition-all duration-300 group"
     style={{
       background: "transparent",
-      borderRadius: 6,
+      borderRadius: 0,
     }}
   >
     {(index > 0 && index < 3) && (

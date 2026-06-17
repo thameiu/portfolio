@@ -278,7 +278,7 @@ export default function HeaderV2() {
           }}>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center justify-center h-[46px] p-0 rounded-xl overflow-hidden backdrop-blur-sm shadow-lg w-max relative"
+          <nav className="hidden md:flex items-center justify-center h-[46px] p-0 overflow-hidden backdrop-blur-sm shadow-lg w-max relative"
             style={{ background: `${PRIMARY}55` }}>
             <ul className="flex items-center justify-between h-full relative">
               {navItems.map((item, idx) => {
@@ -299,7 +299,7 @@ export default function HeaderV2() {
                       {`${isActive ? "▪" : "▫"} ${item.label} ${isActive ? "▪" : "▫"}`}
                     </span>
                     <div
-                      className={`absolute inset-0 -z-0 transition-opacity duration-300 ${isFirst ? "rounded-l-xl" : ""} ${isLast ? "rounded-r-xl" : ""} ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                      className={`absolute inset-0 -z-0 transition-opacity duration-300 ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
                       style={itemHighlightStyle}
                     />
                   </li>
@@ -314,7 +314,7 @@ export default function HeaderV2() {
               <button
                 onClick={() => setMenu(true)}
                 className="flex items-center justify-center w-[50px] h-[50px] backdrop-blur-xl border border-white/10 shadow-lg text-white/80 hover:text-white transition-colors"
-                style={{ borderRadius: 14, background: `${PRIMARY}55` }}>
+                style={{ borderRadius: 0, background: `${PRIMARY}55` }}>
                 <FaBars size={22}/>
               </button>
             )}
@@ -348,12 +348,12 @@ export default function HeaderV2() {
                         className="relative z-10 transition-colors"
                         style={{ color: isActive ? ACCENT : undefined }}
                       >
-                        {item.label}
+                      {item.label}
                       </span>
                       {isActive && (
                         <div
-                          className="absolute inset-0 -z-0 rounded-xl"
-                          style={{ borderRadius: 12, background: "rgba(136,17,17,0.1)" }}
+                          className="absolute inset-0 -z-0"
+                          style={{ borderRadius: 0, background: "rgba(136,17,17,0.1)" }}
                         />
                       )}
                     </li>
