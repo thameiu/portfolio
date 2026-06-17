@@ -11,7 +11,7 @@ export default function CuteLinks({longer=false}) {
               alt={alt}
               width={80}
               height={31}
-              className='transition-all  border w-[68px] h-auto md:w-[80px] md:h-5'
+              className='transition-all  border w-17 h-auto md:w-18 md:h-5'
               style={{ borderColor: borderColor || 'transparent' }}
             />
         </Link>
@@ -24,7 +24,7 @@ export default function CuteLinks({longer=false}) {
               height={20}
               quality={55}
               sizes="(max-width: 768px) 68px, 80px"
-              className='transition-all border w-[68px] h-auto md:w-[80px] md:h-5'
+              className='transition-all  border w-17 h-auto md:w-18 md:h-5'
               style={{ borderColor: borderColor || 'transparent' }}
             />
         </div>
@@ -36,6 +36,7 @@ export default function CuteLinks({longer=false}) {
           <CuteLink href="/chat" src="/thameiu.webp" alt="chat" borderColor="#881111" />
           <CuteLink href="https://16ur.vercel.app" src="/16ur.gif" alt="Axel Manguian" borderColor="#066767" />
           <CuteLink href="https://soundcloud.com/mydriax" src="/mydriax.gif" alt="Stream Mydriax" borderColor="#24004C" />
+          <CuteLink href="https://abregi.com" src="/abregi.gif" alt="Check out Abregi" borderColor="#d15a6b" />
           {/*<CuteLink href="https://ergosix-rc.vercel.app/" src="/ergosix.webp" alt="Ergosix Recrutement" borderColor="#3D6D2D" />*/}
           {/*<CuteLink href="https://github.com/timothygebhard/js-colormaps" src="/jscolormaps.webp" alt="JS Colormaps by timothygebhard on GitHub" />*/}
           <CuteLink href="https://zed.dev" src="/zed.gif" alt="Zed IDE supremacy" borderColor="#5b86e9" />
