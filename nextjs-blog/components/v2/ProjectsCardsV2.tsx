@@ -882,7 +882,7 @@ function ProjectInfoScrollbar({
                 right: 8,
                 bottom: 14,
                 width: 10,
-                borderRadius: 999,
+                borderRadius: 4,
                 background: "transparent",
                 pointerEvents: "none",
                 opacity: 0,
@@ -898,7 +898,7 @@ function ProjectInfoScrollbar({
                     top: 0,
                     width: "100%",
                     height: 42,
-                    borderRadius: 999,
+                    borderRadius: 4,
                     background: withAlpha(accentColor, 0.9),
                     boxShadow: `0 0 0 1px ${withAlpha(accentColor, 0.28)}`,
                     transform: "translate3d(0,0,0)",
@@ -1341,7 +1341,7 @@ export default function ProjectsCardsV2({
                             style={{
                                 background: cardBg,
                                 borderColor: `${accent}3D`,
-                                borderRadius: 12,
+                                borderRadius: 6,
                                 minHeight: "clamp(11.5rem, 20vw, 15rem)",
                                 isolation: "isolate",
                                 cursor: "pointer",
@@ -1778,7 +1778,7 @@ export default function ProjectsCardsV2({
                                                                 background: `${activeProject.accentColor}10`,
                                                                 fontFamily:
                                                                     "'Sora',sans-serif",
-                                                                borderRadius: 0,
+                                                                borderRadius: 4,
                                                             }}
                                                         >
                                                             {TECH_ICON[t] && (

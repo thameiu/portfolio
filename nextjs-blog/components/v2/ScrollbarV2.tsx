@@ -211,7 +211,7 @@ export default function ScrollbarV2() {
           top: 0,
           width: "10px",
           height: "70px",
-          borderRadius: "999px",
+          borderRadius: "4px",
           background: DEFAULT_COLOR,
           transform: "translate3d(0, 0, 0)",
           willChange: "transform, background-color, height",

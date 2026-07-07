@@ -99,7 +99,7 @@ export default function AboutV2() {
               background: "transparent",
               lineHeight: 0,
               overflow: showCubeGif ? "visible" : "hidden",
-              borderRadius: 0,
+              borderRadius: 4,
               boxShadow: showCubeGif
                 ? "none"
                 : "0 18px 34px rgba(136,17,17,0.22), 0 6px 14px rgba(136,17,17,0.14)",

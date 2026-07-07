@@ -23,7 +23,7 @@ const Badge = ({ children }: { children: React.ReactNode }) => (
       borderColor: "rgba(136,17,17,0.32)",
       color: "#881111",
       background: "rgba(136,17,17,0.09)",
-      borderRadius: 0,
+      borderRadius: 4,
     }}
   >
     {children}
@@ -32,11 +32,13 @@ const Badge = ({ children }: { children: React.ReactNode }) => (
 
 const JobTag = ({ children }: { children: React.ReactNode }) => (
   <span
-    className="inline-block px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider"
+    className="inline-block px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider border"
     style={{
       fontFamily: "'Sora', sans-serif",
       color: "#881111",
-      background: "rgba(136,17,17,0.1)",
+      background: "rgba(136,17,17,0.09)",
+      borderColor: "rgba(136,17,17,0.32)",
+      borderRadius: 4,
     }}
   >
     {children}
@@ -53,15 +55,19 @@ interface XPEntry {
   badge?: React.ReactNode;
 }
 
-const XPItem = ({ e }: { e: XPEntry }) => (
+const XPItem = ({ e, isLast = false }: { e: XPEntry; isLast?: boolean }) => (
   <div className="relative pl-10 pb-12 group">
     <div
       className="absolute left-0 top-1 w-3 h-3 transition-all duration-300"
       style={{ background: "#881111" }}
     />
     <div
-      className="absolute left-1.5 top-2.5 bottom-2.5 w-px group-last:hidden"
-      style={{ background: "rgba(136,17,17,0.35)" }}
+      className="absolute left-[6px] top-2.5 w-px"
+      style={{
+        background: "rgba(136,17,17,0.35)",
+        bottom: isLast ? "auto" : "-5px",
+        display: isLast ? "none" : "block",
+      }}
     />
     <div className="flex flex-col items-start gap-1 mb-1 md:flex-row md:items-start md:justify-between md:gap-2">
       <span className="text-xs font-medium tracking-wide" style={{ color: "rgba(45,16,16,0.5)", fontFamily: "'Sora', sans-serif" }}>
@@ -91,7 +97,7 @@ const SkillCard = ({
     className="relative p-5 md:p-6 transition-all duration-300 group"
     style={{
       background: "transparent",
-      borderRadius: 0,
+      borderRadius: 4,
     }}
   >
     {(index > 0 && index < 3) && (
@@ -261,10 +267,10 @@ export default function CareerV2() {
 
   const renderTabContent = (tab: Tab) => {
     if (tab === "expériences") {
-      return <div>{experiences.map((e, i) => <XPItem key={`xp-${i}`} e={e} />)}</div>;
+      return <div>{experiences.map((e, i) => <XPItem key={`xp-${i}`} e={e} isLast={i === experiences.length - 1} />)}</div>;
     }
     if (tab === "formation") {
-      return <div>{formations.map((e, i) => <XPItem key={`f-${i}`} e={e} />)}</div>;
+      return <div>{formations.map((e, i) => <XPItem key={`f-${i}`} e={e} isLast={i === formations.length - 1} />)}</div>;
     }
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
