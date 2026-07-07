@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { FaFileDownload, FaTimes } from "react-icons/fa";
 
-const CV_FILE = "/CV_Mathieu_Hernandez.pdf";
+const CV_FILE = "/CV_HERNANDEZ_MATHIEU_2026-2028.pdf";
 
 interface CVModalProps {
   onClose: () => void;
