@@ -379,7 +379,6 @@ export default function HeaderV2() {
         style={{
           color: HEADER_BLEND_SOURCE,
           mixBlendMode: "difference",
-          WebkitMixBlendMode: "difference",
           top: shouldShow ? "0.5rem" : "-4rem",
           transition: "top 300ms ease-in-out",
           willChange: "top",
