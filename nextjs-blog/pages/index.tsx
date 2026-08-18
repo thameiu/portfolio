@@ -28,7 +28,7 @@ type PortfolioV2Props = {
 };
 
 /* ─── 4 projects ──────────────────────────────── */
-const PROJECTS: ProjectData[] = [
+export const PROJECTS: ProjectData[] = [
     {
         id: "rgbast",
         title: "RGBast",
@@ -650,21 +650,21 @@ export default function PortfolioV2({
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            {/* Fixed elements outside smooth-content */}
             <HeaderV2 />
             {!isLoading ? <ScrollbarV2 /> : null}
+            <main className="v2-blend-page">
+                <div id="smooth-wrapper">
+                    <div id="smooth-content">
+                        {!isLoading ? <SideDecor /> : null}
+                        <HeroSection />
+                        <AboutV2 />
+                        <CareerV2 />
+                        <ProjectsCardsV2 projects={PROJECTS} />
 
-            <div id="smooth-wrapper">
-                <div id="smooth-content">
-                    {!isLoading ? <SideDecor /> : null}
-                    <HeroSection />
-                    <AboutV2 />
-                    <CareerV2 />
-                    <ProjectsCardsV2 projects={PROJECTS} />
-
-                    <ContactV2 />
+                        <ContactV2 />
+                    </div>
                 </div>
-            </div>
+            </main>
         </>
     );
 }

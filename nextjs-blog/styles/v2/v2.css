@@ -22,6 +22,11 @@ html.v2-page, body.v2-page {
   background: #FFFAFB;
 }
 
+.v2-blend-page {
+  position: relative;
+  isolation: isolate;
+}
+
 body.v2-page {
   --v2-gutter: clamp(1.2rem, 4.6vw, 8rem);
   --v2-text-md: clamp(1.02rem, 0.38vw + 0.94rem, 1.3rem);
@@ -199,7 +204,6 @@ body.v2-page .side-decor-layer.embedded .side-decor-canvas {
 body.v2-page .v2-main-section {
   position: relative;
   z-index: 20 !important;
-  isolation: isolate;
 }
 
 /* ── Contact random glyph background ── */

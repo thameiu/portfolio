@@ -678,7 +678,7 @@ export default function ContactV2() {
                                     fontFamily: "'Sora', sans-serif",
                                 }}
                             >
-                                © {new Date().getFullYear()} Mathieu Hernandez
+                                © {new Date().getFullYear()} Mathieu Hernandez ▪ thameiu
                             </p>
                             <div
                                 className="flex items-center"
