@@ -145,7 +145,7 @@ export default function AboutV2() {
             <BoldKeyword>développement et en programmation</BoldKeyword>,
             mais surtout cultivé une{" "}<BoldKeyword>passion</BoldKeyword> pour ce domaine,
             que ce soit dans la conception de{" "}<BoldKeyword>structures</BoldKeyword> de données
-            <BoldKeyword>propres et efficaces</BoldKeyword> ou dans le{" "}<BoldKeyword>web design</BoldKeyword>,{" "}
+            {" "}<BoldKeyword>propres et efficaces</BoldKeyword> ou dans le{" "}<BoldKeyword>web design</BoldKeyword>,{" "}
             qui m'a permis d'exprimer ma {" "}<BoldKeyword>créativité</BoldKeyword> dans le monde du {" "}
             <BoldKeyword>numérique</BoldKeyword>.
           </p>
