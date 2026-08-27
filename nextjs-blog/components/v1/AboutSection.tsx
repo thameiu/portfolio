@@ -40,7 +40,7 @@ const AboutSection: React.FC = () => {
           <div className="text-left w-full max-w-4xl">
             <section className="text-base md:text-2xl leading-relaxed text-white/90 space-y-6">
               <p>
-                Je m'appelle <b className="text-[var(--color-accent)] font-bold">Mathieu HERNANDEZ</b>, j'ai 21 ans et je suis actuellement étudiant à <b className="text-[var(--color-accent)] font-bold">Epitech</b>, Marseille, dans le cadre d'un <b className="text-[var(--color-accent)] font-bold">Master of Science Technique</b>, avec une spécialisation en <b className="text-[var(--color-accent)] font-bold">Cybersécurité + Cloud</b>, après avoir réalisé un <b className="text-[var(--color-accent)] font-bold">BUT Informatique</b> à l'IUT d'Arles.
+                Je m'appelle <b className="text-[var(--color-accent)] font-bold">Mathieu HERNANDEZ</b>, j'ai 21 ans et je suis actuellement étudiant au <b className="text-[var(--color-accent)] font-bold">CESI</b> d'Aix-en-Provence, dans le cadre d'un <b className="text-[var(--color-accent)] font-bold">Mastère professionnel Manager en infrastructures et cybersécurité des SI</b>, après avoir réalisé un <b className="text-[var(--color-accent)] font-bold">BUT Informatique</b> à l'IUT d'Arles.
               </p>
               <p>
                 Grâce à ma formation et mes expériences professionnelles, j'ai développé de solides compétences en <b className="text-[var(--color-accent)] font-bold">développement web</b>, en conception d'architecture, en optimisation des performances, ainsi qu'en <b className="text-[var(--color-accent)] font-bold">gestion de projet</b> et qualité de développement.

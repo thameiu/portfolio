@@ -26,7 +26,7 @@
     "showPhoto": "Show the regular photo",
     "showCube": "Show the cube version",
     "paragraphs": [
-      "My name is **Mathieu HERNANDEZ**, I'm 21 years old, and I am currently studying at **CESI** in Aix-en-Provence as part of a **Master of Science Technique**, specializing in **Cybersecurity + Cloud**, after completing a **BUT Informatique** at the IUT of Arles.",
+      "My name is **Mathieu HERNANDEZ**, I'm 21 years old, and I am currently studying at **CESI** in Aix-en-Provence as part of a **Professional Master's in Infrastructure Management and IS Cybersecurity**, after completing a **BUT Informatique** at the IUT of Arles.",
       "Through my studies and professional experience, I have developed solid skills in **development and programming**, and above all a real **passion** for the field, from designing **clean and efficient** data **structures** to **web design**, which lets me express my **creativity** in the **digital** world."
     ],
     "location": "Bouc-Bel-Air ▪ France"
@@ -101,7 +101,7 @@
       "bunchofcards": {
         "description": "Web binder for my collection of miscellaneous cards.",
         "details": "Retro web experience inspired by Windows XP and the Source engine · scrollable cards tracking the cursor · front-and-back 3D card view.",
-        "linkText": "voir bunchofcards",
+        "linkText": "view bunchofcards",
         "story": {
           "bunchofcards-story-1": {
             "title": "Context",
