@@ -321,7 +321,7 @@ export default function HeaderV2({
 
     return (
     <div
-      className={isMobile ? "flex items-center gap-2 px-4 pt-6" : "absolute right-3 md:right-4 top-0 bottom-0 flex items-center gap-1.5"}
+      className={isMobile ? "mt-auto flex items-center gap-3 px-4 pb-2" : "absolute right-3 md:right-4 top-0 bottom-0 flex items-center gap-1.5"}
       aria-label={copy.language.ariaLabel}
       role="group"
     >
@@ -347,9 +347,10 @@ export default function HeaderV2({
               background: "transparent",
               border: `1px solid ${isActiveLanguage ? languageColor : "transparent"}`,
               borderRadius: 0,
-              padding: isMobile ? "0.24rem 0.28rem" : "0.28rem 0.32rem",
+              padding: isMobile ? "0.44rem 0.5rem" : "0.28rem 0.32rem",
               cursor: "pointer",
               textTransform: "lowercase",
+              fontSize: isMobile ? "1.6rem" : undefined,
             }}
             aria-pressed={isActiveLanguage}
           >
@@ -413,19 +414,22 @@ export default function HeaderV2({
           </nav>
 
           {/* Mobile button */}
-          <div className="md:hidden w-full flex items-center justify-between pr-3">
-            {!menuVisible && (
-              <button
-                onClick={() => setMenu(true)}
-                className="flex items-center justify-center w-[75px] h-[75px] text-current hover:text-current transition-colors"
-                style={{
-                  background: "transparent",
-                  border: "none",
-                  color: "currentColor",
-                }}>
-                <FaBars size={33}/>
-              </button>
-            )}
+          <div className="md:hidden relative w-full min-h-[75px] flex items-center justify-between pr-3">
+            <button
+              onClick={() => setMenu(true)}
+              className="flex items-center justify-center w-[75px] h-[75px] text-current hover:text-current transition-colors"
+              style={{
+                background: "transparent",
+                border: "none",
+                color: "currentColor",
+                opacity: menuVisible ? 0 : 1,
+                pointerEvents: menuVisible ? "none" : "auto",
+              }}
+              aria-hidden={menuVisible}
+              tabIndex={menuVisible ? -1 : 0}
+            >
+              <FaBars size={33}/>
+            </button>
             {renderLanguageSelector()}
           </div>
         </div>
@@ -442,7 +446,7 @@ export default function HeaderV2({
             />
             <div
               ref={mobileMenuPanelRef}
-              className="absolute top-0 left-0 h-full w-full border-r border-[#120D0D]/10 shadow-2xl px-6 pt-20 pb-8"
+              className="absolute top-0 left-0 flex h-full w-full flex-col border-r border-[#120D0D]/10 shadow-2xl px-6 pt-20 pb-8"
               style={{ background: "rgba(255,250,251,0.96)" }}
               onClick={e => e.stopPropagation()}
             >
