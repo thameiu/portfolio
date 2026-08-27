@@ -10,8 +10,11 @@ import { PiFileCSharp } from "react-icons/pi";
 import { WindevIcon } from "../v1/Utils";
 import GlitchTitle from "./GlitchTitle";
 import MainSectionV2 from "./MainSectionV2";
+import RichText from "./RichText";
+import type { PortfolioCopy } from "./i18n";
+import frCopy from "./i18n/fr.json";
 
-const TABS = ["expériences", "formation", "compétences"] as const;
+const TABS = ["experiences", "education", "skills"] as const;
 type Tab = typeof TABS[number];
 
 /* ── small reusable badge ── */
@@ -50,7 +53,7 @@ interface XPEntry {
   period: string;
   role: string;
   org: string;
-  desc: React.ReactNode;
+  desc: string;
   tags?: React.ReactNode;
   badge?: React.ReactNode;
 }
@@ -82,7 +85,9 @@ const XPItem = ({ e, isLast = false }: { e: XPEntry; isLast?: boolean }) => (
       {e.role}
     </h3>
     <p className="mb-3 text-sm font-medium" style={{ color: "rgba(45,16,16,0.78)", fontFamily: "'Sora', sans-serif" }}>{e.org}</p>
-    <div className="text-[0.95rem] leading-relaxed mb-4" style={{ color: "rgba(45,16,16,0.9)", fontFamily: "'Sora', sans-serif" }}>{e.desc}</div>
+    <div className="text-[0.95rem] leading-relaxed mb-4" style={{ color: "rgba(45,16,16,0.9)", fontFamily: "'Sora', sans-serif" }}>
+      <RichText text={e.desc} strongColor="#2D1010" />
+    </div>
     {e.tags && <div className="flex flex-wrap gap-2">{e.tags}</div>}
   </div>
 );
@@ -125,51 +130,30 @@ const SkillCard = ({
   </div>
 );
 
-/* ── data ── */
-const experiences: XPEntry[] = [
-  {
-    period: "Septembre 2025 - Aujourd'hui",
-    role: "Analyste Développeur",
-    org: "ACD ▪ Aix-en-Provence",
-    badge: <JobTag>Alternance</JobTag>,
-    desc: <>Maintenance applicative et développement sur <strong>Suite Expert</strong>, solution Bureau et Web pour experts comptables. Optimisation des performances, résolution de bugs, refactorisation.</>,
-    tags: <><Badge><SiDotnet/> ASP.NET MVC</Badge><Badge><PiFileCSharp/> C#</Badge><Badge><SiJavascript/> JavaScript</Badge><Badge><SiMysql/> SQL</Badge><Badge><VscAzureDevops/> Azure DevOps</Badge><Badge><WindevIcon/> WinDev</Badge></>,
-  },
-  {
-    period: "Septembre 2024 - Juin 2025",
-    role: "Développeur Full-Stack",
-    org: "Miratlas ▪ Pertuis",
-    badge: <JobTag>Alternance</JobTag>,
-    desc: <>Refonte de <strong>Pathfinder</strong>, application de cartographie de perturbations atmosphériques (FSOC). Conception BDD, API REST, dynamisation Frontend via Leaflet, graphiques temps réel.</>,
-    tags: <><Badge><SiNextdotjs/> Next.js</Badge><Badge><SiLaravel/> Laravel</Badge><Badge><SiLeaflet/> Leaflet</Badge><Badge><SiDocker/> Docker</Badge><Badge><SiPostgresql/> PostgreSQL</Badge><Badge><SiGitlab/> GitLab</Badge></>,
-  },
-  {
-    period: "Avril - Juin 2024",
-    role: "Développeur Web",
-    org: "Amiltone ▪ Aix-en-Provence",
-    badge: <JobTag>Stage</JobTag>,
-    desc: <>Développement sur <strong>Flotto</strong>, solution web de gestion de flotte automobile. Nouvelles fonctionnalités Frontend/Backend, accessibilité, corrections de bugs.</>,
-    tags: <><Badge><SiReact/> React</Badge><Badge><SiAngular/> Angular</Badge><Badge><SiNestjs/> NestJS</Badge><Badge><SiTypescript/> TypeScript</Badge><Badge><SiGitlab/> GitLab</Badge></>,
-  },
-];
-
-const formations: XPEntry[] = [
-  {
-    period: "2025 - 2027",
-    role: "Master of Science Technique",
-    org: "Epitech ▪ Marseille",
-    desc: "Architecte de Systèmes d'Information. Spécialisation Cybersécurité + Cloud. Projets avancés en équipe, projet de fin d'études sur 2 ans.",
-  },
-  {
-    period: "2022 - 2025",
-    role: "BUT Informatique",
-    org: "Aix-Marseille Université ▪ IUT d'Arles",
-    desc: "Formation complète en développement logiciel, bases de données, réseaux et gestion de projet. Méthodologies agiles et bonnes pratiques.",
-  },
-];
-
-export default function CareerV2() {
-  const [activeTab, setActiveTab] = useState<Tab>("expériences");
+export default function CareerV2({
+  copy = frCopy.career,
+}: {
+  copy?: PortfolioCopy["career"];
+}) {
+  const experiences: XPEntry[] = [
+    {
+      ...copy.experiences[0],
+      badge: <JobTag>{copy.experiences[0].badge}</JobTag>,
+      tags: <><Badge><SiDotnet/> ASP.NET MVC</Badge><Badge><PiFileCSharp/> C#</Badge><Badge><SiJavascript/> JavaScript</Badge><Badge><SiMysql/> SQL</Badge><Badge><VscAzureDevops/> Azure DevOps</Badge><Badge><WindevIcon/> WinDev</Badge></>,
+    },
+    {
+      ...copy.experiences[1],
+      badge: <JobTag>{copy.experiences[1].badge}</JobTag>,
+      tags: <><Badge><SiNextdotjs/> Next.js</Badge><Badge><SiLaravel/> Laravel</Badge><Badge><SiLeaflet/> Leaflet</Badge><Badge><SiDocker/> Docker</Badge><Badge><SiPostgresql/> PostgreSQL</Badge><Badge><SiGitlab/> GitLab</Badge></>,
+    },
+    {
+      ...copy.experiences[2],
+      badge: <JobTag>{copy.experiences[2].badge}</JobTag>,
+      tags: <><Badge><SiReact/> React</Badge><Badge><SiAngular/> Angular</Badge><Badge><SiNestjs/> NestJS</Badge><Badge><SiTypescript/> TypeScript</Badge><Badge><SiGitlab/> GitLab</Badge></>,
+    },
+  ];
+  const formations: XPEntry[] = copy.education;
+  const [activeTab, setActiveTab] = useState<Tab>("experiences");
   const [panelMinHeight, setPanelMinHeight] = useState<number>(0);
   const sectionRef   = useRef<HTMLElement>(null);
   const tabNavRef    = useRef<HTMLDivElement>(null);
@@ -203,20 +187,17 @@ export default function CareerV2() {
   }, []);
 
   useEffect(() => {
-    const getActiveTabMeasureRef = () => {
-      if (activeTab === "expériences") return measureExpRef.current;
-      if (activeTab === "formation") return measureFormRef.current;
-      return measureSkillsRef.current;
-    };
-
     const measure = () => {
-      const activeMeasure = getActiveTabMeasureRef();
-      const activeTabHeight = Math.ceil(
-        activeMeasure?.getBoundingClientRect().height ??
-        tabPanelRef.current?.getBoundingClientRect().height ??
-        0
+      const measuredHeights = [
+        measureExpRef.current,
+        measureFormRef.current,
+        measureSkillsRef.current,
+      ].map((node) => Math.ceil(node?.getBoundingClientRect().height ?? 0));
+      const maxTabHeight = Math.max(
+        ...measuredHeights,
+        Math.ceil(tabPanelRef.current?.getBoundingClientRect().height ?? 0),
       );
-      if (activeTabHeight > 0) setPanelMinHeight(activeTabHeight);
+      if (maxTabHeight > 0) setPanelMinHeight(maxTabHeight);
     };
 
     const run = () => requestAnimationFrame(() => requestAnimationFrame(measure));
@@ -226,8 +207,10 @@ export default function CareerV2() {
       ? new ResizeObserver(() => run())
       : null;
     if (ro) {
-      if (sectionRef.current) ro.observe(sectionRef.current);
       if (tabPanelRef.current) ro.observe(tabPanelRef.current);
+      if (measureExpRef.current) ro.observe(measureExpRef.current);
+      if (measureFormRef.current) ro.observe(measureFormRef.current);
+      if (measureSkillsRef.current) ro.observe(measureSkillsRef.current);
     }
 
     window.addEventListener("resize", run);
@@ -235,7 +218,7 @@ export default function CareerV2() {
       window.removeEventListener("resize", run);
       ro?.disconnect();
     };
-  }, [activeTab]);
+  }, [copy]);
 
   /* ── animated tab change ── */
   const changeTab = (tab: Tab) => {
@@ -266,15 +249,15 @@ export default function CareerV2() {
   };
 
   const renderTabContent = (tab: Tab) => {
-    if (tab === "expériences") {
+    if (tab === "experiences") {
       return <div>{experiences.map((e, i) => <XPItem key={`xp-${i}`} e={e} isLast={i === experiences.length - 1} />)}</div>;
     }
-    if (tab === "formation") {
+    if (tab === "education") {
       return <div>{formations.map((e, i) => <XPItem key={`f-${i}`} e={e} isLast={i === formations.length - 1} />)}</div>;
     }
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        <SkillCard icon={<FaDesktop/>} title="Frontend" index={0}>
+        <SkillCard icon={<FaDesktop/>} title={copy.skillTitles.frontend} index={0}>
           <Badge><SiReact/> React</Badge>
           <Badge><SiNextdotjs/> Next.js</Badge>
           <Badge><SiAngular/> Angular</Badge>
@@ -282,7 +265,7 @@ export default function CareerV2() {
           <Badge><SiLeaflet/> Leaflet</Badge>
           <Badge><SiDotnet/> Kendo UI</Badge>
         </SkillCard>
-        <SkillCard icon={<FaServer/>} title="Backend" index={1}>
+        <SkillCard icon={<FaServer/>} title={copy.skillTitles.backend} index={1}>
           <Badge><FaNodeJs/> Node.js</Badge>
           <Badge><SiNestjs/> NestJS</Badge>
           <Badge><SiFastapi/> FastAPI</Badge>
@@ -290,20 +273,20 @@ export default function CareerV2() {
           <Badge><SiLaravel/> Laravel</Badge>
           <Badge><SiDotnet/> ASP.NET</Badge>
         </SkillCard>
-        <SkillCard icon={<FaDatabase/>} title="Bases de données" index={2}>
+        <SkillCard icon={<FaDatabase/>} title={copy.skillTitles.databases} index={2}>
           <Badge><SiPostgresql/> PostgreSQL</Badge>
           <Badge><SiMysql/> MySQL</Badge>
           <Badge><SiMongodb/> MongoDB</Badge>
           <Badge><SiSupabase/> Supabase</Badge>
         </SkillCard>
-        <SkillCard icon={<FaTools/>} title="Outils" index={3}>
+        <SkillCard icon={<FaTools/>} title={copy.skillTitles.tools} index={3}>
           <Badge><SiDocker/> Docker</Badge>
           <Badge><SiGit/> Git</Badge>
           <Badge><SiGitlab/> GitLab</Badge>
           <Badge><SiJenkins/> Jenkins</Badge>
           <Badge><VscAzureDevops/> Azure DevOps</Badge>
         </SkillCard>
-        <SkillCard icon={<FaCode/>} title="Langages" index={4}>
+        <SkillCard icon={<FaCode/>} title={copy.skillTitles.languages} index={4}>
           <Badge><SiJavascript/> JavaScript</Badge>
           <Badge><SiTypescript/> TypeScript</Badge>
           <Badge><PiFileCSharp/> C#</Badge>
@@ -312,7 +295,7 @@ export default function CareerV2() {
           <Badge><FaJava/> Java</Badge>
           <Badge><SiCplusplus/> C++</Badge>
         </SkillCard>
-        <SkillCard icon={<FaLaptopCode/>} title="Bureau" index={5}>
+        <SkillCard icon={<FaLaptopCode/>} title={copy.skillTitles.desktop} index={5}>
           <Badge><SiOpengl/> OpenGL</Badge>
           <Badge><SiQt/> Qt</Badge>
           <Badge><WindevIcon/> WinDev</Badge>
@@ -330,7 +313,7 @@ export default function CareerV2() {
     >
       {/* Mega title */}
       <GlitchTitle
-        text="Parcours"
+        text={copy.title}
         color="#881111"
         triggerRef={sectionRef}
         className="v2-mega-title mb-16"
@@ -365,7 +348,7 @@ export default function CareerV2() {
             >
               {activeTab === tab ? "▪" : "▫"}
             </span>
-            {tab}
+            {copy.tabs[tab]}
             <span
               aria-hidden="true"
               className="absolute inset-y-0 right-1.5 sm:right-2.5 flex items-center"
@@ -403,9 +386,9 @@ export default function CareerV2() {
           visibility: "hidden",
         }}
       >
-        <div ref={measureExpRef}>{renderTabContent("expériences")}</div>
-        <div ref={measureFormRef}>{renderTabContent("formation")}</div>
-        <div ref={measureSkillsRef}>{renderTabContent("compétences")}</div>
+        <div ref={measureExpRef}>{renderTabContent("experiences")}</div>
+        <div ref={measureFormRef}>{renderTabContent("education")}</div>
+        <div ref={measureSkillsRef}>{renderTabContent("skills")}</div>
       </div>
     </MainSectionV2>
   );

@@ -53,6 +53,7 @@ export default function GlitchTitle({
     const overlay = overlayRef.current;
     if (!section || !title || !base || !overlay) return;
 
+    playedRef.current = false;
     gsap.set(base, { opacity: 0 });
     gsap.set(overlay, { opacity: 0, y: -18, color });
 

@@ -1,36 +1,24 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, type CSSProperties } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import gsap from "gsap";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
+import type { Language, PortfolioCopy } from "./i18n";
 
 const PRIMARY = "#881111";
 const ACCENT  = "#DD3A3A";
 const MOBILE_HIGHLIGHT_TEXT = "#000000";
 const LEGACY_BLEND_SOURCE = "#FFFFFF";
-const invertHexColor = (hex: string) => {
-  const normalized = hex.replace("#", "");
-  if (normalized.length !== 6) return LEGACY_BLEND_SOURCE;
-  const [r, g, b] = normalized.match(/.{2}/g) ?? [];
-  if (!r || !g || !b) return LEGACY_BLEND_SOURCE;
+// These sources resolve to the site's reds when difference-blended over the off-white page.
+const HEADER_BLEND_SOURCE = "#77EEEE";
+const HEADER_ACTIVE_BLEND_SOURCE = "#22C5C5";
 
-  const inverted = [r, g, b]
-    .map((channel) => (255 - Number.parseInt(channel, 16)).toString(16).padStart(2, "0"))
-    .join("");
-
-  return `#${inverted.toUpperCase()}`;
-};
-const HEADER_BLEND_SOURCE = invertHexColor(PRIMARY);
-const HEADER_ACTIVE_BLEND_SOURCE = invertHexColor(ACCENT);
-
-const navItems = [
-  { id: "v2-about",          label: "à propos" },
-  { id: "v2-career",         label: "parcours" },
-  { id: "v2-projects",       label: "projets"  },
-  { id: "v2-contact",        label: "contact"  },
-];
-const navItemsLeft = navItems.slice(0, 2);
-const navItemsRight = navItems.slice(2);
+const NAV_ITEM_CONFIG = [
+  { id: "v2-about", key: "about" },
+  { id: "v2-projects", key: "projects" },
+  { id: "v2-career", key: "career" },
+  { id: "v2-contact", key: "contact" },
+] as const;
 const DEFAULT_ACTIVE_SECTION = "v2-about";
 
 function MHLogo() {
@@ -53,21 +41,28 @@ function MHLogo() {
   );
 }
 
-export default function HeaderV2() {
-  const [isVisible,      setVisible]    = useState(false);
+export default function HeaderV2({
+  copy,
+  language,
+  onLanguageChange,
+}: {
+  copy: PortfolioCopy;
+  language: Language;
+  onLanguageChange: (language: Language) => void;
+}) {
+  const navItems = NAV_ITEM_CONFIG.map((item) => ({
+    id: item.id,
+    label: copy.nav[item.key],
+  }));
+  const navItemsLeft = navItems.slice(0, 2);
+  const navItemsRight = navItems.slice(2);
   const [menuVisible,    setMenu]       = useState(false);
   const [activeSection,  setActive]     = useState(DEFAULT_ACTIVE_SECTION);
-  const [activeLetterHighlighted, setActiveLetterHighlighted] = useState(true);
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
-  const [hovering,       setHovering]   = useState(false);
   const isClickScrolling = useRef(false);
-  const hideTimerRef     = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const hoveringRef      = useRef(false);
-  const lastScrollYRef    = useRef(0);
   const mobileMenuPanelRef = useRef<HTMLDivElement | null>(null);
   const mobileMenuOverlayRef = useRef<HTMLDivElement | null>(null);
   const mobileMenuClosingRef = useRef(false);
-  const headerHoverRef = useRef<HTMLDivElement | null>(null);
 
   const getDocumentTop = (node: HTMLElement) => {
     let top = 0;
@@ -98,46 +93,16 @@ export default function HeaderV2() {
     return Math.max(0, baseTop - 80);
   };
 
-  /* keep hoveringRef in sync */
-  useEffect(() => { hoveringRef.current = hovering; }, [hovering]);
-
-  useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      setActiveLetterHighlighted((value) => !value);
-    }, 500);
-
-    return () => window.clearInterval(intervalId);
-  }, []);
-
-  /* hide/show on scroll */
+  /* bottom-of-page active section guard */
   useEffect(() => {
     let maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
     const updateScrollBounds = () => {
       maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
     };
 
-    const scheduleHide = () => {
-      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-      hideTimerRef.current = setTimeout(() => {
-        if (!hoveringRef.current) setVisible(false);
-      }, 1500);
-    };
-
     const onScroll = () => {
       const smoother = ScrollSmoother.get();
       const y = smoother ? smoother.scrollTop() : window.scrollY;
-      const lastY = lastScrollYRef.current;
-
-      if (hoveringRef.current) {
-        if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-        setVisible(true);
-      } else if (y > lastY + 2) {
-        if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-        setVisible(false);
-      } else if (y < lastY - 2) {
-        setVisible(true);
-        scheduleHide();
-      }
 
       if (!isClickScrolling.current) {
         const isReallyScrollable = maxScroll > 120;
@@ -145,28 +110,17 @@ export default function HeaderV2() {
           setActive("v2-contact");
         }
       }
-      lastScrollYRef.current = y;
-    };
-
-    const onMouse = (e: MouseEvent) => {
-      if (e.clientY < 56) {
-        if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-        setVisible(true);
-      }
     };
 
     window.addEventListener("scroll",    onScroll, { passive: true });
-    window.addEventListener("mousemove", onMouse);
     window.addEventListener("resize", updateScrollBounds);
     window.addEventListener("load", updateScrollBounds);
     updateScrollBounds();
     onScroll();
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("mousemove", onMouse);
       window.removeEventListener("resize", updateScrollBounds);
       window.removeEventListener("load", updateScrollBounds);
-      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
     };
   }, []);
 
@@ -275,7 +229,6 @@ export default function HeaderV2() {
 
   const scrollToSection = (id: string) => {
     closeMobileMenu();
-    setVisible(true);
     isClickScrolling.current = true;
     setActive(id);
     setTimeout(() => { isClickScrolling.current = false; }, 1500);
@@ -296,7 +249,6 @@ export default function HeaderV2() {
     else execute();
   };
 
-  const shouldShow = isVisible || hovering || menuVisible;
   const animatedSection =
     hoveredSection && hoveredSection !== activeSection
       ? hoveredSection
@@ -309,20 +261,15 @@ export default function HeaderV2() {
     highlightTextColor: string,
   ) => {
     const [firstLetter = "", ...restLetters] = Array.from(label);
-    const shouldHighlightFirstLetter = isAnimated && activeLetterHighlighted;
 
     return (
       <span className="relative z-10 inline transition-opacity duration-300">
         <span
+          className={isAnimated ? "v2-header-label-first v2-header-label-first--blink" : "v2-header-label-first"}
           style={{
-            display: "inline-block",
-            lineHeight: 1,
-            paddingInline: "0.015em",
-            borderRadius: 0,
-            background: shouldHighlightFirstLetter ? highlightBackground : "transparent",
-            color: shouldHighlightFirstLetter ? highlightTextColor : "inherit",
-            transition: "background-color 180ms ease, color 180ms ease",
-          }}
+            "--v2-header-highlight-bg": highlightBackground,
+            "--v2-header-highlight-color": highlightTextColor,
+          } as CSSProperties}
         >
           {firstLetter}
         </span>
@@ -348,7 +295,9 @@ export default function HeaderV2() {
           onMouseEnter={() => setHoveredSection(item.id)}
           onMouseLeave={() => setHoveredSection((current) => (current === item.id ? null : current))}
           style={{
-            color: isEmphasized ? HEADER_ACTIVE_BLEND_SOURCE : "currentColor",
+            color: isEmphasized
+                ? HEADER_ACTIVE_BLEND_SOURCE
+                : "currentColor",
             opacity: isEmphasized ? 1 : 0.82,
           }}
         >
@@ -367,33 +316,65 @@ export default function HeaderV2() {
     );
   };
 
+  const renderLanguageSelector = (isMobile = false) => {
+    const options: Language[] = ["en", "fr"];
+
+    return (
+    <div
+      className={isMobile ? "flex items-center gap-2 px-4 pt-6" : "absolute right-3 md:right-4 top-0 bottom-0 flex items-center gap-1.5"}
+      aria-label={copy.language.ariaLabel}
+      role="group"
+    >
+      {options.map((item) => {
+        const isActiveLanguage = language === item;
+        const languageColor = isMobile
+          ? isActiveLanguage
+            ? ACCENT
+            : PRIMARY
+          : isActiveLanguage
+            ? HEADER_ACTIVE_BLEND_SOURCE
+            : "currentColor";
+
+        return (
+          <button
+            key={item}
+            type="button"
+            onClick={() => onLanguageChange(item)}
+            className="font-['Sora'] text-xs font-semibold tracking-[0.14em] leading-none transition-opacity"
+            style={{
+              color: languageColor,
+              opacity: isActiveLanguage ? 1 : 0.58,
+              background: "transparent",
+              border: `1px solid ${isActiveLanguage ? languageColor : "transparent"}`,
+              borderRadius: 0,
+              padding: isMobile ? "0.24rem 0.28rem" : "0.28rem 0.32rem",
+              cursor: "pointer",
+              textTransform: "lowercase",
+            }}
+            aria-pressed={isActiveLanguage}
+          >
+            {copy.language[item].toLowerCase()}
+          </button>
+        );
+      })}
+    </div>
+    );
+  };
+
   return (
     <>
-      <div
-        className="fixed top-0 left-0 w-full h-12 z-40 pointer-events-auto"
-        onMouseEnter={() => setVisible(true)}
-        aria-hidden="true"
-      />
       <header
         className="fixed top-4 left-0 w-full z-[140] flex justify-start md:justify-center px-2 md:px-4 pointer-events-none"
         style={{
           color: HEADER_BLEND_SOURCE,
           mixBlendMode: "difference",
-          top: shouldShow ? "0.5rem" : "-4rem",
+          top: "0.5rem",
           transition: "top 300ms ease-in-out",
-          willChange: "top",
         }}
       >
         <div
-          ref={headerHoverRef}
           className="pointer-events-auto flex w-full md:justify-center"
-          onMouseEnter={() => { setHovering(true); if (hideTimerRef.current) clearTimeout(hideTimerRef.current); }}
-          onMouseLeave={() => {
-            setHovering(false);
-            /* restart hide timer when cursor leaves header */
-            if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-            hideTimerRef.current = setTimeout(() => setVisible(false), 1500);
-          }}>
+        >
 
           {/* Desktop nav */}
           <nav
@@ -428,10 +409,11 @@ export default function HeaderV2() {
                 {navItemsRight.map(renderDesktopNavItem)}
               </ul>
             </div>
+            {renderLanguageSelector()}
           </nav>
 
           {/* Mobile button */}
-          <div className="md:hidden">
+          <div className="md:hidden w-full flex items-center justify-between pr-3">
             {!menuVisible && (
               <button
                 onClick={() => setMenu(true)}
@@ -444,6 +426,7 @@ export default function HeaderV2() {
                 <FaBars size={33}/>
               </button>
             )}
+            {renderLanguageSelector()}
           </div>
         </div>
       </header>
@@ -495,6 +478,7 @@ export default function HeaderV2() {
                   );
                 })}
               </ul>
+              {renderLanguageSelector(true)}
             </div>
             <div className="absolute top-4 left-4">
               <button

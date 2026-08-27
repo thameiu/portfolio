@@ -1,0 +1,154 @@
+{
+  "language": {
+    "ariaLabel": "Choisir la langue",
+    "fr": "FR",
+    "en": "EN"
+  },
+  "meta": {
+    "title": "Mathieu Hernandez - Portfolio",
+    "description": "Mathieu Hernandez, Développeur Polyvalent - Portfolio",
+    "ogDescription": "Portfolio de Mathieu Hernandez, développeur polyvalent (Frontend, Backend, Web Design, Cloud, Cybersécurité).",
+    "twitterDescription": "Portfolio de Mathieu Hernandez, développeur full-stack.",
+    "imageAlt": "Aperçu du portfolio de Mathieu Hernandez",
+    "keywords": "Mathieu Hernandez, portfolio, développeur web, développeur full-stack, développeur frontend, développeur backend, Next.js, React, TypeScript, NestJS, FastAPI, Laravel, Docker, Leaflet, PostgreSQL, cybersécurité, cloud, alternance, Marseille, Aix-en-Provence, Windev, rgbast, RGBast, GGPS, Pathfinder, 2Clock, Three, Three.js, Web Design, Web Designer, webdev, web dev, dev web"
+  },
+  "nav": {
+    "about": "à propos",
+    "projects": "projets",
+    "career": "parcours",
+    "contact": "contact"
+  },
+  "hero": {
+    "subtitle": "▪ Développeur Full-stack ▪"
+  },
+  "about": {
+    "title": "À Propos",
+    "showPhoto": "Afficher la photo normale",
+    "showCube": "Afficher la version cube",
+    "paragraphs": [
+      "Je m'appelle **Mathieu HERNANDEZ**, j'ai 21 ans et je suis actuellement étudiant à **Epitech**, Marseille, dans le cadre d'un **Master of Science Technique**, avec une spécialisation en **Cybersécurité + Cloud**, après avoir réalisé un **BUT Informatique** à l'IUT d'Arles.",
+      "À travers mes études et expériences professionnelles, j'ai non seulement développé des compétences solides en **développement et en programmation**, mais surtout cultivé une **passion** pour ce domaine, que ce soit dans la conception de **structures** de données **propres et efficaces** ou dans le **web design**, qui m'a permis d'exprimer ma **créativité** dans le monde du **numérique**."
+    ],
+    "location": "Bouc-Bel-Air ▪ France"
+  },
+  "career": {
+    "title": "Parcours",
+    "tabs": {
+      "experiences": "expériences",
+      "education": "formation",
+      "skills": "compétences"
+    },
+    "experiences": [
+      {
+        "period": "Septembre 2025 - Aujourd'hui",
+        "role": "Analyste Développeur",
+        "org": "ACD ▪ Aix-en-Provence",
+        "badge": "Alternance",
+        "desc": "Maintenance applicative et développement sur **Suite Expert**, solution Bureau et Web pour experts comptables. Optimisation des performances, résolution de bugs, refactorisation."
+      },
+      {
+        "period": "Septembre 2024 - Juin 2025",
+        "role": "Développeur Full-Stack",
+        "org": "Miratlas ▪ Pertuis",
+        "badge": "Alternance",
+        "desc": "Refonte de **Pathfinder**, application de cartographie de perturbations atmosphériques (FSOC). Conception BDD, API REST, dynamisation Frontend via Leaflet, graphiques temps réel."
+      },
+      {
+        "period": "Avril - Juin 2024",
+        "role": "Développeur Web",
+        "org": "Amiltone ▪ Aix-en-Provence",
+        "badge": "Stage",
+        "desc": "Développement sur **Flotto**, solution web de gestion de flotte automobile. Nouvelles fonctionnalités Frontend/Backend, accessibilité, corrections de bugs."
+      }
+    ],
+    "education": [
+      {
+        "period": "2026 - 2028",
+        "role": "Mastère professionnel manager en infrastructures et cybersécurité des SI",
+        "org": "CESI ▪ Aix-en-Provence",
+        "desc": "Gestion de projets avancées, cybersécurité appliquée, cloud et infrastructures."
+      },
+      {
+        "period": "2022 - 2025",
+        "role": "BUT Informatique",
+        "org": "Aix-Marseille Université ▪ IUT d'Arles",
+        "desc": "Formation complète en développement logiciel, bases de données, réseaux et gestion de projet. Méthodologies agiles et bonnes pratiques."
+      }
+    ],
+    "skillTitles": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "databases": "Bases de données",
+      "tools": "Outils",
+      "languages": "Langages",
+      "desktop": "Bureau"
+    }
+  },
+  "projects": {
+    "title": "Projets",
+    "tabs": {
+      "web": "apps web",
+      "others": "autres"
+    },
+    "viewMore": "voir plus",
+    "back": "Retour",
+    "previousImage": "Image précédente",
+    "nextImage": "Image suivante",
+    "noPreview": "▪ aperçu bientôt ▪",
+    "defaultLinkText": "voir le projet",
+    "previewAltSuffix": "aperçu",
+    "cards": {
+      "bunchofcards": {
+        "description": "Classeur web de ma collection de cartes diverses.",
+        "details": "Expérience web rétro inspirée de Windows XP et du moteur Source · cartes scrollables orientées vers le curseur · visualisation 3D recto-verso.",
+        "linkText": "voir bunchofcards",
+        "story": {
+          "bunchofcards-story-1": {
+            "title": "Contexte",
+            "text": "Depuis de nombreuses années, je collectionne des **cartes** aléatoires, de restaurants où je mange, d’artistes que je rencontre, de boutiques que je visite… J’en ai tellement accumulé que mon portefeuille de l’époque commençait à se déchirer.<br/><br/>Je voulais faire quelque chose de ces cartes, et éventuellement, j’ai eu l’idée d’en faire un **classeur digital**, que j’ai appelé “**bunchofcards**”."
+          },
+          "bunchofcards-story-2": {
+            "title": "Projet",
+            "text": "**bunchofcards** contient des dizaines de cartes que j’ai manuellement **scannées** et **éditées**, pour qu’elles soient correctement rognées et toutes à la même échelle. Il les présente via une liste **scrollable**, où toutes les cartes **s’orientent** constamment vers le curseur, ou alors sur une grille répétant les cartes à **l’infini**. Cliquer sur une carte permet de la visualiser en **3D, recto-verso**, et d’obtenir une description de celle-ci.<br/><br/>Sur ce projet j’ai voulu reproduire une esthétique rétro, proche de **Windows XP**, et s’inspirant également du moteur de jeu **Source** (à travers les fonds quadrillés rose et noir, et un easter egg).<br/><br/>Ces cartes que je collectionne représentent des instants ou **expériences** de ma vie. D’autres détails et fonctionnalités utilisant les cartes sont présents sur le site."
+          }
+        }
+      },
+      "rgbast": {
+        "description": "Application web de versionning et génération de palettes de couleurs pour designers et développeurs.",
+        "details": "Frontend Vue 3 + Vite · Backend FastAPI + SQLAlchemy + Alembic · VPS Ubuntu + CI/CD GitHub Actions · reverse proxy Nginx + Docker.",
+        "linkText": "voir RGBAST"
+      },
+      "2clock": {
+        "description": "Application web de pointage horodaté et d'analyse de KPI en entreprise avec sécurité avancée.",
+        "details": "Architecture microservices Next.js + Express · codes TOTP éphémères WebSocket · CI/CD Jenkins · Docker + Nginx + SSL.",
+        "linkText": "voir le dépôt"
+      },
+      "pathfinder": {
+        "description": "Application web de cartographie de perturbations atmosphériques pour communications optiques en espace libre.",
+        "details": "Leaflet interactif · traitement pixel-par-pixel des images nuageuses · graphiques Recharts · back-office gestion utilisateurs et datasets",
+        "linkText": "voir Miratlas"
+      },
+      "ggps": {
+        "description": "Application web de localisation d'événements du jeu vidéo avec chatrooms temps réel.",
+        "details": "NestJS + WebSockets Socket.io · géolocalisation Leaflet · système de permissions par rôles · authentification JWT."
+      },
+      "glproject": {
+        "description": "Moteur de visualisation 3D pédagogique (OpenGL).",
+        "details": "Programmation bas-niveau C++ et GPU, shaders GLSL (Phong, Blinn-Phong, flou Gaussien), projections planaires/sphériques/cylindriques/cubiques, chargement .obj, caméra et lumières dynamiques."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "intro": "Disponible pour opportunités, collaborations ou simplement échanger.",
+    "emailCopied": "E-mail copié !",
+    "emailLabel": "E-mail",
+    "linkedinLabel": "LinkedIn",
+    "githubLabel": "GitHub",
+    "cvLabel": "CV",
+    "cvValue": "Télécharger mon CV",
+    "cvDownload": "Télécharger",
+    "cvClose": "Fermer",
+    "cvTitle": "CV Mathieu Hernandez"
+  }
+}

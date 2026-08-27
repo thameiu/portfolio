@@ -7,9 +7,17 @@ const CV_FILE = "/CV_HERNANDEZ_MATHIEU_2026-2028.pdf";
 
 interface CVModalProps {
   onClose: () => void;
+  downloadLabel?: string;
+  closeLabel?: string;
+  title?: string;
 }
 
-const CVModal: React.FC<CVModalProps> = ({ onClose }) => {
+const CVModal: React.FC<CVModalProps> = ({
+  onClose,
+  downloadLabel = "Télécharger",
+  closeLabel = "Fermer",
+  title = "CV Mathieu Hernandez",
+}) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -56,12 +64,12 @@ const CVModal: React.FC<CVModalProps> = ({ onClose }) => {
             className="flex items-center gap-2 px-3 py-2 bg-[var(--color-primary)] hover:bg-[var(--color-secondary)] text-white rounded-lg transition-colors text-sm font-medium"
           >
             <FaFileDownload />
-            <span className="hidden sm:inline">Télécharger</span>
+            <span className="hidden sm:inline">{downloadLabel}</span>
           </button>
           <button
             onClick={onClose}
             className="p-2 hover:bg-white/20 rounded-full transition-colors"
-            aria-label="Fermer"
+            aria-label={closeLabel}
           >
             <FaTimes className="text-xl text-white" />
           </button>
@@ -75,7 +83,7 @@ const CVModal: React.FC<CVModalProps> = ({ onClose }) => {
       >
         <iframe
           src={CV_FILE}
-          title="CV Mathieu Hernandez"
+          title={title}
           className="w-full h-full border-0 bg-transparent"
         />
       </div>

@@ -76,5 +76,25 @@ export default function ProjectBackdropLayer({
     );
   }
 
+  if (config.preset === "bunchofcardsRetro") {
+    return (
+      <div
+        aria-hidden="true"
+        className="v2-boc-backdrop"
+        style={{ opacity }}
+      >
+        <div className="v2-boc-backdrop-frame">
+          <div className="v2-boc-backdrop-header">
+            <span className="v2-boc-backdrop-icon" />
+            <span className="v2-boc-backdrop-title">bunchofcards</span>
+          </div>
+          <div className="v2-boc-backdrop-panel">
+            <div className="v2-boc-backdrop-hero" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return null;
 }

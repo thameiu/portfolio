@@ -105,6 +105,31 @@ body.v2-page .v2-section-shell {
   will-change: transform, opacity, color;
 }
 
+.v2-header-label-first {
+  display: inline-block;
+  line-height: 1;
+  padding-inline: 0.015em;
+  border-radius: 0;
+}
+
+.v2-header-label-first--blink {
+  animation: v2-header-first-blink 1s steps(1, end) infinite;
+}
+
+@keyframes v2-header-first-blink {
+  0%,
+  49.999% {
+    background: var(--v2-header-highlight-bg);
+    color: var(--v2-header-highlight-color);
+  }
+
+  50%,
+  100% {
+    background: transparent;
+    color: inherit;
+  }
+}
+
 /* ── Section mega-title ── */
 .v2-mega-title {
   position: relative;
@@ -761,5 +786,143 @@ body.v2-page .v2-contact-cutelinks * {
     transform: translateY(-0.5px);
     background: rgba(255,255,255,0.07);
     pointer-events: none;
+  }
+}
+
+.v2-boc-backdrop {
+  --eggplant: #19001a;
+  --shockpink: #c41bd4;
+  --alabaster: #faf9fa;
+  --retro-panel: #d4d0c8;
+  --retro-panel-light: #ffffff;
+  --retro-panel-shadow: #7f7f7f;
+  --retro-border: #4d4d4d;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background: var(--shockpink);
+  color: #fff;
+  font-family: "Sora", sans-serif;
+}
+
+.v2-boc-backdrop-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-top: 2px solid var(--shockpink);
+  border-left: 3px solid var(--shockpink);
+  border-right: 4px solid #9814a3;
+  border-bottom: 4px solid #9814a3;
+  background: linear-gradient(180deg, #fdf8fd 0%, #f5f0f5 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.9),
+    inset -1px -1px 0 rgba(120, 14, 132, 0.75),
+    inset 0 0 0 2px rgba(196, 27, 212, 0.42);
+}
+
+.v2-boc-backdrop-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 4px 8px;
+  border-bottom: 1px solid #7a0e84;
+  background: linear-gradient(90deg, var(--shockpink) 0%, var(--shockpink) 70%, #a114ad 100%);
+  color: #fff;
+  gap: 7px;
+}
+
+.v2-boc-backdrop-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.v2-boc-backdrop-icon {
+  display: block;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  image-rendering: pixelated;
+  background-image: url("/bunchofcards/cards_favicon.ico");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.v2-boc-backdrop-panel {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255, 250, 254, 0.95), rgba(250, 249, 250, 1));
+}
+
+.v2-boc-backdrop-hero {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: clamp(140px, 24vw, 220px);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.v2-boc-backdrop-hero::before,
+.v2-boc-backdrop-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.v2-boc-backdrop-hero::before {
+  background-image: url("/bunchofcards/bliss.jpg");
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  transform: translateZ(0);
+}
+
+.v2-boc-backdrop-hero::after {
+  background: linear-gradient(
+    180deg,
+    rgba(250, 249, 250, 0) 0%,
+    rgba(250, 249, 250, 0.06) 50%,
+    rgba(250, 249, 250, 0.74) 78%,
+    rgba(250, 249, 250, 0.98) 92%,
+    rgba(250, 249, 250, 1) 100%
+  );
+}
+
+@media (max-width: 720px) {
+  .v2-boc-backdrop-frame {
+    border-top-width: 2px;
+    border-left-width: 3px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+  }
+
+  .v2-boc-backdrop-header {
+    min-height: 28px;
+    padding: 4px 7px;
+  }
+
+  .v2-boc-backdrop-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .v2-boc-backdrop-hero {
+    height: clamp(76px, 24vw, 118px);
   }
 }

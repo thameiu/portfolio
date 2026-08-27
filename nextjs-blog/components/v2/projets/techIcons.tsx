@@ -16,9 +16,11 @@ import {
   SiOpengl,
   SiPhp,
   SiPostgresql,
+  SiReact,
   SiSocketdotio,
   SiSqlalchemy,
   SiSupabase,
+  SiThreedotjs,
   SiTypescript,
   SiVite,
   SiVuedotjs,
@@ -26,6 +28,7 @@ import {
 
 export const TECH_ICON: Record<string, React.ReactNode> = {
   "Next.js": <SiNextdotjs />,
+  React: <SiReact />,
   Express: <SiExpress />,
   TypeScript: <SiTypescript />,
   Supabase: <SiSupabase />,
@@ -47,4 +50,5 @@ export const TECH_ICON: Record<string, React.ReactNode> = {
   "C++": <SiCplusplus />,
   OpenGL: <SiOpengl />,
   CMake: <SiCmake />,
+  "Three.js": <SiThreedotjs />,
 };

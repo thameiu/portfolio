@@ -12,6 +12,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CVModal from "../v1/CVModal";
 import CuteLinks from "../v1/CuteLinks";
 import GlitchTitle from "./GlitchTitle";
+import type { PortfolioCopy } from "./i18n";
+import frCopy from "./i18n/fr.json";
 
 const CONTACT_OVERLAP = "clamp(-120px, -7vw, -36px)";
 const CONTACT_BG_GLYPHS = [
@@ -452,7 +454,11 @@ function ContactCard({ icon, label, value, onClick, href }: ContactCardProps) {
 }
 
 /* ─── main ─────────────────────────────────────── */
-export default function ContactV2() {
+export default function ContactV2({
+    copy = frCopy.contact,
+}: {
+    copy?: PortfolioCopy["contact"];
+}) {
     const sectionRef = useRef<HTMLElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
     const colLeft = useRef<HTMLDivElement>(null);
@@ -480,8 +486,11 @@ export default function ContactV2() {
                     document.body.classList.remove("v2-contact-active"),
             });
 
-            // Cover transition: contact rises over projects while projects stay pinned behind.
-            const previousSection = document.getElementById("v2-projects");
+            // Cover transition: contact rises over the previous section while it stays pinned behind.
+            const previousSection =
+                sectionRef.current?.previousElementSibling instanceof HTMLElement
+                    ? sectionRef.current.previousElementSibling
+                    : document.getElementById("v2-career");
             if (previousSection) {
                 ScrollTrigger.create({
                     trigger: sectionRef.current,
@@ -586,7 +595,7 @@ export default function ContactV2() {
     const handleCopyEmail = () => {
         const email = "hernandez.mathieu19@gmail.com";
         navigator.clipboard.writeText(email);
-        setEmailDisplay("E-mail copié !");
+        setEmailDisplay(copy.emailCopied);
         setTimeout(() => setEmailDisplay(email), 1400);
     };
 
@@ -607,7 +616,7 @@ export default function ContactV2() {
                 {/* Mega title */}
                 <div className="mb-16">
                     <GlitchTitle
-                        text="Contact"
+                        text={copy.title}
                         color="#DD3A3A"
                         triggerRef={sectionRef}
                         className="v2-mega-title"
@@ -628,33 +637,32 @@ export default function ContactV2() {
                                 fontFamily: "'Sora',sans-serif",
                             }}
                         >
-                            Disponible pour opportunités, collaborations ou
-                            simplement échanger.
+                            {copy.intro}
                         </p>
 
                         <div className="v2-contact-grid grid grid-cols-1 sm:grid-cols-2 gap-0">
                             <ContactCard
                                 icon={<FaEnvelope />}
-                                label="E-mail"
+                                label={copy.emailLabel}
                                 value={emailDisplay}
                                 onClick={handleCopyEmail}
                             />
                             <ContactCard
                                 icon={<FaLinkedin />}
-                                label="LinkedIn"
+                                label={copy.linkedinLabel}
                                 value="Mathieu Hernandez"
                                 href="https://www.linkedin.com/in/mathieu-hernandez-dev/"
                             />
                             <ContactCard
                                 icon={<FaGithub />}
-                                label="GitHub"
+                                label={copy.githubLabel}
                                 value="thameiu"
                                 href="https://github.com/thameiu"
                             />
                             <ContactCard
                                 icon={<FaFileDownload />}
-                                label="CV"
-                                value="Télécharger mon CV"
+                                label={copy.cvLabel}
+                                value={copy.cvValue}
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     requestAnimationFrame(() =>
@@ -715,7 +723,14 @@ export default function ContactV2() {
                 </div>
             </div>
 
-            {isCVOpen && <CVModal onClose={() => setIsCVOpen(false)} />}
+            {isCVOpen && (
+                <CVModal
+                    onClose={() => setIsCVOpen(false)}
+                    downloadLabel={copy.cvDownload}
+                    closeLabel={copy.cvClose}
+                    title={copy.cvTitle}
+                />
+            )}
         </section>
     );
 }

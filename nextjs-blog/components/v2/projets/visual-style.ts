@@ -1,6 +1,12 @@
 import type { IconPos } from "./types";
 
-export type BackdropPreset = "none" | "rgbastDots" | "ggpsRings" | "pathfinderImage" | "glprojectGrid";
+export type BackdropPreset =
+  | "none"
+  | "rgbastDots"
+  | "ggpsRings"
+  | "pathfinderImage"
+  | "glprojectGrid"
+  | "bunchofcardsRetro";
 
 export interface BackdropConfig {
   preset: BackdropPreset;

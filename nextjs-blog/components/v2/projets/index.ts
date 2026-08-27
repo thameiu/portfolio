@@ -1,4 +1,5 @@
 import { PROJECT_2CLOCK_VISUAL_STYLE } from "./2clock";
+import { PROJECT_BUNCH_OF_CARDS_VISUAL_STYLE } from "./bunchofcards";
 import { PROJECT_GGPS_VISUAL_STYLE } from "./ggps";
 import { PROJECT_GLPROJECT_VISUAL_STYLE } from "./glproject";
 import { PROJECT_PATHFINDER_VISUAL_STYLE } from "./pathfinder";
@@ -17,6 +18,7 @@ const PROJECT_VISUAL_STYLE_MAP: Record<string, ProjectVisualStyle> = {
   [PROJECT_PATHFINDER_VISUAL_STYLE.id]: PROJECT_PATHFINDER_VISUAL_STYLE,
   [PROJECT_GGPS_VISUAL_STYLE.id]: PROJECT_GGPS_VISUAL_STYLE,
   [PROJECT_GLPROJECT_VISUAL_STYLE.id]: PROJECT_GLPROJECT_VISUAL_STYLE,
+  [PROJECT_BUNCH_OF_CARDS_VISUAL_STYLE.id]: PROJECT_BUNCH_OF_CARDS_VISUAL_STYLE,
 };
 
 export function getProjectVisualStyle(projectId: string): ProjectVisualStyle | null {

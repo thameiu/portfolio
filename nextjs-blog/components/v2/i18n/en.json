@@ -1,0 +1,323 @@
+{
+  "language": {
+    "ariaLabel": "Choose language",
+    "fr": "FR",
+    "en": "EN"
+  },
+  "meta": {
+    "title": "Mathieu Hernandez - Portfolio",
+    "description": "Mathieu Hernandez, Versatile Developer - Portfolio",
+    "ogDescription": "Mathieu Hernandez's portfolio, versatile developer across frontend, backend, web design, cloud, and cybersecurity.",
+    "twitterDescription": "Mathieu Hernandez's portfolio, full-stack developer.",
+    "imageAlt": "Preview of Mathieu Hernandez's portfolio",
+    "keywords": "Mathieu Hernandez, portfolio, web developer, full-stack developer, frontend developer, backend developer, Next.js, React, TypeScript, NestJS, FastAPI, Laravel, Docker, Leaflet, PostgreSQL, cybersecurity, cloud, apprenticeship, Marseille, Aix-en-Provence, Windev, rgbast, RGBast, GGPS, Pathfinder, 2Clock, Three, Three.js, Web Design, Web Designer, webdev, web dev"
+  },
+  "nav": {
+    "about": "about",
+    "projects": "works",
+    "career": "career",
+    "contact": "contact"
+  },
+  "hero": {
+    "subtitle": "▪ Full-stack Developer ▪"
+  },
+  "about": {
+    "title": "About",
+    "showPhoto": "Show the regular photo",
+    "showCube": "Show the cube version",
+    "paragraphs": [
+      "My name is **Mathieu HERNANDEZ**, I'm 21 years old, and I am currently studying at **CESI** in Aix-en-Provence as part of a **Master of Science Technique**, specializing in **Cybersecurity + Cloud**, after completing a **BUT Informatique** at the IUT of Arles.",
+      "Through my studies and professional experience, I have developed solid skills in **development and programming**, and above all a real **passion** for the field, from designing **clean and efficient** data **structures** to **web design**, which lets me express my **creativity** in the **digital** world."
+    ],
+    "location": "Bouc-Bel-Air ▪ France"
+  },
+  "career": {
+    "title": "Career",
+    "tabs": {
+      "experiences": "experience",
+      "education": "education",
+      "skills": "skills"
+    },
+    "experiences": [
+      {
+        "period": "September 2025 - Present",
+        "role": "Developer Analyst",
+        "org": "ACD ▪ Aix-en-Provence",
+        "badge": "Apprenticeship",
+        "desc": "Application maintenance and development on **Suite Expert**, desktop and web solution for accountants. Performance optimization, bug fixing, and refactoring."
+      },
+      {
+        "period": "September 2024 - June 2025",
+        "role": "Full-Stack Developer",
+        "org": "Miratlas ▪ Pertuis",
+        "badge": "Apprenticeship",
+        "desc": "Rebuild of **Pathfinder**, a mapping cartography for atmospheric disturbances in free-space optical communications. Database design, REST API, and dynamic frontend features with Leaflet and live charts."
+      },
+      {
+        "period": "April - June 2024",
+        "role": "Web Developer",
+        "org": "Amiltone ▪ Aix-en-Provence",
+        "badge": "Internship",
+        "desc": "Development on **Flotto**, a web solution for vehicle fleet management. Frontend/backend features, accessibility improvements, and bug fixes."
+      }
+    ],
+    "education": [
+      {
+        "period": "2026 - 2028",
+        "role": "Professional Master's Manager in Infrastructures and IS Cybersecurity",
+        "org": "CESI ▪ Aix-en-Provence",
+        "desc": "Advanced project management, cybersecurity, cloud, and infrastructure specialization."
+      },
+      {
+        "period": "2022 - 2025",
+        "role": "BUT Informatique",
+        "org": "Aix-Marseille University ▪ IUT of Arles",
+        "desc": "Complete software development curriculum covering databases, networking, and project management. Agile methods and development best practices."
+      }
+    ],
+    "skillTitles": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "databases": "Databases",
+      "tools": "Tools",
+      "languages": "Languages",
+      "desktop": "Desktop"
+    }
+  },
+  "projects": {
+    "title": "Works",
+    "tabs": {
+      "web": "web apps",
+      "others": "others"
+    },
+    "viewMore": "view more",
+    "back": "Back",
+    "previousImage": "Previous image",
+    "nextImage": "Next image",
+    "noPreview": "▪ preview soon ▪",
+    "defaultLinkText": "view project",
+    "previewAltSuffix": "preview",
+    "cards": {
+      "bunchofcards": {
+        "description": "Web binder for my collection of miscellaneous cards.",
+        "details": "Retro web experience inspired by Windows XP and the Source engine · scrollable cards tracking the cursor · front-and-back 3D card view.",
+        "linkText": "voir bunchofcards",
+        "story": {
+          "bunchofcards-story-1": {
+            "title": "Context",
+            "text": "For many years, I have collected random **cards** from restaurants where I eat, artists I meet, shops I visit... I accumulated so many that my wallet at the time started to tear.<br/><br/>I wanted to do something with these cards, and eventually I had the idea of turning them into a **digital binder**, which I called “**bunchofcards**”."
+          },
+          "bunchofcards-story-2": {
+            "title": "Project",
+            "text": "**bunchofcards** contains dozens of cards that I manually **scanned** and **edited** so they are correctly cropped and all at the same scale. It presents them through a **scrollable** list, where every card constantly **turns** toward the cursor, or through a grid repeating the cards **infinitely**. Clicking a card lets you view it in **3D, front and back**, and get a description of it.<br/><br/>For this project I wanted to recreate a retro aesthetic, close to **Windows XP**, also inspired by the **Source** game engine (through the pink and black grid backgrounds, and an easter egg).<br/><br/>These cards I collect represent moments or **experiences** from my life. Other details and features using the cards are present on the site."
+          }
+        }
+      },
+      "rgbast": {
+        "description": "A web app for color-palette versioning and generation, built for designers and developers.",
+        "details": "Vue 3 + Vite frontend · FastAPI + SQLAlchemy + Alembic backend · Ubuntu VPS + GitHub Actions CI/CD · Nginx reverse proxy + Docker.",
+        "linkText": "view RGBAST",
+        "story": {
+          "rgbast-story-1": {
+            "title": "Context",
+            "text": "I often used Coolors, a web app for generating and visualizing **palettes**, to create visual identities for my school projects. But some of its limitations bothered me. Aside from the features behind a **paywall**, which is already restrictive, you cannot modify a saved **palette** directly: opening it in the generator and saving it creates a new one. The palette generator is also very linear; you cannot choose which **colors** to keep or what harmony type to use. It is entirely random.<br/><br/>At first, I simply wanted to build a better palette-saving system... then I had a better idea: **Git**."
+          },
+          "rgbast-story-2": {
+            "title": "Features",
+            "text": "RGBAST lets users create palettes with 1 to 15 colors, each with a custom label. Every save creates a **Snapshot** with the changes attached to it. After the initial snapshot, ONLY changes are stored: **additions**, **modifications** (hex code or label), **moves**, and **deletions**. This avoids duplicating data and recreates the core idea of Git.",
+            "imageAlt": "Section with the rgbast-4 image alongside text"
+          },
+          "rgbast-story-3": {
+            "text": "I also implemented a **branch** system, used here as drafts for exploring color variants. A **Merge** can be made from a branch into the main palette to validate changes. If the latest palette version doesn't suit you anymore, a **Revert** can bring a branch back to an older snapshot."
+          },
+          "rgbast-story-4": {
+            "text": "For color indexing, RGBAST uses **lexicographic ordering**, with letters instead of numbers, so the order can be preserved without reindexing every item when a color is inserted at the beginning.<br/> [Lexicographic order - Wikipedia](https://en.wikipedia.org/wiki/Lexicographic_order)<br/><br/>Only the moved or inserted item changes, so no extra changes need to be stored."
+          },
+          "rgbast-story-5": {
+            "text": "Keeping the code-repository theme, RGBAST also includes folders to organize palettes and generate more meaningful URLs:<br/><br/>[https://www.rgbast.com/users/thameiu/projets/ErgoSix](https://www.rgbast.com/users/thameiu/projets%2FErgoSix)"
+          },
+          "rgbast-story-6": {
+            "text": "For palette generation, users can choose **harmony** modes, making it possible to generate opposite colors, nearby shades, or palettes centered around 1 to 3 colors that matter to them. If an image is inspiring, RGBAST can also extract its **dominant colors**.",
+            "imageAlt": "Section with the rgbast-generation image alongside text"
+          },
+          "rgbast-story-7": {
+            "text": "PDF, PNG, SVG, and even CSS/SCSS variable exports are also available for maximum palette portability."
+          },
+          "rgbast-story-8": {
+            "text": "To complete the app, I added a **color picker** that provides useful information about a color: conversions, an approximate name, contrast against black, white, or another color, equivalents for different kinds of color blindness, and especially the **Bast Score**: an original 0-to-100 score that indicates how indescribable, ambiguous, or bastardized a color is. That is where RGBAST gets its name, even though there is also a wordplay with “Past”."
+          },
+          "rgbast-story-9": {
+            "text": "While building that feature, I ran into another problem. I wanted a picker that could display every RGB color in a single image... but that is impossible if the result needs to stay readable, because RGB is a 3D color system. While researching it, I found the idea of a **3D RGB visualizer**: a cube whose x, y, and z axes map to red, green, and blue values from 0 to 255."
+          },
+          "rgbast-story-10": {
+            "text": "I implemented that picker and tried to make it as intuitive as possible: **sliders** for each axis slice through the cube and reveal the values inside it, with an optional fourth slider to limit the number of values per axis. You might ask what a 3D color picker is for... honestly, not much. But if someone ever needs one, it exists. That is the spirit of RGBAST.",
+            "imageAlt": "Section with the rgbast-cube image alongside text"
+          },
+          "rgbast-story-11": {
+            "title": "Technical Stack",
+            "text": "Technically, RGBAST uses **Vue.js** on the frontend, **FastAPI** for the API, **PostgreSQL** as the relational database, and **Docker** for backend containerization. It is deployed on an **IONOS Ubuntu VPS** behind an **Nginx** reverse proxy. I also configured **IONOS SMTP** for account and password-reset emails, plus a **GitHub Actions** pipeline for backend deployment and automatic migrations.<br/><br/>This project let me work across the full development spectrum: **backend architecture**, **4NF database design**, and **web design & UX**, while still having fun."
+          }
+        }
+      },
+      "2clock": {
+        "description": "A timestamped clock-in web app with business KPI analysis and hardened access controls.",
+        "details": "Next.js + Express microservice architecture · temporary WebSocket TOTP codes · Jenkins CI/CD · Docker + Nginx + SSL.",
+        "linkText": "view repository",
+        "story": {
+          "2clock-story-1": {
+            "title": "Context",
+            "text": "At the beginning of my first year in Epitech's Master of Science Technique, I had to build a timestamped clock-in application that could visualize at least two kinds of **KPIs**.<br/><br/>With my project team, we called it **2Clock**, reflecting the binary nature of clocking in and out and the app's simplicity: two punches, nothing more. It is also a play on “to clock in/out”.<br/><br/>2Clock is designed to be flexible and robust. Once your access is created, you can manage different teams and also be an employee in another team."
+          },
+          "2clock-story-2": {
+            "text": "Each employee inherits the general **schedule** by default, but can also have an individual weekly schedule with days off, precise start and end times, and support for night shifts.",
+            "imageAlt": "Weekly schedule in 2Clock"
+          },
+          "2clock-story-3": {
+            "text": "Because the app is fully digital, with no physical badge system, clock-ins are secured using a temporary six-digit **code** that refreshes every 30 seconds and is only available from a team manager's screen.",
+            "imageAlt": "Temporary clock-in code in 2Clock"
+          },
+          "2clock-story-4": {
+            "text": "Each team has its own time zone so arrivals and departures are calculated correctly. The employee UX is deliberately direct: type the code, validate, done.<br/><br/>Managers have access to employee statistics pages showing arrival and departure punctuality (early arrivals, lateness, overtime...) across date ranges or recent days, as well as absences that can be corrected in case of missed punches or unexpected events. The KPIs are designed to be understandable and easy to manipulate."
+          },
+          "2clock-story-5": {
+            "imageAlt": "2Clock KPI dashboard"
+          },
+          "2clock-story-6": {
+            "title": "Technical Side",
+            "text": "To make the application flexible, solid, and maintainable, the most important part of the project was database design.<br/><br/>We created a compact **4NF** model where each piece of data can remain technically definitive."
+          },
+          "2clock-story-7": {
+            "imageAlt": "2Clock database schema"
+          },
+          "2clock-story-8": {
+            "text": "Each **Clock**, or punch record, contains the arrival and departure time, defining a workday. It is always linked to a weekly schedule, either the team's default schedule or the user's own schedule within that team. To avoid empty columns and duplicated data, a schedule contains 1 to 7 **Schedule** rows, one per workday, with the day of the week and the hours. If an employee only works on Mondays, only Monday data exists in the database. When a schedule changes, 2Clock creates a new one while keeping the previous version. A punch therefore remains permanently linked to the schedule that applied at that time, protecting KPIs and statistics from inconsistencies.<br/><br/>For protected clock-ins, we used a **WebSocket**, a communication channel between client and server based on emitted and received signals. This keeps the team code identical for everyone and refreshes it automatically every 30 seconds on the manager's screen, including the countdown."
+          },
+          "2clock-story-9": {
+            "title": "Technical Stack",
+            "text": "The backend was built with **Express.js** and protected by several **middlewares** that prevent injections, attacks, and spam while checking team roles and permissions in addition to authentication. The frontend uses **Next.js**, and both frontend and backend are containerized with **Docker**. We used **Supabase** for the database so test data could be shared. During the project, it was hosted on an **OVHCloud** server with **Jenkins** handling the **CI/CD** pipeline, code-format checks, unit tests, and production deployment."
+          }
+        }
+      },
+      "pathfinder": {
+        "description": "A web mapping app for atmospheric disturbance analysis in free-space optical communications.",
+        "details": "Interactive Leaflet maps · pixel-by-pixel cloud image processing · Recharts visualizations · user and dataset back-office",
+        "linkText": "view Miratlas",
+        "story": {
+          "pathfinder-story-0": {
+            "title": "Context",
+            "text": "During my **third year** in **BUT Informatique**, I completed an apprenticeship at **Miratlas**.<br/><br/>**Miratlas** is a French company that provides telecom operators, space institutions, and defense organizations with precise atmospheric measurements to continuously guarantee the reliability of optical communications. To do that, they design and deploy instruments and services that measure, in real time, the parameters that affect light propagation through the atmosphere, including **turbulence**, **cloud cover**, and light **absorption**."
+          },
+          "pathfinder-story-0b": {
+            "text": "Their main tool is the **Sky Monitor**, a compact atmospheric-disturbance analysis instrument whose images and data are available through an **API**. It helps measure conditions required for high-quality **ground-to-space** optical communication."
+          },
+          "pathfinder-story-0c": {
+            "text": "The **Sky Monitor** stands out because it is compact, easy to install, and less expensive than other solutions. Even so, it does not directly decide where an optical ground station should be installed. That is where **Pathfinder** comes in.",
+            "imageAlt": "Miratlas Sky Monitor"
+          },
+          "pathfinder-story-1": {
+            "title": "Pathfinder 1.0",
+            "text": "**Pathfinder** is an analysis and simulation tool that helps select the best sites for **OGS** stations and optimize optical links. It is a **Next.js** web app with a map where users can visualize points of interest, each with atmospheric disturbance charts such as **histograms** and **time series**."
+          },
+          "pathfinder-story-2": {
+            "text": "It also displays average cloud-cover and turbulence rates across the planet by semester and time of day using map layers. **TCC** (**Total Cloud Cover**) is shown through a color spectrum from **1** (full cover) to **0** (no clouds). The same approach is used for **r0**, the average diameter of a turbulence-free zone, from **0.01 m** to **0.15 m**. These images are designed to be intuitive: higher values use warmer and brighter colors, representing better optical communication conditions.",
+            "imageAlt": "Pathfinder 1.0 demo"
+          },
+          "pathfinder-story-3": {
+            "text": "When I arrived, **Pathfinder** was not very scalable. It used **Appwrite** to store users and chart images that had been generated ahead of time with **Matplotlib**. Access management was fragile and mostly based on the user's email DNS, which made permissions difficult to handle. The app worked and was deployed, but it was still closer to a **POC**."
+          },
+          "pathfinder-story-4": {
+            "text": "As an apprentice at **Miratlas**, my mission was to build **Pathfinder 2.0** without **Appwrite**, designing and implementing a **Laravel** backend and a database from scratch."
+          },
+          "pathfinder-story-5": {
+            "title": "Pathfinder 2.0",
+            "text": "The first step was to model a solid **4NF** data schema. The database now manages data as follows:<br/><br/>**Users** belong to **teams** through memberships, and team **access** to geolocated **sites** is handled through **categories** and accesses."
+          },
+          "pathfinder-story-6": {
+            "text": "Every site has **10 charts** showing **r0**, **theta0**, **tau0**, **TCC**, and **Rytov index** data. It has **5 histograms**, representing **50 intervals** (`[0;0.2]`, `[0.2;0.4]` ... `[0.98;1]`) with the number of values found in each one, and **5 heatmaps**, or **time series**, representing each day of the year on the x-axis and every **3 hours** on the y-axis, with each disturbance rate shown as a color. Each row stores the site ID and the required data split atomically into columns.<br/><br/>With this storage format, the data is easy to maintain, importable as **CSV** files or **CSV** archives for bulk imports, and visualized dynamically on the frontend with **Recharts** and **heatmap-grid**."
+          },
+          "pathfinder-story-6b": {
+            "imageAlt": "Pathfinder 2.0 histograms",
+            "imageSecondaryAlt": "Pathfinder 2.0 time series"
+          },
+          "pathfinder-story-7": {
+            "title": "Value Thresholds",
+            "text": "Overlay images showing average cloud cover or turbulence across the planet are now stored in a public backend folder so they can be exposed through the **API**. This feature also had **two improvement axes**: adding **transparency thresholds** to hide values below a minimum or above a maximum, and allowing the **colormap** to change, because all images had been generated with **Matplotlib** using the **viridis** spectrum (purple to bright yellow)."
+          },
+          "pathfinder-story-8": {
+            "text": "My first idea was to make map backgrounds dynamic, like the charts.<br/><br/>If every value used to generate the map backgrounds were stored in the database, the frontend could fetch them and compute colors from those values. But that approach is far from optimal.<br/><br/>These images visualize values every **0.3** degrees of latitude and longitude, which means:<br/><br/>(90 x 2 / 0.3) x (180 x 2 / 0.3) = **600 x 1200 values** in the arrays used to generate one map background, or **720,000 values** in a possible database table for a single map. Replacing images this way would mean **21,600,000** database rows.<br/><br/>In this case, images are still the optimal solution, because **Leaflet** already displays them efficiently as map layers. To implement thresholds and palette changes, the solution was not to make map backgrounds dynamic, but to modify the images directly on the client with **digital image processing**."
+          },
+          "pathfinder-story-9": {
+            "text": "I found a niche **JavaScript** library on **GitHub** called **js-colormaps**, which brings **Matplotlib** colormaps to JavaScript and provides a function for finding a color in a spectrum from a value between **0** and **1**."
+          },
+          "pathfinder-story-9b": {
+            "text": "Using the colormap data and a function I wrote to locate a color between **0** and **1** within a spectrum, I built a **threshold controller**. It lets users adjust minimum and maximum thresholds on images, displaying opaque gray areas below the minimum and transparency above the maximum. It can also stretch the spectrum to the selected thresholds, recalculating every pixel to improve readability and contrast.",
+            "imageAlt": "Threshold controller for Pathfinder overlays"
+          },
+          "pathfinder-story-9c": {
+            "text": "For example, where a **TCC** value of **0.5** would normally appear green, if the minimum threshold is set to **0.5**, pixels with that extracted value become purple."
+          },
+          "pathfinder-story-10": {
+            "imageAlt": "Pathfinder view with overlays and threshold controller"
+          },
+          "pathfinder-story-11": {
+            "title": "Outcome",
+            "text": "After these improvements, and thanks to the researchers' work that made a large atmospheric-disturbance dataset available, **Pathfinder** became a unique application that helps optical-communication decision-makers choose installation sites more easily.<br/><br/>I especially enjoyed this project, not only because of the technical complexity that forced me to think carefully, but also because of everything I learned about ground-to-space optical communications and atmospheric disturbances."
+          }
+        }
+      },
+      "ggps": {
+        "description": "A web app for locating video-game events, with real-time event chatrooms.",
+        "details": "NestJS + Socket.io WebSockets · Leaflet geolocation · role-based permission system · JWT authentication.",
+        "story": {
+          "ggps-story-1": {
+            "title": "Context",
+            "text": "In my third year of **BUT Informatique**, each of us had to build an individual project using the development skills acquired throughout the program, with a free topic.<br/><br/>I wanted to connect the project to my apprenticeship, so my goal was to use a similar structure: a **React** frontend communicating with a **REST API** and using **Leaflet** to display elements on a map. Since I knew almost nothing about free-space optical communications, I decided to create an app for locating and creating video-game events, which I named **Global Gamer's Positionning System**, or simply **GGPS**."
+          },
+          "ggps-story-1b": {
+            "title": "Features",
+            "text": "**GGPS** lets users locate tournaments, LAN parties, and conventions on a map and register for them in one click. If an event is private, its creator or an administrator must accept the request, after which the user gains access to **chatrooms**.<br/><br/>Participants can talk there, and chat administrators can pin messages, mute or timeout members, or ban users from the chat.<br/><br/>On an event page, everything is instant: messages, registration approvals, event or chat bans, pinned messages, and more.<br/><br/>Once their e-mail is verified, users can also create their own event directly on the map. They fill in the details (name, description, dates, privacy) and click the map, which automatically detects the address and still allows manual correction if needed.<br/><br/>The application also uses a local **cookie** system: if users often search for a type or theme of event, such as **Super Smash Bros.**, events displayed on the map are prioritized accordingly."
+          },
+          "ggps-story-2": {
+            "title": "Technical Side",
+            "text": "As mentioned above, the frontend uses **Next.js** with **Leaflet**, plus API calls to **OpenStreetMap** to detect the address selected when creating an event.<br/><br/>The backend was built with **Nest.js**, a useful framework because it shares a key library with the frontend: **Socket.io**.<br/><br/>To make chatrooms almost instant, I implemented a **WebSocket** on both client and server, using emitted and received signals. Signals are shared whenever a message is sent, pinned, or deleted, and also when an access request is accepted, a role changes, or a participant is banned.<br/><br/>Beyond avoiding repetitive requests, this channel significantly improves the **UX**, especially for access management because users do not need to refresh repeatedly.<br/><br/>The **PostgreSQL** API and database are containerized with **Docker** for easier maintenance."
+          },
+          "ggps-story-3": {
+            "title": "Outcome",
+            "text": "This was my first complete **API-first** web application, and I really enjoyed building it. Even though the code feels a bit chaotic to me today, **GGPS** fully deserves its place in my **portfolio**."
+          }
+        }
+      },
+      "glproject": {
+        "description": "An educational 3D visualization engine built with OpenGL.",
+        "details": "Low-level C++ and GPU programming, GLSL shaders (Phong, Blinn-Phong, Gaussian blur), planar/spherical/cylindrical/cubic projections, .obj loading, dynamic camera and lighting.",
+        "story": {
+          "glproject-story-1": {
+            "title": "Context",
+            "text": "During my third year of **BUT Informatique**, we learned **3D**, more specifically how it works at a **low level**: vertices, edges, textures, and shaders, all handled manually.<br/><br/>The goal of this assignment was to create an educational project presenting the features of the low-level graphics library **OpenGL**.<br/><br/>**GLProject**, the temporary and final name I gave it because I had no better idea, can display **.obj** 3D models, apply textures, manipulate the camera, and especially control lighting: intensity, light and reflection colors, angle, optional camera binding, and shader choice (**Phong**, **Blinn-Phong**, **Gaussian**). It can also project image textures onto a model using planar, cylindrical, cubic, or spherical projection."
+          },
+          "glproject-story-2": {
+            "title": "Technical Side",
+            "text": "We built this project in **C++** with **OpenGL**, a low-level graphics library. Here, we had to manage everything ourselves: sending vertices and edges to the **GPU**, writing and computing shaders, optimizing rendering, controlling the camera, updating lighting in real time, and more."
+          },
+          "glproject-story-3": {
+            "title": "Outcome",
+            "text": "This project was extremely complex, probably one of the hardest parts of my training, but it was also very interesting. There is no better way to understand how **3D** works, or any other area of computing for that matter, than starting from the **low level** and getting as close as possible to the computer's components.<br/><br/>It belongs to the kind of project so complex that the final emotion is not frustration, but the satisfaction of having made it work."
+          }
+        }
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "intro": "Available for opportunities, collaborations, or just to talk.",
+    "emailCopied": "E-mail copied!",
+    "emailLabel": "E-mail",
+    "linkedinLabel": "LinkedIn",
+    "githubLabel": "GitHub",
+    "cvLabel": "Resume",
+    "cvValue": "Download my resume",
+    "cvDownload": "Download",
+    "cvClose": "Close",
+    "cvTitle": "Mathieu Hernandez resume"
+  }
+}

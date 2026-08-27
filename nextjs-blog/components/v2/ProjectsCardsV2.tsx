@@ -21,47 +21,7 @@ import { TECH_ICON } from "./projets/techIcons";
 import type { IconType, ProjectData } from "./projets/types";
 import GlitchTitle from "./GlitchTitle";
 import MainSectionV2 from "./MainSectionV2";
-
-const OTHER_PROJECTS: ProjectData[] = [
-    {
-        id: "glproject",
-        title: "GLProject",
-        fullTitle: "GLProject",
-        titleSvg: "/glproject/glproject.svg",
-        description: "Moteur de visualisation 3D pédagogique (OpenGL).",
-        details:
-            "Programmation bas-niveau C++ et GPU, shaders GLSL (Phong, Blinn-Phong, flou Gaussien), projections planaires/sphériques/cylindriques/cubiques, chargement .obj, caméra et lumières dynamiques.",
-        techStack: ["C++", "OpenGL", "CMake"],
-        bgColor: "#191919",
-        accentColor: "#2889A9",
-        isDark: true,
-        iconType: "cubegrid",
-        screenshots: [
-            "/glproject/glproject-1.png",
-            "/glproject/glproject-2.png",
-        ],
-        story: [
-            {
-                id: "glproject-story-1",
-                layout: "text",
-                title: "Contexte",
-                text: "Durant ma 3ème année de **BUT Informatique**, nous avons appris la **3D**, plus précisément son fonctionnement **bas niveau** : vertices, edges, textures et shaders, tout à la main.<br/><br/>L’objectif de ce TP était de créer un projet pédagogique, qui présente les fonctionnalités de la librairie graphique bas niveau **OpenGL**.<br/><br/>**GLProject**, nom temporaire - et définitif - que j’ai donné à ce projet à cause d’un manque d’inspiration, permet de visualiser des modèles 3D **.obj**, de leur appliquer une texture, de manipuler la caméra et surtout la lumière : intensité, couleur de la lumière et des réflexions, angle, liaison possible avec la caméra, choix de shader (**Phong**, **Blinn-Phong**, **Gaussian**). Il permet aussi d’appliquer une texture sur le modèle avec des images, en projection plane, cylindrique, cubique ou sphérique.",
-            },
-            {
-                id: "glproject-story-2",
-                layout: "text",
-                title: "Aspect technique",
-                text: "Nous avons réalisé ce projet en **C++**, avec **OpenGL**, qui est une librairie graphique de bas niveau. Ici, nous devions tout gérer : envoi des vertices et edges au **GPU**, calcul des shaders (que nous devions écrire), optimisation, manipulation de la caméra, mise à jour en temps réel de la lumière, etc.",
-            },
-            {
-                id: "glproject-story-3",
-                layout: "text",
-                title: "Bilan",
-                text: "Ce projet était extrêmement complexe, probablement l’un des plus difficiles de ma formation, mais il était cela dit très intéressant. Il n’y a pas de meilleure façon de comprendre le fonctionnement de la **3D** (ou de n’importe quelle autre forme d’informatique, cela dit) qu’en commençant par le **bas niveau**, en se rapprochant le plus possible des composants de l’ordinateur.<br/><br/>Il fait partie d’une catégorie de projets qui est tellement complexe, que la frustration n’est pas l’émotion finale que l’on ressent, mais plutôt la satisfaction d’avoir réussi.",
-            },
-        ],
-    },
-];
+import type { PortfolioCopy } from "./i18n";
 
 const CirclesIcon = ({ color }: { color: string }) => (
     <svg viewBox="0 0 280 280" fill="none" style={{ overflow: "visible" }}>
@@ -241,11 +201,13 @@ function Carousel({
     accentColor,
     isDark,
     skeletonColor,
+    copy,
 }: {
     images: string[];
     accentColor: string;
     isDark: boolean;
     skeletonColor?: string;
+    copy: PortfolioCopy["projects"];
 }) {
     const [mounted, setMounted] = useState(false);
     const [idx, setIdx] = useState(0);
@@ -411,7 +373,7 @@ function Carousel({
                                       }}
                                       className="v2-carousel-side-nav v2-carousel-side-nav-left v2-carousel-focus-desktop-nav"
                                       style={{ color: accentColor }}
-                                      aria-label="Image précédente"
+                                      aria-label={copy.previousImage}
                                   >
                                       ‹
                                   </button>
@@ -472,7 +434,7 @@ function Carousel({
                                       }}
                                       className="v2-carousel-side-nav v2-carousel-side-nav-right v2-carousel-focus-desktop-nav"
                                       style={{ color: accentColor }}
-                                      aria-label="Image suivante"
+                                      aria-label={copy.nextImage}
                                   >
                                       ›
                                   </button>
@@ -487,7 +449,7 @@ function Carousel({
                                       }}
                                       className="v2-carousel-focus-mobile-nav"
                                       style={{ color: accentColor }}
-                                      aria-label="Image précédente"
+                  aria-label={copy.previousImage}
                                   >
                                       ‹
                                   </button>
@@ -526,7 +488,7 @@ function Carousel({
                                       }}
                                       className="v2-carousel-focus-mobile-nav"
                                       style={{ color: accentColor }}
-                                      aria-label="Image suivante"
+                  aria-label={copy.nextImage}
                                   >
                                       ›
                                   </button>
@@ -595,7 +557,7 @@ function Carousel({
                             }}
                             className="v2-carousel-side-nav v2-carousel-side-nav-left"
                             style={{ color: accentColor }}
-                            aria-label="Image précédente"
+                            aria-label={copy.previousImage}
                         >
                             ‹
                         </button>
@@ -619,7 +581,7 @@ function Carousel({
                             }}
                             className="v2-carousel-side-nav v2-carousel-side-nav-right"
                             style={{ color: accentColor }}
-                            aria-label="Image suivante"
+                            aria-label={copy.nextImage}
                         >
                             ›
                         </button>
@@ -912,9 +874,13 @@ function ProjectInfoScrollbar({
 }
 
 export default function ProjectsCardsV2({
-    projects,
+    webProjects,
+    otherProjects,
+    copy,
 }: {
-    projects: ProjectData[];
+    webProjects: ProjectData[];
+    otherProjects: ProjectData[];
+    copy: PortfolioCopy["projects"];
 }) {
     const sectionRef = useRef<HTMLElement>(null);
     const infoScrollRef = useRef<HTMLDivElement>(null);
@@ -939,7 +905,7 @@ export default function ProjectsCardsV2({
   const modalTopOpacityRef = useRef(1);
   const modalStoryOpacityRef = useRef(0);
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-    const visibleProjects = activeTab === "web" ? projects : OTHER_PROJECTS;
+    const visibleProjects = activeTab === "web" ? webProjects : otherProjects;
 
     const clearTimers = () => {
         timersRef.current.forEach(clearTimeout);
@@ -1222,7 +1188,7 @@ export default function ProjectsCardsV2({
             style={{ background: "transparent" }}
         >
             <GlitchTitle
-                text="Projets"
+                text={copy.title}
                 color="#881111"
                 triggerRef={sectionRef}
                 className="v2-mega-title mb-14"
@@ -1260,7 +1226,7 @@ export default function ProjectsCardsV2({
                     >
                         {activeTab === "web" ? "▪" : "▫"}
                     </span>
-                    apps web
+                    {copy.tabs.web}
                     <span
                         aria-hidden="true"
                         className="absolute inset-y-0 right-1.5 sm:right-2.5 flex items-center"
@@ -1292,7 +1258,7 @@ export default function ProjectsCardsV2({
                     >
                         {activeTab === "others" ? "▪" : "▫"}
                     </span>
-                    autres
+                    {copy.tabs.others}
                     <span
                         aria-hidden="true"
                         className="absolute inset-y-0 right-1.5 sm:right-2.5 flex items-center"
@@ -1364,7 +1330,7 @@ export default function ProjectsCardsV2({
                                     >
                                         <ProjectImageWithSkeleton
                                             src={cardPreview}
-                                            alt={`${projectFullTitle} aperçu`}
+                                            alt={`${projectFullTitle} ${copy.previewAltSuffix}`}
                                             fill
                                             className="object-cover object-top"
                                             draggable={false}
@@ -1384,7 +1350,7 @@ export default function ProjectsCardsV2({
                                     >
                                         <ProjectImageWithSkeleton
                                             src={cardPreview}
-                                            alt={`${projectFullTitle} aperçu`}
+                                            alt={`${projectFullTitle} ${copy.previewAltSuffix}`}
                                             fill
                                             className="object-cover object-right"
                                             draggable={false}
@@ -1425,7 +1391,7 @@ export default function ProjectsCardsV2({
                                             fontFamily: "'Sora',sans-serif",
                                         }}
                                     >
-                                        ▪ voir plus →
+                                        ▪ {copy.viewMore} →
                                     </span>
                                 </div>
                             </div>
@@ -1532,7 +1498,7 @@ export default function ProjectsCardsV2({
                                         : "auto",
                                     transition: "opacity 0.22s ease",
                                 }}
-                                aria-label="Retour"
+                                aria-label={copy.back}
                             >
                                 <IoArrowBack />
                             </button>
@@ -1810,7 +1776,7 @@ export default function ProjectsCardsV2({
                                                     }}
                                                 >
                                                     {"▪"} {activeProject.linkText ??
-                                                        "voir le projet"}{" "}
+                                                        copy.defaultLinkText}{" "}
                                                     →
                                                 </a>
                                             )}
@@ -1833,6 +1799,7 @@ export default function ProjectsCardsV2({
                                                         skeletonColor={
                                                             activeProject.accentColor
                                                         }
+                                                        copy={copy}
                                                     />
                                                 ) : (
                                                     <div
@@ -1856,7 +1823,7 @@ export default function ProjectsCardsV2({
                                                                 fontSize: 12,
                                                             }}
                                                         >
-                                                            ▪ aperçu bientôt ▪
+                                                            {copy.noPreview}
                                                         </span>
                                                     </div>
                                                 )}
@@ -1879,7 +1846,7 @@ export default function ProjectsCardsV2({
                                                         }}
                                                     >
                                                         {"▪"} {activeProject.linkText ??
-                                                            "voir le projet"}{" "}
+                                                            copy.defaultLinkText}{" "}
                                                         →
                                                     </a>
                                                 </div>
